@@ -1,0 +1,165 @@
+<html>
+	<head>
+		<script>
+			function to_int(str)
+			{
+				if(str.length<=0)
+					throw "Invalid digit.";
+
+				for(var ii=0;ii<str.length;++ii)
+					if(str[ii]<'0'||str[ii]>'9')
+						throw "Invalid digit.";
+
+				return parseInt(str);
+			}
+
+			function submit()
+			{
+				var input_length=null;
+				var layer_length=null;
+				var weight_length=null;
+				var json=
+				{
+					inputs:null,
+					layers:null,
+					weights:null
+				};
+
+				try
+				{
+					input_length=to_int(document.getElementById("input_length").value);
+				}
+				catch(error)
+				{
+					throw "Invalid number of inputs.";
+				}
+
+				try
+				{
+					layer_length=to_int(document.getElementById("layer_length").value);
+				}
+				catch(error)
+				{
+					throw "Invalid number of layers.";
+				}
+
+				try
+				{
+					weight_length=to_int(document.getElementById("weight_length").value);
+				}
+				catch(error)
+				{
+					throw "Invalid number of weights.";
+				}
+
+				try
+				{
+					json.inputs=JSON.parse(document.getElementById("inputs").value);
+				}
+				catch(error)
+				{
+					throw "Invalid inputs: "+error;
+				}
+
+				try
+				{
+					json.layers=JSON.parse(document.getElementById("layers").value);
+				}
+				catch(error)
+				{
+					throw "Invalid layers: "+error;
+				}
+
+				try
+				{
+					json.weights=JSON.parse(document.getElementById("weights").value);
+				}
+				catch(error)
+				{
+					throw "Invalid weights: "+error;
+				}
+
+				if(json.inputs.length!=input_length)
+					throw "Input lengths do not match.";
+				if(json.layers.length!=layer_length)
+					throw "Layer lengths do not match.";
+				if(json.weights.length!=weight_length)
+					throw "Weight lengths do not match.";
+
+				request_eval(json,
+					function(json)
+					{
+						console.log("JSON - "+JSON.stringify(json));
+					},
+					function(error)
+					{
+						console.log("Error - "+error);
+					});
+			}
+
+			function request_eval(json,onreply,onerror)
+			{
+				var data=null;
+
+				try
+				{
+					data=JSON.stringify(json);
+
+					var xmlhttp=new XMLHttpRequest();
+
+					xmlhttp.onreadystatechange=function()
+					{
+						if(xmlhttp.readyState==4)
+						{
+							if(xmlhttp.status==200)
+							{
+								try
+								{
+									var json=JSON.parse(xmlhttp.responseText);
+
+									if(onreply)
+										onreply(json);
+								}
+								catch(error)
+								{
+									onerror(error);
+								}
+							}
+							else if(onerror)
+							{
+								onerror(xmlhttp.status);
+							}
+						}
+					};
+
+					xmlhttp.open("POST","?eval=true",true);
+					xmlhttp.setRequestHeader("Content-Type","application/json");
+					xmlhttp.send(data);
+				}
+				catch(error)
+				{
+					if(onerror)
+						onerror(error);
+				}
+			}
+		</script>
+	</head>
+	<body>
+		# of Inputs <input id="input_length" value="3"></input><br/>
+		<br/>
+		<textarea id="inputs">[0,0,0]</textarea><br/>
+		<br/>
+		# of Layers <input id="layer_length" value="4"/><br/>
+		<br/>
+		<textarea id="layers">[32,40,16,1]</textarea><br/>
+		<br/>
+		# of Weights <input id="weight_length" value="3"/><br/>
+		<br/>
+		<textarea id="weights">[[],[],[]]</textarea><br/>
+		<br/>
+		Sigmoid<br/>
+		y=x/sqrt(1+x^2)<br/>
+		<br/>
+		<input type="button" value="Submit" onclick="submit();"/>
+	</body>
+</html>

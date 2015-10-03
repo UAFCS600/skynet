@@ -10,7 +10,7 @@ endif
 
 all: server
 
-server: $(SRC)/server.cpp $(SRC)/handler.cpp $(SRC)/json.cpp $(INC)/mongoose/mongoose.c $(INC)/jsoncpp/json_reader.cpp $(INC)/jsoncpp/json_tool.h $(INC)/jsoncpp/json_value.cpp $(INC)/jsoncpp/json_writer.cpp
+server: $(SRC)/server.cpp $(SRC)/handler.cpp $(SRC)/json.cpp $(INC)/mongoose/mongoose.c $(INC)/jsoncpp/json_reader.cpp $(INC)/jsoncpp/json_value.cpp $(INC)/jsoncpp/json_writer.cpp
 	$(CXX) $(CFLAGS) $(LIB) $^ -o $@
 
 clean:

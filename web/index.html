@@ -1,18 +1,8 @@
 <html>
 	<head>
+		<script src="/js/utility.js"></script>
+		<script src="/js/xmlhttp.js"></script>
 		<script>
-			function to_int(str)
-			{
-				if(str.length<=0)
-					throw "Invalid digit.";
-
-				for(var ii=0;ii<str.length;++ii)
-					if(str[ii]<'0'||str[ii]>'9')
-						throw "Invalid digit.";
-
-				return parseInt(str);
-			}
-
 			function submit()
 			{
 				var input_length=null;
@@ -86,7 +76,7 @@
 				if(json.weights.length!=weight_length)
 					throw "Weight lengths do not match.";
 
-				request_eval(json,
+				request("?eval=true",json,
 					function(json)
 					{
 						console.log("JSON - "+JSON.stringify(json));
@@ -95,52 +85,6 @@
 					{
 						console.log("Error - "+error);
 					});
-			}
-
-			function request_eval(json,onreply,onerror)
-			{
-				var data=null;
-
-				try
-				{
-					data=JSON.stringify(json);
-
-					var xmlhttp=new XMLHttpRequest();
-
-					xmlhttp.onreadystatechange=function()
-					{
-						if(xmlhttp.readyState==4)
-						{
-							if(xmlhttp.status==200)
-							{
-								try
-								{
-									var json=JSON.parse(xmlhttp.responseText);
-
-									if(onreply)
-										onreply(json);
-								}
-								catch(error)
-								{
-									onerror(error);
-								}
-							}
-							else if(onerror)
-							{
-								onerror(xmlhttp.status);
-							}
-						}
-					};
-
-					xmlhttp.open("POST","?eval=true",true);
-					xmlhttp.setRequestHeader("Content-Type","application/json");
-					xmlhttp.send(data);
-				}
-				catch(error)
-				{
-					if(onerror)
-						onerror(error);
-				}
 			}
 		</script>
 	</head>

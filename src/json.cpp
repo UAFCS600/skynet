@@ -20,3 +20,42 @@ json_t JSON_parse(const std::string& stringified)
 	istr>>json;
 	return json;
 }
+
+std::vector<float> to_float_array(const json_t& json)
+{
+	if(!json.isArray())
+		throw std::runtime_error("Not a JSON array.");
+
+	std::vector<float> array;
+
+	for(auto ii:json)
+		array.push_back(ii.asFloat());
+
+	return array;
+}
+
+std::vector<size_t> to_size_array(const json_t& json)
+{
+	if(!json.isArray())
+		throw std::runtime_error("Not a JSON array.");
+
+	std::vector<size_t> array;
+
+	for(auto ii:json)
+		array.push_back(ii.asUInt());
+
+	return array;
+}
+
+std::vector<std::vector<float>> to_array_float_array(const json_t& json)
+{
+	if(!json.isArray())
+		throw std::runtime_error("Not a JSON array.");
+
+	std::vector<std::vector<float>> array;
+
+	for(auto ii:json)
+		array.push_back(to_float_array(ii));
+
+	return array;
+}

@@ -71,9 +71,9 @@ int client_handler(mg_connection* connection,mg_event event)
 				if(!json.isObject())
 					throw std::runtime_error("Not a JSON object.");
 
-				std::vector<float> inputs=to_float_array(json["inputs"]);
+				std::vector<double> inputs=to_double_array(json["inputs"]);
 				std::vector<size_t> layers=to_size_array(json["layers"]);
-				std::vector<std::vector<float>> weights=to_array_float_array(json["weights"]);
+				std::vector<std::vector<double>> weights=to_array_double_array(json["weights"]);
 
 				mg_send(connection,"{\"output\":42,\"time\":200}","application/json");
 			}

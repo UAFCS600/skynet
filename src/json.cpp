@@ -21,15 +21,18 @@ json_t JSON_parse(const std::string& stringified)
 	return json;
 }
 
-std::vector<float> to_float_array(const json_t& json)
+std::vector<double> to_double_array(const json_t& json)
 {
 	if(!json.isArray())
-		throw std::runtime_error("Not a JSON array.");
+		throw std::runtime_error("Not a JSON double array.");
 
-	std::vector<float> array;
+	std::vector<double> array;
 
 	for(auto ii:json)
-		array.push_back(ii.asFloat());
+		if(!ii.isDouble()&&!ii.isInt())
+			throw std::runtime_error("JSON array contains a non-double.");
+		else
+			array.push_back(ii.asDouble());
 
 	return array;
 }
@@ -37,25 +40,28 @@ std::vector<float> to_float_array(const json_t& json)
 std::vector<size_t> to_size_array(const json_t& json)
 {
 	if(!json.isArray())
-		throw std::runtime_error("Not a JSON array.");
+		throw std::runtime_error("Not a JSON unsigned integer array.");
 
 	std::vector<size_t> array;
 
 	for(auto ii:json)
-		array.push_back(ii.asUInt());
+		if(!ii.isUInt())
+			throw std::runtime_error("JSON array contains a non-unsigned integer.");
+		else
+			array.push_back(ii.asUInt());
 
 	return array;
 }
 
-std::vector<std::vector<float>> to_array_float_array(const json_t& json)
+std::vector<std::vector<double>> to_array_double_array(const json_t& json)
 {
 	if(!json.isArray())
 		throw std::runtime_error("Not a JSON array.");
 
-	std::vector<std::vector<float>> array;
+	std::vector<std::vector<double>> array;
 
 	for(auto ii:json)
-		array.push_back(to_float_array(ii));
+		array.push_back(to_double_array(ii));
 
 	return array;
 }

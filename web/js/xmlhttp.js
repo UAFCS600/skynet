@@ -28,7 +28,7 @@ function request(request,json,onreply,onerror)
 				}
 				else if(onerror)
 				{
-					onerror(xmlhttp.status);
+					onerror("Returned with status "+xmlhttp.status+".");
 				}
 			}
 		};

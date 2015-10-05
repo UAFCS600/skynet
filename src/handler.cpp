@@ -54,7 +54,7 @@ int eval_handler(mg_connection* connection,mg_event event,const std::string& pos
 			output=neuralnet.evaluate(inputs);
 
 		auto end=std::chrono::system_clock::now();
-		auto time=(end-start).count()/(double)times;
+		auto time=std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count()/(double)times;
 
 		mg_send(connection,"{\"output\":"+std::to_string(output)+",\"time\":"+std::to_string(time)+"}","application/json");
 	}

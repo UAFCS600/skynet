@@ -1,7 +1,7 @@
 #ifndef NEURALNET_HPP
 #define NEURALNET_HPP
 
-#include <string>
+#include <cstdlib>
 #include <vector>
 
 class neuralnet_t
@@ -18,6 +18,8 @@ class neuralnet_t
 
 	private:
 		void create_node_layers_m();
+		void set_node_weights_m(const std::vector<double>& weights);
+
 		std::vector<size_t> layers_m;
 		std::vector<std::vector<node_t>> node_layers_m;
 };

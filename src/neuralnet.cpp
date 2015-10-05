@@ -1,6 +1,7 @@
 #include "neuralnet.hpp"
 
 #include <stdexcept>
+#include <string>
 
 double sigmoid(double x)
 {
@@ -19,20 +20,7 @@ neuralnet_t::neuralnet_t(const std::vector<size_t>& layers,const std::vector<dou
 			std::to_string(layers_m[layers_m.size()-1])+").");
 
 	create_node_layers_m();
-
-	std::vector<double*> real_weights;
-
-	for(auto& layer:node_layers_m)
-		for(auto& node:layer)
-			for(auto& weight:node.weights)
-				real_weights.push_back(&weight);
-
-	if(weights.size()!=real_weights.size())
-		throw std::runtime_error("Weight lengths do not match(expected "+
-			std::to_string(real_weights.size())+" got "+std::to_string(weights.size())+").");
-
-	for(size_t ii=0;ii<real_weights.size();++ii)
-		*(real_weights[ii])=weights[ii];
+	set_node_weights_m(weights);
 }
 
 double neuralnet_t::evaluate(const std::vector<double>& inputs)
@@ -84,4 +72,21 @@ void neuralnet_t::create_node_layers_m()
 			node_layers_m.push_back({node});
 		}
 	}
+}
+
+void neuralnet_t::set_node_weights_m(const std::vector<double>& weights)
+{
+	std::vector<double*> real_weights;
+
+	for(auto& layer:node_layers_m)
+		for(auto& node:layer)
+			for(auto& weight:node.weights)
+				real_weights.push_back(&weight);
+
+	if(weights.size()!=real_weights.size())
+		throw std::runtime_error("Weight lengths do not match(expected "+
+			std::to_string(real_weights.size())+" got "+std::to_string(weights.size())+").");
+
+	for(size_t ii=0;ii<real_weights.size();++ii)
+		*(real_weights[ii])=weights[ii];
 }

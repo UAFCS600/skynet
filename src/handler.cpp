@@ -40,6 +40,7 @@ int eval_handler(mg_connection* connection,mg_event event,const std::string& pos
 		auto inputs=to_double_array(json["inputs"]);
 		auto layers=to_size_array(json["layers"]);
 		auto weights=to_double_array(json["weights"]);
+		size_t sigmoid_index=json["sigmoid_index"].asUInt();
 
 		neuralnet_t neuralnet(layers,weights);
 
@@ -51,7 +52,7 @@ int eval_handler(mg_connection* connection,mg_event event,const std::string& pos
 		double output=0;
 
 		for(auto ii=0;ii<times;++ii)
-			output=neuralnet.evaluate(inputs);
+			output=neuralnet.evaluate(inputs,sigmoid_index);
 
 		auto end=std::chrono::system_clock::now();
 		auto time=std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count()/(double)times;

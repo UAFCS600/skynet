@@ -14,7 +14,7 @@ class neuralnet_t
 
 	public:
 		neuralnet_t(const std::vector<size_t>& layers,const std::vector<double>& weights);
-		double evaluate(const std::vector<double>& inputs);
+		double evaluate(const std::vector<double>& inputs,const size_t sigmoid_index);
 
 	private:
 		void create_node_layers_m();

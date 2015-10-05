@@ -5,24 +5,14 @@
 		<script>
 			function submit()
 			{
-				var input_length=null;
 				var layer_length=null;
-				var weight_length=null;
 				var json=
 				{
 					inputs:null,
 					layers:null,
-					weights:null
+					weights:null,
+					sigmoid_index:null
 				};
-
-				try
-				{
-					input_length=to_unsigned_int(document.getElementById("input_length").value);
-				}
-				catch(error)
-				{
-					throw "Invalid number of inputs ("+error+").";
-				}
 
 				try
 				{
@@ -31,15 +21,6 @@
 				catch(error)
 				{
 					throw "Invalid number of layers ("+error+").";
-				}
-
-				try
-				{
-					weight_length=to_unsigned_int(document.getElementById("weight_length").value);
-				}
-				catch(error)
-				{
-					throw "Invalid number of weights ("+error+").";
 				}
 
 				try
@@ -69,12 +50,10 @@
 					throw "Invalid weights: "+error;
 				}
 
-				if(json.inputs.length!=input_length)
-					throw "Input lengths do not match.";
+				json.sigmoid_index=document.getElementById("sigmoid").selectedIndex;
+
 				if(json.layers.length!=layer_length)
 					throw "Layer lengths do not match.";
-				if(json.weights.length!=weight_length)
-					throw "Weight lengths do not match.";
 
 				if(json.layers.length<=0)
 					throw "Invalid layer length(expected value >= 0).";
@@ -109,20 +88,24 @@
 		</script>
 	</head>
 	<body>
-		# of Inputs <input id="input_length" value="2"></input><br/>
-		<br/>
-		<textarea id="inputs">[1,1]</textarea><br/>
-		<br/>
 		# of Layers <input id="layer_length" value="3"/><br/>
 		<br/>
 		<textarea id="layers">[2,3,1]</textarea><br/>
 		<br/>
-		# of Weights <input id="weight_length" value="9"/><br/>
+		Weights<br/>
 		<br/>
 		<textarea id="weights">[1,1,1,1,1,1,1,1,1]</textarea><br/>
 		<br/>
+		Inputs<br/>
+		<br/>
+		<textarea id="inputs">[1,1]</textarea><br/>
+		<br/>
 		Sigmoid<br/>
-		y=x<br/>
+		<select id="sigmoid">
+			<option>y=x</option>
+			<option>y=1/(1+e^(-x))</option>
+			<option>y=2/(1+e^(-x/2))-1</option>
+		</select><br/>
 		<br/>
 		<input type="button" value="Submit" onclick="submit();"/>
 	</body>

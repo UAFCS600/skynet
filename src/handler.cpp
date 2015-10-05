@@ -1,10 +1,12 @@
 #include "handler.hpp"
 
+#include <chrono>
 #include <iostream>
 #include <stdexcept>
 #include <utility>
 
 #include "json.hpp"
+#include "neuralnet.hpp"
 
 std::string get_query(const mg_connection* connection,const std::string& var)
 {
@@ -24,6 +26,48 @@ void mg_send(mg_connection* connection,const std::string& data,const std::string
 void mg_send_status(mg_connection* connection,const std::string& status)
 {
 	mg_printf(connection,"HTTP/1.1 %s\r\nContent-Length: 0\r\n\r\n\r\n\r\n",status.c_str());
+}
+
+int eval_handler(mg_connection* connection,mg_event event,const std::string& post_data)
+{
+	try
+	{
+		json_t json=JSON_parse(post_data);
+
+		if(!json.isObject())
+			throw std::runtime_error("Not a JSON object.");
+
+		auto inputs=to_double_array(json["inputs"]);
+		auto layers=to_size_array(json["layers"]);
+		auto weights=to_double_array(json["weights"]);
+
+		neuralnet_t neuralnet(layers,weights);
+
+		if(inputs.size()!=layers[0])
+			throw std::runtime_error("Invalid input length(expected "+std::to_string(layers[0])+" got "+std::to_string(inputs.size())+").");
+
+		int times=100000;
+		auto start=std::chrono::system_clock::now();
+		double output=0;
+
+		for(auto ii=0;ii<times;++ii)
+			output=neuralnet.evaluate(inputs);
+
+		auto end=std::chrono::system_clock::now();
+		auto time=(end-start).count()/(double)times;
+
+		mg_send(connection,"{\"output\":"+std::to_string(output)+",\"time\":"+std::to_string(time)+"}","application/json");
+	}
+	catch(std::exception& error)
+	{
+		mg_send(connection,"{\"error\":\""+std::string(error.what())+"\"}","application/json");
+	}
+	catch(...)
+	{
+		mg_send(connection,"{\"error\":\"Could not parse JSON object.\"}","application/json");
+	}
+
+	return MG_TRUE;
 }
 
 int client_handler(mg_connection* connection,mg_event event)
@@ -63,31 +107,7 @@ int client_handler(mg_connection* connection,mg_event event)
 		std::string is_eval=get_query(connection,"eval");
 
 		if(is_eval!=""&&is_eval!="false")
-		{
-			try
-			{
-				json_t json=JSON_parse(post_data);
-
-				if(!json.isObject())
-					throw std::runtime_error("Not a JSON object.");
-
-				std::vector<double> inputs=to_double_array(json["inputs"]);
-				std::vector<size_t> layers=to_size_array(json["layers"]);
-				std::vector<std::vector<double>> weights=to_array_double_array(json["weights"]);
-
-				mg_send(connection,"{\"output\":42,\"time\":200}","application/json");
-			}
-			catch(std::exception& error)
-			{
-				mg_send(connection,"{\"error\":\""+std::string(error.what())+"\"}","application/json");
-			}
-			catch(...)
-			{
-				mg_send(connection,"{\"error\":\"Could not parse JSON object.\"}","application/json");
-			}
-
-			return MG_TRUE;
-		}
+			return eval_handler(connection,event,post_data);
 	}
 
 	return MG_FALSE;

@@ -17,29 +17,29 @@
 
 				try
 				{
-					input_length=to_int(document.getElementById("input_length").value);
+					input_length=to_unsigned_int(document.getElementById("input_length").value);
 				}
 				catch(error)
 				{
-					throw "Invalid number of inputs.";
+					throw "Invalid number of inputs ("+error+").";
 				}
 
 				try
 				{
-					layer_length=to_int(document.getElementById("layer_length").value);
+					layer_length=to_unsigned_int(document.getElementById("layer_length").value);
 				}
 				catch(error)
 				{
-					throw "Invalid number of layers.";
+					throw "Invalid number of layers ("+error+").";
 				}
 
 				try
 				{
-					weight_length=to_int(document.getElementById("weight_length").value);
+					weight_length=to_unsigned_int(document.getElementById("weight_length").value);
 				}
 				catch(error)
 				{
-					throw "Invalid number of weights.";
+					throw "Invalid number of weights ("+error+").";
 				}
 
 				try
@@ -76,6 +76,26 @@
 				if(json.weights.length!=weight_length)
 					throw "Weight lengths do not match.";
 
+				if(json.layers.length<=0)
+					throw "Invalid layer length(expected value >= 0).";
+
+				if(json.layers[json.layers.length-1]!=1)
+					throw "Expected last layer value of 1(got "+json.layers[json.layers.length-1]+").";
+
+				if(json.inputs.length!=json.layers[0])
+					throw "Invalid input length(expected value "+json.layers[0]+
+						" got "+json.inputs.length+").";
+
+				var weight_length_correct=0;
+
+				for(var ii=0;ii<json.layers.length;++ii)
+					if(ii+1<json.layers.length)
+						weight_length_correct+=json.layers[ii]*json.layers[ii+1];
+
+				if(json.weights.length!=weight_length_correct)
+					throw "Weight lengths do not match(expected "+weight_length_correct+
+						" got "+json.weights.length+").";
+
 				request("?eval=true",json,
 					function(json)
 					{
@@ -89,20 +109,20 @@
 		</script>
 	</head>
 	<body>
-		# of Inputs <input id="input_length" value="3"></input><br/>
+		# of Inputs <input id="input_length" value="2"></input><br/>
 		<br/>
-		<textarea id="inputs">[0,0,0]</textarea><br/>
+		<textarea id="inputs">[1,1]</textarea><br/>
 		<br/>
-		# of Layers <input id="layer_length" value="4"/><br/>
+		# of Layers <input id="layer_length" value="3"/><br/>
 		<br/>
-		<textarea id="layers">[32,40,16,1]</textarea><br/>
+		<textarea id="layers">[2,3,1]</textarea><br/>
 		<br/>
-		# of Weights <input id="weight_length" value="3"/><br/>
+		# of Weights <input id="weight_length" value="9"/><br/>
 		<br/>
-		<textarea id="weights">[[],[],[]]</textarea><br/>
+		<textarea id="weights">[1,1,1,1,1,1,1,1,1]</textarea><br/>
 		<br/>
 		Sigmoid<br/>
-		y=x/sqrt(1+x^2)<br/>
+		y=x<br/>
 		<br/>
 		<input type="button" value="Submit" onclick="submit();"/>
 	</body>

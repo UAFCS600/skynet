@@ -8,13 +8,10 @@ ifeq ($(OS),Windows_NT)
 	LIB+=-lWs2_32
 endif
 
-all: server unittests
+all: server
 
-server: $(SRC)/server.cpp $(SRC)/handler.cpp $(SRC)/json.cpp $(INC)/mongoose/mongoose.c $(INC)/jsoncpp/json_reader.cpp $(INC)/jsoncpp/json_value.cpp $(INC)/jsoncpp/json_writer.cpp
-	$(CXX) $(CFLAGS) $(LIB) $^ -o $@
-
-unittests: $(SRC)/NNTest.cpp $(SRC)/NN.cpp
+server: $(SRC)/server.cpp $(SRC)/handler.cpp $(SRC)/json.cpp $(SRC)/neuralnet.cpp $(INC)/mongoose/mongoose.c $(INC)/jsoncpp/json_reader.cpp $(INC)/jsoncpp/json_value.cpp $(INC)/jsoncpp/json_writer.cpp
 	$(CXX) $(CFLAGS) $(LIB) $^ -o $@
 
 clean:
-	-rm -rf server server.exe unittests unittests.exe
+	-rm -rf server server.exe

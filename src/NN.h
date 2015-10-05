@@ -38,7 +38,7 @@ struct  Node{
   //constructors
   Node(const vector<double> w) : weights(w)
   {}
-  Node(int size, double value)
+  Node(size_t size, double value)
   {
     weights.assign(size,value);
   }
@@ -52,18 +52,18 @@ class  Network
 public:
 	Network();
   Network(const Network & orig);
-  Network(const vector<int> & top, int val);      //tests for constant valued
-  Network(const vector<int> & top); 
-  
+  Network(const vector<size_t> & top, int val);      //tests for constant valued
+  Network(const vector<size_t> & top);
+
 	void seed();
 	void print();
 	double evaluator(vector<double> input);
 
 private:
-	 void addLayer(int size);
-private:	
+	 void addLayer(size_t size);
+private:
 	vector< vector<Node> > layer_;
-  vector<int> topology_;        //a vector of ints for the network topology
+  vector<size_t> topology_;        //a vector of ints for the network topology
 };
 
 #endif

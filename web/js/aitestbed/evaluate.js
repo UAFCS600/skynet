@@ -123,84 +123,97 @@ function evaluator_t(div)
 
 evaluator_t.prototype.submit=function()
 {
-	var layer_length=null;
-	var json=
-	{
-		layers:null,
-		weights:null,
-		inputs:null,
-		sigmoid_index:null
-	};
-
 	try
 	{
-		layer_length=to_unsigned_int(this.data.layers.input.value);
-	}
-	catch(error)
-	{
-		throw "Invalid number of layers ("+error+").";
-	}
-
-	try
-	{
-		json.layers=JSON.parse(this.data.topology.input.value);
-	}
-	catch(error)
-	{
-		throw "Invalid layers: "+error;
-	}
-
-	try
-	{
-		json.weights=JSON.parse(this.data.weights.input.value);
-	}
-	catch(error)
-	{
-		throw "Invalid weights: "+error;
-	}
-
-	try
-	{
-		json.inputs=JSON.parse(this.data.inputs.input.value);
-	}
-	catch(error)
-	{
-		throw "Invalid inputs: "+error;
-	}
-
-	json.sigmoid_index=this.data.sigmoid.select.selectedIndex;
-
-	if(json.layers.length!=layer_length)
-		throw "Layer lengths do not match.";
-
-	if(json.layers.length<=0)
-		throw "Invalid layer length(expected value >= 0).";
-
-	if(json.layers[json.layers.length-1]!=1)
-		throw "Expected last layer value of 1(got "+json.layers[json.layers.length-1]+").";
-
-	if(json.inputs.length!=json.layers[0])
-		throw "Invalid input length(expected value "+json.layers[0]+
-			" got "+json.inputs.length+").";
-
-	var weight_length_correct=0;
-
-	for(var ii=0;ii<json.layers.length;++ii)
-		if(ii+1<json.layers.length)
-			weight_length_correct+=json.layers[ii]*json.layers[ii+1];
-
-	if(json.weights.length!=weight_length_correct)
-		throw "Weight lengths do not match(expected "+weight_length_correct+
-			" got "+json.weights.length+").";
-
-	request("?eval=true",json,
-		function(json)
+		var layer_length=null;
+		var json=
 		{
-			console.log("JSON - "+JSON.stringify(json));
-			alert("Output: "+json.output+"\nTime: "+json.ns+"ns");
-		},
-		function(error)
+			layers:null,
+			weights:null,
+			inputs:null,
+			sigmoid_index:null
+		};
+
+		try
 		{
-			console.log("Error - "+error);
-		});
+			layer_length=to_unsigned_int(this.data.layers.input.value);
+		}
+		catch(error)
+		{
+			throw "Invalid number of layers ("+error+").";
+		}
+
+		try
+		{
+			json.layers=JSON.parse(this.data.topology.input.value);
+		}
+		catch(error)
+		{
+			throw "Invalid layers: "+error;
+		}
+
+		try
+		{
+			json.weights=JSON.parse(this.data.weights.input.value);
+		}
+		catch(error)
+		{
+			throw "Invalid weights: "+error;
+		}
+
+		try
+		{
+			json.inputs=JSON.parse(this.data.inputs.input.value);
+		}
+		catch(error)
+		{
+			throw "Invalid inputs: "+error;
+		}
+
+		json.sigmoid_index=this.data.sigmoid.select.selectedIndex;
+
+		if(json.layers.length!=layer_length)
+			throw "Layer lengths do not match.";
+
+		if(json.layers.length<=0)
+			throw "Invalid layer length(expected value >= 0).";
+
+		if(json.layers[json.layers.length-1]!=1)
+			throw "Expected last layer value of 1(got "+json.layers[json.layers.length-1]+").";
+
+		if(json.inputs.length!=json.layers[0])
+			throw "Invalid input length(expected value "+json.layers[0]+
+				" got "+json.inputs.length+").";
+
+		var weight_length_correct=0;
+
+		for(var ii=0;ii<json.layers.length;++ii)
+			if(ii+1<json.layers.length)
+				weight_length_correct+=json.layers[ii]*json.layers[ii+1];
+
+		if(json.weights.length!=weight_length_correct)
+			throw "Weight lengths do not match(expected "+weight_length_correct+
+				" got "+json.weights.length+").";
+
+		request("?eval=true",json,
+			function(json)
+			{
+				console.log("JSON - "+JSON.stringify(json));
+
+				if(json.error)
+					alert("Server Error: "+json.error);
+				else
+					alert("Output: "+json.output+"\nTime: "+json.ns+"ns\nBoard Evaluations Per Second: "+Math.ceil(1e9/json.ns));
+			},
+			function(error)
+			{
+				console.log("Error - "+error);
+				alert("Error: "+error);
+			});
+	}
+	catch(error)
+	{
+		console.log("Error - "+error);
+		alert("Error: "+error);
+	}
 }

@@ -31,6 +31,7 @@ int main(int argc,char* argv[])
 		}
 
 		mg_set_option(server,"document_root",web_root.c_str());
+		mg_set_option(server,"ssi_pattern","**.html$");
 
 		std::cout<<"Server started on "<<mg_get_option(server,"listening_port")<<" with web root \""<<
 			web_root<<"\"."<<std::endl;

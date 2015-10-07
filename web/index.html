@@ -1,5 +1,7 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
+		<!--#include virtual="/sources.html"-->
 		<script src="/js/utility.js"></script>
 		<script src="/js/xmlhttp.js"></script>
 		<script>
@@ -88,25 +90,35 @@
 		</script>
 	</head>
 	<body>
-		# of Layers <input id="layer_length" value="3"/><br/>
+		<!--#include virtual="/navbar.html"-->
+		<title>Neural Network Evaluator</title>
+		<div class="container">
+			<center><h1>Neural Network Evaluator</h1></center>
+			<label># of Layers</label>
+			<input id="layer_length" value="3" class="form-control" style="width:100px;"/>
+			<br/>
+			<label>Topology</label>
+			<br/>
+			<textarea id="layers" class="form-control" rows="1" style="width:200px;">[2,3,1]</textarea>
+			<br/>
+			<label>Weights</label>
+			<br/>
+			<textarea id="weights" class="form-control" rows="10" style="width:600px;">[1,1,1,1,1,1,1,1,1]</textarea>
+			<br/>
+			<label>Inputs</label><br/>
+			<textarea id="inputs" class="form-control" rows="10" style="width:600px;">[1,1]</textarea>
+			<br/>
+			<label>Sigmoid</label>
+			<select id="sigmoid" class="form-control" style="width:200px">
+				<option>y=x</option>
+				<option>y=1/(1+e^(-x))</option>
+				<option>y=2/(1+e^(-x/2))-1</option>
+			</select>
+			<br/>
+			<input type="button" value="Submit" onclick="submit();" class="btn btn-primary"/>
+		</div>
 		<br/>
-		<textarea id="layers">[2,3,1]</textarea><br/>
 		<br/>
-		Weights<br/>
 		<br/>
-		<textarea id="weights">[1,1,1,1,1,1,1,1,1]</textarea><br/>
-		<br/>
-		Inputs<br/>
-		<br/>
-		<textarea id="inputs">[1,1]</textarea><br/>
-		<br/>
-		Sigmoid<br/>
-		<select id="sigmoid">
-			<option>y=x</option>
-			<option>y=1/(1+e^(-x))</option>
-			<option>y=2/(1+e^(-x/2))-1</option>
-		</select><br/>
-		<br/>
-		<input type="button" value="Submit" onclick="submit();"/>
 	</body>
 </html>

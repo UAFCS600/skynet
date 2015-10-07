@@ -2,123 +2,17 @@
 <html lang="en">
 	<head>
 		<!--#include virtual="/sources.html"-->
-		<script src="/js/utility.js"></script>
-		<script src="/js/xmlhttp.js"></script>
-		<script>
-			function submit()
-			{
-				var layer_length=null;
-				var json=
-				{
-					inputs:null,
-					layers:null,
-					weights:null,
-					sigmoid_index:null
-				};
-
-				try
-				{
-					layer_length=to_unsigned_int(document.getElementById("layer_length").value);
-				}
-				catch(error)
-				{
-					throw "Invalid number of layers ("+error+").";
-				}
-
-				try
-				{
-					json.inputs=JSON.parse(document.getElementById("inputs").value);
-				}
-				catch(error)
-				{
-					throw "Invalid inputs: "+error;
-				}
-
-				try
-				{
-					json.layers=JSON.parse(document.getElementById("layers").value);
-				}
-				catch(error)
-				{
-					throw "Invalid layers: "+error;
-				}
-
-				try
-				{
-					json.weights=JSON.parse(document.getElementById("weights").value);
-				}
-				catch(error)
-				{
-					throw "Invalid weights: "+error;
-				}
-
-				json.sigmoid_index=document.getElementById("sigmoid").selectedIndex;
-
-				if(json.layers.length!=layer_length)
-					throw "Layer lengths do not match.";
-
-				if(json.layers.length<=0)
-					throw "Invalid layer length(expected value >= 0).";
-
-				if(json.layers[json.layers.length-1]!=1)
-					throw "Expected last layer value of 1(got "+json.layers[json.layers.length-1]+").";
-
-				if(json.inputs.length!=json.layers[0])
-					throw "Invalid input length(expected value "+json.layers[0]+
-						" got "+json.inputs.length+").";
-
-				var weight_length_correct=0;
-
-				for(var ii=0;ii<json.layers.length;++ii)
-					if(ii+1<json.layers.length)
-						weight_length_correct+=json.layers[ii]*json.layers[ii+1];
-
-				if(json.weights.length!=weight_length_correct)
-					throw "Weight lengths do not match(expected "+weight_length_correct+
-						" got "+json.weights.length+").";
-
-				request("?eval=true",json,
-					function(json)
-					{
-						console.log("JSON - "+JSON.stringify(json));
-					},
-					function(error)
-					{
-						console.log("Error - "+error);
-					});
-			}
-		</script>
+		<script src="/js/aitestbed/evaluate.js"></script>
+		<script src="/js/aitestbed/utility.js"></script>
+		<script src="/js/aitestbed/xmlhttp.js"></script>
 	</head>
 	<body>
 		<!--#include virtual="/navbar.html"-->
 		<title>Neural Network Evaluator</title>
 		<div class="container">
 			<center><h1>Neural Network Evaluator</h1></center>
-			<label># of Layers</label>
-			<input id="layer_length" value="3" class="form-control" style="width:100px;"/>
-			<br/>
-			<label>Topology</label>
-			<br/>
-			<textarea id="layers" class="form-control" rows="1" style="width:200px;">[2,3,1]</textarea>
-			<br/>
-			<label>Weights</label>
-			<br/>
-			<textarea id="weights" class="form-control" rows="10" style="width:600px;">[1,1,1,1,1,1,1,1,1]</textarea>
-			<br/>
-			<label>Inputs</label><br/>
-			<textarea id="inputs" class="form-control" rows="10" style="width:600px;">[1,1]</textarea>
-			<br/>
-			<label>Sigmoid</label>
-			<select id="sigmoid" class="form-control" style="width:200px">
-				<option>y=x</option>
-				<option>y=1/(1+e^(-x))</option>
-				<option>y=2/(1+e^(-x/2))-1</option>
-			</select>
-			<br/>
-			<input type="button" value="Submit" onclick="submit();" class="btn btn-primary"/>
+			<div id="test"></div>
+			<script>var evaluator=new evaluator_t(document.getElementById("test"));</script>
 		</div>
-		<br/>
-		<br/>
-		<br/>
 	</body>
 </html>

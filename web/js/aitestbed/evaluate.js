@@ -1,3 +1,7 @@
+//$$y=x$$
+//$$y=\frac{1}{1+e^{-x}}$$
+//$$y=\frac{2}{1+e^{-x/2}}-1$$
+
 function evaluator_t(div)
 {
 	if(!div)
@@ -193,6 +197,7 @@ evaluator_t.prototype.submit=function()
 		function(json)
 		{
 			console.log("JSON - "+JSON.stringify(json));
+			alert("Output: "+json.output+"\nTime: "+json.ns+"ns");
 		},
 		function(error)
 		{

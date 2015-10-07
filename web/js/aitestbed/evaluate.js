@@ -15,16 +15,14 @@ function evaluator_t(div)
 			label:document.createElement("label"),
 			text:"Layers",
 			input:document.createElement("input"),
-			value:"3",
-			width:200
+			value:"3"
 		},
 		topology:
 		{
 			label:document.createElement("label"),
 			text:"Topology",
 			input:document.createElement("input"),
-			value:"[2,3,1]",
-			width:200
+			value:"[2,3,1]"
 		},
 		weights:
 		{
@@ -32,7 +30,6 @@ function evaluator_t(div)
 			text:"Weights",
 			input:document.createElement("textarea"),
 			value:"[1,1,1,1,1,1,1,1,1]",
-			width:600,
 			rows:10
 		},
 		inputs:
@@ -41,7 +38,6 @@ function evaluator_t(div)
 			text:"Inputs",
 			input:document.createElement("textarea"),
 			value:"[1,1]",
-			width:600,
 			rows:10
 		},
 		sigmoid:
@@ -54,8 +50,7 @@ function evaluator_t(div)
 				"y=x",
 				"y=1/(1+e^(-x))",
 				"y=2/(1+e^(-x/2))-1"
-			],
-			width:200
+			]
 		},
 		submit:
 		{

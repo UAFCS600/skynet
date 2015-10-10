@@ -1,3 +1,6 @@
 server
 server.exe
-*.swp
+*.swp #Ignore Vi swap files.
+
+#Build directory for binaries.
+/build

@@ -287,30 +287,28 @@ evaluator_t.prototype.submit=function()
 	var json=json=this.validate();
 	var myself=this;
 
-	try
-	{
-		request("?eval=true",json,
-			function(json)
+	request("?eval=true",json,
+		function(json)
+		{
+			if(json.error)
 			{
-				if(json.error)
-				{
-					myself.data.submit.div.className="form-group has-feedback has-error";
-					myself.error_boxes.push(new error_t(myself.data.submit.div,"Server Error: "+json.error));
-				}
-				else
-				{
-					alert("Output: "+json.output+"\nTime: "+json.ns+"ns\nBoard Evaluations Per Second: "+Math.ceil(1e9/json.ns));
-				}
-			},
-			function(error)
+				var modal=new modal_ok_t(myself.el,"Server Error",json.error);
+				modal.show();
+			}
+			else
 			{
-				this.data.submit.div.className="form-group has-feedback has-error";
-				this.error_boxes.push(new error_t(this.data.submit.div,error));
-			});
-	}
-	catch(error)
-	{
-		this.data.submit.div.className="form-group has-feedback has-error";
-		this.error_boxes.push(new error_t(this.data.submit.div,error));
-	}
+				var modal=new modal_ok_t(myself.el,"Evaluation");
+				modal.get_content().appendChild(document.createTextNode("Output: "+json.output));
+				modal.get_content().appendChild(document.createElement("br"));
+				modal.get_content().appendChild(document.createTextNode("Time: "+json.ns+"ns"));
+				modal.get_content().appendChild(document.createElement("br"));
+				modal.get_content().appendChild(document.createTextNode("Board Evaluations Per Second: "+Math.ceil(1e9/json.ns)));
+				modal.show();
+			}
+		},
+		function(error)
+		{
+			var modal=new modal_ok_t(myself.el,"Send Error",error);
+			modal.show();
+		});
 }

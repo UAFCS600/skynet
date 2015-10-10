@@ -2,6 +2,35 @@
 //$$y=\frac{1}{1+e^{-x}}$$
 //$$y=\frac{2}{1+e^{-x/2}}-1$$
 
+function error_t(div,message)
+{
+	if(!div)
+		return null;
+
+	this.div=div;
+	this.el=document.createElement("div");
+	this.div.appendChild(this.el);
+
+	this.glyph=document.createElement("span");
+	this.el.appendChild(this.glyph);
+	this.glyph.className="glyphicon glyphicon-remove"
+	this.glyph.style.marginRight="5px";
+	this.glyph.style.color="#a94442";
+
+	this.label=document.createElement("label");
+	this.el.appendChild(this.label);
+	this.label.className="control-label has-feedback";
+	this.label.innerHTML=message;
+}
+
+error_t.prototype.destroy=function()
+{
+	if(this.div)
+		this.div.removeChild(this.el);
+
+	this.div=this.el=null;
+}
+
 function evaluator_t(div)
 {
 	if(!div)
@@ -9,6 +38,7 @@ function evaluator_t(div)
 
 	this.div=div;
 	this.el=document.createElement("div");
+	this.div.appendChild(this.el);
 
 	var myself=this;
 
@@ -64,23 +94,28 @@ function evaluator_t(div)
 		}
 	};
 
-	this.div.appendChild(this.el);
+	this.error_boxes=[];
 
 	for(var key in this.data)
 	{
+		this.data[key].div=document.createElement("div");
+		this.el.appendChild(this.data[key].div);
+		this.data[key].div.className="form-group has-feedback";
+
 		if(this.data[key].label)
 		{
-			this.el.appendChild(this.data[key].label);
+			this.data[key].div.appendChild(this.data[key].label);
 			this.data[key].label.innerHTML=this.data[key].text;
-			this.el.appendChild(document.createElement("br"));
 		}
 
 		if(this.data[key].input)
 		{
-			this.el.appendChild(this.data[key].input);
+			this.data[key].div.appendChild(this.data[key].input);
 			this.data[key].input.className="form-control";
 			this.data[key].input.value=this.data[key].value;
-			this.el.appendChild(document.createElement("br"));
+			this.data[key].input.onchange=function(){myself.validate();};
+			this.data[key].input.onkeyup=function(){myself.validate();};
+			this.data[key].input.onkeypress=function(){myself.validate();};
 
 			if(this.data[key].width)
 				this.data[key].input.style.width=this.data[key].width+"px";
@@ -92,7 +127,7 @@ function evaluator_t(div)
 
 		if(this.data[key].select)
 		{
-			this.el.appendChild(this.data[key].select);
+			this.data[key].div.appendChild(this.data[key].select);
 			this.data[key].select.className="form-control";
 
 			for(var key2 in this.data[key].options)
@@ -101,7 +136,6 @@ function evaluator_t(div)
 				option.innerHTML=this.data[key].options[key2];
 				this.data[key].select.appendChild(option);
 			}
-			this.el.appendChild(document.createElement("br"));
 
 			if(this.data[key].width)
 				this.data[key].select.style.width=this.data[key].width+"px";
@@ -109,11 +143,10 @@ function evaluator_t(div)
 
 		if(this.data[key].button)
 		{
-			this.el.appendChild(this.data[key].button);
+			this.data[key].div.appendChild(this.data[key].button);
 			this.data[key].button.className="btn btn-primary";
 			this.data[key].button.innerHTML=this.data[key].text;
 			this.data[key].button.onclick=this.data[key].onclick;
-			this.el.appendChild(document.createElement("br"));
 
 			if(this.data[key].width)
 				this.data[key].button.style.width=this.data[key].width+"px";
@@ -121,18 +154,30 @@ function evaluator_t(div)
 	}
 }
 
-evaluator_t.prototype.submit=function()
+evaluator_t.prototype.validate=function()
 {
+	this.data.submit.button.disabled=true;
+
+	for(var key in this.data)
+		this.data[key].div.className="form-group has-feedback";
+
+	for(var key in this.error_boxes)
+		if(this.error_boxes[key])
+			this.error_boxes[key].destroy();
+
+	this.error_boxes=[];
+
+	var json=
+	{
+		layers:null,
+		weights:null,
+		inputs:null,
+		sigmoid_index:null
+	};
+
 	try
 	{
 		var layer_length=null;
-		var json=
-		{
-			layers:null,
-			weights:null,
-			inputs:null,
-			sigmoid_index:null
-		};
 
 		try
 		{
@@ -140,7 +185,9 @@ evaluator_t.prototype.submit=function()
 		}
 		catch(error)
 		{
-			throw "Invalid number of layers ("+error+").";
+			this.data.layers.div.className="form-group has-feedback has-error";
+			this.error_boxes.push(new error_t(this.data.layers.div,error));
+			throw error;
 		}
 
 		try
@@ -149,7 +196,9 @@ evaluator_t.prototype.submit=function()
 		}
 		catch(error)
 		{
-			throw "Invalid layers: "+error;
+			this.data.topology.div.className="form-group has-feedback has-error";
+			this.error_boxes.push(new error_t(this.data.topology.div,error));
+			throw error;
 		}
 
 		try
@@ -158,7 +207,9 @@ evaluator_t.prototype.submit=function()
 		}
 		catch(error)
 		{
-			throw "Invalid weights: "+error;
+			this.data.weights.div.className="form-group has-feedback has-error";
+			this.error_boxes.push(new error_t(this.data.weights.div,error));
+			throw error;
 		}
 
 		try
@@ -167,23 +218,46 @@ evaluator_t.prototype.submit=function()
 		}
 		catch(error)
 		{
-			throw "Invalid inputs: "+error;
+			this.data.inputs.div.className="form-group has-feedback has-error";
+			this.error_boxes.push(new error_t(this.data.inputs.div,error));
+			throw error;
 		}
 
 		json.sigmoid_index=this.data.sigmoid.select.selectedIndex;
 
 		if(json.layers.length!=layer_length)
-			throw "Layer lengths do not match.";
+		{
+			var error="Number of layers and topology length do not match.";
+			this.data.layers.div.className="form-group has-feedback has-error";
+			this.data.topology.div.className="form-group has-feedback has-error";
+			this.error_boxes.push(new error_t(this.data.layers.div,error));
+			this.error_boxes.push(new error_t(this.data.topology.div,error));
+			throw error;
+		}
 
 		if(json.layers.length<=0)
-			throw "Invalid layer length(expected value >= 0).";
+		{
+			var error="Invalid number of layers(expected value >= 0).";
+			this.data.layers.div.className="form-group has-feedback has-error";
+			this.error_boxes.push(new error_t(this.data.layers.div,error));
+			throw error;
+		}
 
 		if(json.layers[json.layers.length-1]!=1)
-			throw "Expected last layer value of 1(got "+json.layers[json.layers.length-1]+").";
+		{
+			var error="Expected last layer value of 1(got "+json.layers[json.layers.length-1]+").";
+			this.data.topology.div.className="form-group has-feedback has-error";
+			this.error_boxes.push(new error_t(this.data.topology.div,error));
+			throw error;
+		}
 
 		if(json.inputs.length!=json.layers[0])
-			throw "Invalid input length(expected value "+json.layers[0]+
-				" got "+json.inputs.length+").";
+		{
+			var error="Invalid number of inputs(expected value "+json.layers[0]+" got "+json.inputs.length+")."
+			this.data.inputs.div.className="form-group has-feedback has-error";
+			this.error_boxes.push(new error_t(this.data.inputs.div,error));
+			throw error;
+		}
 
 		var weight_length_correct=0;
 
@@ -192,28 +266,51 @@ evaluator_t.prototype.submit=function()
 				weight_length_correct+=json.layers[ii]*json.layers[ii+1];
 
 		if(json.weights.length!=weight_length_correct)
-			throw "Weight lengths do not match(expected "+weight_length_correct+
-				" got "+json.weights.length+").";
+		{
+			var error="Invalid number of weights(expected "+weight_length_correct+" got "+json.weights.length+").";
+			this.data.weights.div.className="form-group has-feedback has-error";
+			this.error_boxes.push(new error_t(this.data.weights.div,error));
+			throw error;
+		}
 
+		this.data.submit.button.disabled=false;
+	}
+	catch(error)
+	{
+	}
+
+	return json;
+}
+
+evaluator_t.prototype.submit=function()
+{
+	var json=json=this.validate();
+	var myself=this;
+
+	try
+	{
 		request("?eval=true",json,
 			function(json)
 			{
-				console.log("JSON - "+JSON.stringify(json));
-
 				if(json.error)
-					alert("Server Error: "+json.error);
+				{
+					myself.data.submit.div.className="form-group has-feedback has-error";
+					myself.error_boxes.push(new error_t(myself.data.submit.div,"Server Error: "+json.error));
+				}
 				else
+				{
 					alert("Output: "+json.output+"\nTime: "+json.ns+"ns\nBoard Evaluations Per Second: "+Math.ceil(1e9/json.ns));
+				}
 			},
 			function(error)
 			{
-				console.log("Error - "+error);
-				alert("Error: "+error);
+				this.data.submit.div.className="form-group has-feedback has-error";
+				this.error_boxes.push(new error_t(this.data.submit.div,error));
 			});
 	}
 	catch(error)
 	{
-		console.log("Error - "+error);
-		alert("Error: "+error);
+		this.data.submit.div.className="form-group has-feedback has-error";
+		this.error_boxes.push(new error_t(this.data.submit.div,error));
 	}
 }

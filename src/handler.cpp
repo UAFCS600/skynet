@@ -45,7 +45,7 @@ int eval_handler(mg_connection* connection,mg_event event,const std::string& pos
 		neuralnet_t neuralnet(layers,weights);
 
 		if(inputs.size()!=layers[0])
-			throw std::runtime_error("Invalid input length(expected "+std::to_string(layers[0])+" got "+std::to_string(inputs.size())+").");
+			throw std::runtime_error("Invalid number of inputs(expected "+std::to_string(layers[0])+" got "+std::to_string(inputs.size())+").");
 
 		int times=100000;
 		auto start=std::chrono::system_clock::now();

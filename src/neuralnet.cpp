@@ -23,7 +23,7 @@ neuralnet_t::neuralnet_t(const std::vector<size_t>& layers,const std::vector<dou
 	layers_m(layers)
 {
 	if(layers_m.size()<=0)
-		throw std::runtime_error("Invalid layer length(expected value >= 0).");
+		throw std::runtime_error("Invalid number of layers(expected value >= 0).");
 
 	if(layers_m[layers_m.size()-1]!=1)
 		throw std::runtime_error("Expected last layer value of 1(got "+
@@ -94,7 +94,7 @@ void neuralnet_t::set_node_weights_m(const std::vector<double>& weights)
 				real_weights.push_back(&weight);
 
 	if(weights.size()!=real_weights.size())
-		throw std::runtime_error("Weight lengths do not match(expected "+
+		throw std::runtime_error("Invalid number of weights(expected "+
 			std::to_string(real_weights.size())+" got "+std::to_string(weights.size())+").");
 
 	for(size_t ii=0;ii<real_weights.size();++ii)

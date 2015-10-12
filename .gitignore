@@ -1,6 +1,7 @@
 server
 server.exe
 *.swp #Ignore Vi swap files.
+*.o #build objects
 
 #Build directory for binaries.
 /build

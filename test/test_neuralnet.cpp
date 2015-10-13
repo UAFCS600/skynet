@@ -1,5 +1,6 @@
 #include "catch.hpp"
 #include "neuralnet.hpp"
+#include "api_outline.hpp"
 #include <vector>
 
 const std::vector<double> eval_data_null(32, 0);
@@ -23,5 +24,23 @@ TEST_CASE ("Neural Network Construction") {
 		neuralnet_t base_network(standard_network_topography, weights);
 		result = base_network.evaluate(eval_data_null, 0);
 		REQUIRE( 0 == result );
+	}
+}
+
+TEST_CASE ("Neural Network API ") {
+
+	ai::checkers_board_t initial_board =
+	"r_r_r_r_" //7
+	"_r_r_r_r" //15
+	"r_r_r_r_" //23
+	"________" //31
+	"________" //39
+	"_b_b_b_b" //47
+	"b_b_b_b_" //55
+	"_b_b_b_b";//63
+
+	// Would need to track a case where pieces are added invalidly
+	SECTION ("Board Validation") {
+		REQUIRE( true == ai::valid_board(initial_board) );
 	}
 }

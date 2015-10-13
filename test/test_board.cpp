@@ -2,8 +2,37 @@
 #include "neuralnet.hpp"
 #include "api_outline.hpp"
 #include <algorithm>
+#include <iostream>
 
-TEST_CASE ("Neural Network API ") {
+void print_board(ai::checkers_board_t& board)
+{
+	for (size_t ii = 0; ii < board.size(); ii += 8) {
+		std::cout << board.substr(ii, 8) << std::endl;
+	}
+}
+
+bool check_boards(ai::checkers_board_t& expected, const ai::checkers_board_list_t& board_list)
+{
+	bool board_found = true;
+	if (std::find(board_list.begin(), board_list.end(), expected) == board_list.end()) {
+		board_found = false;
+		std::cout << "CHECKING " << std::endl;
+		print_board(expected);
+		std::cout << "AGAINST" << std::endl;
+		for(auto board : board_list) {
+			print_board(board);
+		}
+	}
+	return board_found;
+}
+
+TEST_CASE ("Helper Functions") {
+	ai::checkers_board_t null = "";
+	ai::checkers_board_list_t list(3, "2");
+	REQUIRE( false == check_boards(null, list) );
+}
+
+TEST_CASE ("Board Validation") {
 
 	ai::checkers_board_t initial_board =
 	"r_r_r_r_" //7  layer 0
@@ -75,6 +104,6 @@ TEST_CASE ("Initial Moves") {
 					red_states_layer2[ii] +
 					red_states_layer3[ii] +
 					blk_state;
-		REQUIRE( std::find(red_result.begin(), red_result.end(), expected) != red_result.end() );
+		REQUIRE( true == check_boards(expected, red_result) );
 	}
 }

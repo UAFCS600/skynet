@@ -26,7 +26,7 @@ server: $(SRC)/server.cpp $(SRC)/handler.cpp $(SRC)/json.cpp $(SRC)/neuralnet.cp
 	$(CXX) -c -o $@ -I./ $(CFLAGS) $(CATCH) -I$(SRC) $<
 
 tests: $(OBJS)
-	$(CXX) $(CFLAGS) -I./ $(CATCH) ./api_outline.cpp ./src/neuralnet.cpp $^ -o ./build/bin/$@ 
+	$(CXX) $(CFLAGS) -I./ $(CATCH) ./src/api_outline.cpp ./src/neuralnet.cpp $^ -o ./build/bin/$@ 
 
 run:
 	./build/bin/tests

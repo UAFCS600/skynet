@@ -7,7 +7,7 @@ namespace ai
 		return false;
 	}
 
-	checkers_board_list_t move_generator(const checkers_board_t& board)
+	checkers_board_list_t move_generator(const checkers_board_t& board, const checkers_player_t& player)
 	{
 		checkers_board_list_t dumby_board = { "" };
 		return dumby_board;

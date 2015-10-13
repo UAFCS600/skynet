@@ -30,7 +30,7 @@ namespace ai
 	typedef std::string checkers_status_t;
 	typedef std::string checkers_board_t;
 	typedef std::vector<checkers_board_t> checkers_board_list_t;
-	bool is_valid_checkers_board(const checkers_board_t& board);
+	bool valid_board(const checkers_board_t& board);
 	checkers_board_list_t move_generator(const checkers_board_t& board,const checkers_player_t& player);
 
 	//Alpha Beta
@@ -55,7 +55,7 @@ namespace ai
 	checkers_status_t play(const neuralnet_t& red,const neuralnet_t& black,const checkers_board_t& board=checkers_board_t());
 
 	//Tournament
-	typedef ssize_t point_t;
+	typedef size_t point_t;
 	typedef std::pair<neuralnet_list_t,point_t> ranking_t;
 	typedef std::vector<ranking_t> ranking_list_t;
 	ranking_list_t tournament(const neuralnet_list_t& nets);

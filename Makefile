@@ -4,8 +4,8 @@ CATCH=-I$(INC)/Catch/single_include/
 CXX=g++
 CFLAGS=-O -std=c++11 -Wall -Wno-unused-result -I$(INC)
 LIB=
-TESTS=./src/neuralnet.cpp ./src/api_outline.cpp ./test/catch_main.cpp ./test/test_neuralnet.cpp
-OBJS=./src/neuralnet.o ./src/api_outline.o ./test/catch_main.o ./test/test_neuralnet.o
+TESTS=./src/neuralnet.cpp ./src/api_outline.cpp ./test/catch_main.cpp ./test/test_neuralnet.cpp ./test/test_board.cpp
+OBJS=./src/neuralnet.o ./src/api_outline.o ./test/catch_main.o ./test/test_neuralnet.o ./test/test_board.o
 BIN=build/bin/
 
 ifeq ($(OS),Windows_NT)

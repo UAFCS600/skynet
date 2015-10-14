@@ -13,11 +13,11 @@ class neuralnet_t
 	};
 
 	public:
-		neuralnet_t() = delete;
 		neuralnet_t(const std::vector<size_t>& layers,const std::vector<double>& weights);
 		double evaluate(const std::vector<double>& inputs,const size_t sigmoid_index);
 
 	private:
+		void create_node_layers_m();
 		void set_node_weights_m(const std::vector<double>& weights);
 
 		std::vector<size_t> layers_m;

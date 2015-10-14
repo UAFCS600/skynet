@@ -1,9 +1,10 @@
-#include "catch.hpp"
-#include "neuralnet.hpp"
-#include "api_outline.hpp"
 #include <algorithm>
 #include <iostream>
+#include "api_outline.hpp"
+#include "catch.hpp"
+#include "neuralnet.hpp"
 
+//TODO: move helper functions into own file.
 void print_board(ai::checkers_board_t& board)
 {
 	for (size_t ii = 0; ii < board.size(); ii += 8) {
@@ -30,6 +31,37 @@ TEST_CASE ("Helper Functions") {
 	ai::checkers_board_t null = "";
 	ai::checkers_board_list_t list(3, "2");
 	REQUIRE( false == check_boards(null, list) );
+}
+
+TEST_CASE ("Single Piece Moves") {
+
+	ai::checkers_board_t red_king =
+	"________" //7  layer 0
+	"________" //15 layer 1
+	"________" //23   .
+	"____R___" //31   .
+	"________" //39   .
+	"________" //47
+	"________" //55
+	"________";//63 layer 7
+
+
+	std::string blank = "________";
+	std::string lhs = "___R____";
+	std::string rhs = "_____R__";
+
+	ai::checkers_board_list_t red_states = ai::move_generator(red_king, "r");
+	REQUIRE( 4 == red_states.size() );
+
+	ai::checkers_board_t expected = blank +
+					blank +
+					lhs +
+					blank +
+					blank +
+					blank +
+					blank +
+					blank;
+	REQUIRE( true == check_boards(expected, red_states) );
 }
 
 TEST_CASE ("Board Validation") {
@@ -97,7 +129,6 @@ TEST_CASE ("Initial Moves") {
 	ai::checkers_board_list_t red_result = ai::move_generator(initial_board, red);
 
 	REQUIRE( 7 == red_result.size() );
-	//ai::checkers_board_list_t red_result;
 
 	for (size_t ii = 0; ii <= red_states_layer2.size(); ++ii) {
 		std::string expected = red_states_layers01 +

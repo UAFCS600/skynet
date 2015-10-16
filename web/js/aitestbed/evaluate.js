@@ -332,7 +332,8 @@ evaluator_t.prototype.submit=function()
 				modal.get_content().appendChild(document.createElement("br"));
 				modal.get_content().appendChild(document.createTextNode("Time: "+json.ns+"ns"));
 				modal.get_content().appendChild(document.createElement("br"));
-				modal.get_content().appendChild(document.createTextNode("Board Evaluations Per Second: "+Math.ceil(1e9/json.ns)));
+				var boards_per_second = Math.ceil(1e9/json.ns);
+				modal.get_content().appendChild(document.createTextNode("Board Evaluations Per Second: "+boards_per_second.toExponential()));
 				modal.show();
 			}
 		},

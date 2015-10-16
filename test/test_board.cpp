@@ -3,6 +3,7 @@
 #include "api_outline.hpp"
 #include "catch.hpp"
 #include "neuralnet.hpp"
+#include "board.hpp"
 
 //TODO: move helper functions into own file.
 void print_board(ai::checkers_board_t& board)
@@ -29,8 +30,16 @@ bool check_boards(ai::checkers_board_t& expected, const ai::checkers_board_list_
 
 TEST_CASE ("Helper Functions") {
 	ai::checkers_board_t null = "";
-	ai::checkers_board_list_t list(3, "2");
-	REQUIRE( false == check_boards(null, list) );
+	ai::checkers_board_list_t boardList(3, "2");
+	REQUIRE( false == check_boards(null, boardList) );
+}
+
+TEST_CASE ("Invalid Boards")
+{
+	//test for invalid characters
+	ai::checkers_board_t invalBoard = 
+	"bbbbbbbbbbbb________rrrrrrarrrrr";
+	REQUIRE( false == is_valid_checkers_board(invalBoard) );
 }
 
 TEST_CASE ("Single Piece Moves") {
@@ -45,7 +54,7 @@ TEST_CASE ("Single Piece Moves") {
 	"________" //55
 	"________";//63 layer 7
 
-
+	std::cout << getBoard(red_king) << std::endl;
 	std::string blank = "________";
 	std::string lhs = "___R____";
 	std::string rhs = "_____R__";
@@ -125,7 +134,7 @@ TEST_CASE ("Initial Moves") {
 				"_b_b_b_b"
 				"b_b_b_b_";
 
-	ai::checkers_player_t red = "r";
+	ai::checkers_player_t red = "red";
 	ai::checkers_board_list_t red_result = ai::move_generator(initial_board, red);
 
 	REQUIRE( 7 == red_result.size() );

@@ -5,31 +5,13 @@
 #include "neuralnet.hpp"
 #include "board.hpp"
 
-//TODO: move helper functions into own file.
-void print_board(ai::checkers_board_t& board)
-{
-	
-}
 
-bool check_boards(ai::checkers_board_t& expected, const ai::checkers_board_list_t& board_list)
+void check_boards(ai::checkers_board_list_t& expected, const ai::checkers_board_list_t& actual)
 {
-	bool board_found = true;
-	if (std::find(board_list.begin(), board_list.end(), expected) == board_list.end()) {
-		board_found = false;
-		std::cout << "CHECKING " << std::endl;
-		print_board(expected);
-		std::cout << "AGAINST" << std::endl;
-		for(auto board : board_list) {
-			print_board(board);
-		}
+	for (auto it = expected.begin(); it != expected.end(); ++it) {
+		auto location = std::find(actual.begin(), actual.end(), *it);
+		REQUIRE( location != actual.end() );
 	}
-	return board_found;
-}
-
-TEST_CASE ("Helper Functions") {
-	ai::checkers_board_t null = "";
-	ai::checkers_board_list_t boardList(3, "2");
-	REQUIRE( false == check_boards(null, boardList) );
 }
 
 TEST_CASE ("Invalid Boards")
@@ -58,11 +40,8 @@ TEST_CASE ("Single Piece Moves") {
 		ai::checkers_board_list_t actual = ai::move_generator(red_king, "red");
 
 		REQUIRE( 2 == actual.size() );
-		
-		for (auto it = expected.begin(); it != expected.end(); ++it) {
-			auto location = std::find(actual.begin(), actual.end(), *it);
-			REQUIRE( location != actual.end() );
-		}
+	
+		check_boards(expected, actual);
 	}
 
 	SECTION ("Single Red King Right Edge") {
@@ -78,10 +57,7 @@ TEST_CASE ("Single Piece Moves") {
 
 		REQUIRE( 2 == actual.size() );
 
-		for (auto it = expected.begin(); it != expected.end(); ++it) {
-			auto location = std::find(actual.begin(), actual.end(), *it);
-			REQUIRE( location != actual.end() );
-		}
+		check_boards(expected, actual);
 	}
 
 }
@@ -115,9 +91,6 @@ TEST_CASE ("Initial Moves") {
 
 		REQUIRE( expected.size() == actual.size() ); 
 
-		for (auto it = expected.begin(); it != expected.end(); ++it) {
-			auto location = std::find(actual.begin(), actual.end(), *it);
-			REQUIRE( location != actual.end() );
-		}
+		check_boards(expected, actual);
 	}
 }

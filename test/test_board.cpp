@@ -38,6 +38,7 @@ TEST_CASE ("Invalid Boards")
 	ai::checkers_board_t invalBoard = 
 	"bbbbbbbbbbbb________rrrrrrarrrrr";
 	REQUIRE( false == is_valid_checkers_board(invalBoard) );
+
 	invalBoard = 
 	"________________________________";
 	REQUIRE( false == is_valid_checkers_board(invalBoard) );
@@ -45,19 +46,44 @@ TEST_CASE ("Invalid Boards")
 
 TEST_CASE ("Single Piece Moves") {
 
-	ai::checkers_board_t red_king =
-	"____________R___________________";
+	SECTION ("Single Red King Left Edge") {
+		ai::checkers_board_t red_king =
+			"____________R__________________b"; //Position 12: 8, 16
+		ai::checkers_board_list_t expected = {
+			"________R______________________b", //Result 8
+			"________________R______________b"}; //Result 16
 
-	std::cout << getBoard(red_king) << std::endl;
-	std::string blank = "____";
-	std::string lhs = "";
-	std::string rhs = "";
+		std::cout << getBoard(red_king) << std::endl;
 
-	ai::checkers_board_list_t red_states = ai::move_generator(red_king, "r");
-	REQUIRE( 4 == red_states.size() );
+		ai::checkers_board_list_t actual = ai::move_generator(red_king, "red");
 
-	ai::checkers_board_t expected = "";
-	REQUIRE( true == check_boards(expected, red_states) );
+		REQUIRE( 2 == actual.size() );
+		
+		for (auto it = expected.begin(); it != expected.end(); ++it) {
+			auto location = std::find(actual.begin(), actual.end(), *it);
+			REQUIRE( location != actual.end() );
+		}
+	}
+
+	SECTION ("Single Red King Right Edge") {
+		ai::checkers_board_t red_king =
+			"_______________R_______________b"; //Position 15: 11, 19
+		ai::checkers_board_list_t expected = {
+			"___________R___________________b", //Result 11
+			"___________________R___________b"}; //Result 19
+
+		std::cout << getBoard(red_king) << std::endl;
+
+		ai::checkers_board_list_t actual = ai::move_generator(red_king, "red");
+
+		REQUIRE( 2 == actual.size() );
+
+		for (auto it = expected.begin(); it != expected.end(); ++it) {
+			auto location = std::find(actual.begin(), actual.end(), *it);
+			REQUIRE( location != actual.end() );
+		}
+	}
+
 }
 
 TEST_CASE ("Board Validation") {
@@ -74,45 +100,24 @@ TEST_CASE ("Board Validation") {
 TEST_CASE ("Initial Moves") {
 	ai::checkers_board_t initial_board =
 	"rrrrrrrrrrrr________bbbbbbbbbbbb";
-	
-	std::string static_red = "rrrrrrrr";
-	std::string static_blk = "____bbbbbbbbbbbb";
 
-	ai::checkers_board_list_t red_states;
+	SECTION ("Red Initial Moves") {
+		ai::checkers_board_list_t expected = {
+			"rrrrrrrr_rrrr_______bbbbbbbbbbbb",
+			"rrrrrrrr_rrr_r______bbbbbbbbbbbb",
+			"rrrrrrrrr_rr_r______bbbbbbbbbbbb",
+			"rrrrrrrrr_rr__r_____bbbbbbbbbbbb",
+			"rrrrrrrrrr_r__r_____bbbbbbbbbbbb",
+			"rrrrrrrrrr_r___r____bbbbbbbbbbbb",
+			"rrrrrrrrrrr____r____bbbbbbbbbbbb"};
 
-	std::string piece8 = "_rrr";
-	std::string new_location12 = "r___";
-	std::string new_location13 = "_r__";
+		ai::checkers_board_list_t actual = ai::move_generator(initial_board, "red");
 
-	red_states.emplace_back(static_red + piece8 + new_location12 + static_blk);
-	red_states.emplace_back(static_red + piece8 + new_location13 + static_blk);
+		REQUIRE( expected.size() == actual.size() ); 
 
-	std::string piece9 = "r_rr";
-	std::string new_location14 = "__r_";
-	red_states.emplace_back(static_red + piece9 + new_location13 + static_blk);
-	red_states.emplace_back(static_red + piece9 + new_location14 + static_blk);
-
-	std::string piece10 = "rr_r";
-	std::string new_location15 = "___r";
-	red_states.emplace_back(static_red + piece10 + new_location14 + static_blk);
-	red_states.emplace_back(static_red + piece10 + new_location15 + static_blk);
-
-	std::string piece11 = "rrr_";
-	red_states.emplace_back(static_red + piece11 + new_location15 + static_blk);
-
-
-	ai::checkers_player_t red = "red";
-	ai::checkers_board_list_t red_result = ai::move_generator(initial_board, red);
-
-	for (auto it = red_states.begin(); it != red_states.end(); ++it) {
-		std::cout << *it << std::endl;
-	}
-	REQUIRE( 7 == red_states.size() ); //Adding in self validation.
-	REQUIRE( 7 == red_result.size() );
-
-	bool correct_generation = true;
-	for (auto it = red_states.begin(); it != red_states.end(); ++it) {
-		auto location = std::find(red_result.begin(), red_result.end(), *it);
-		REQUIRE( location != red_result.end() );
+		for (auto it = expected.begin(); it != expected.end(); ++it) {
+			auto location = std::find(actual.begin(), actual.end(), *it);
+			REQUIRE( location != actual.end() );
+		}
 	}
 }

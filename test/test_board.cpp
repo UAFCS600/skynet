@@ -8,9 +8,7 @@
 //TODO: move helper functions into own file.
 void print_board(ai::checkers_board_t& board)
 {
-	for (size_t ii = 0; ii < board.size(); ii += 8) {
-		std::cout << board.substr(ii, 8) << std::endl;
-	}
+	
 }
 
 bool check_boards(ai::checkers_board_t& expected, const ai::checkers_board_list_t& board_list)
@@ -40,50 +38,32 @@ TEST_CASE ("Invalid Boards")
 	ai::checkers_board_t invalBoard = 
 	"bbbbbbbbbbbb________rrrrrrarrrrr";
 	REQUIRE( false == is_valid_checkers_board(invalBoard) );
+	invalBoard = 
+	"________________________________";
+	REQUIRE( false == is_valid_checkers_board(invalBoard) );
 }
 
 TEST_CASE ("Single Piece Moves") {
 
 	ai::checkers_board_t red_king =
-	"________" //7  layer 0
-	"________" //15 layer 1
-	"________" //23   .
-	"____R___" //31   .
-	"________" //39   .
-	"________" //47
-	"________" //55
-	"________";//63 layer 7
+	"____________R___________________";
 
 	std::cout << getBoard(red_king) << std::endl;
-	std::string blank = "________";
-	std::string lhs = "___R____";
-	std::string rhs = "_____R__";
+	std::string blank = "____";
+	std::string lhs = "";
+	std::string rhs = "";
 
 	ai::checkers_board_list_t red_states = ai::move_generator(red_king, "r");
 	REQUIRE( 4 == red_states.size() );
 
-	ai::checkers_board_t expected = blank +
-					blank +
-					lhs +
-					blank +
-					blank +
-					blank +
-					blank +
-					blank;
+	ai::checkers_board_t expected = "";
 	REQUIRE( true == check_boards(expected, red_states) );
 }
 
 TEST_CASE ("Board Validation") {
 
 	ai::checkers_board_t initial_board =
-	"_r_r_r_r" //7  layer 0
-	"r_r_r_r_" //15 layer 1
-	"_r_r_r_r" //23   .
-	"________" //31   .
-	"________" //39   .
-	"b_b_b_b_" //47
-	"_b_b_b_b" //55
-	"b_b_b_b_";//63 layer 7
+	"rrrrrrrrrrrr________bbbbbbbbbbbb";
 
 	// Would need to track a case where pieces are added invalidly
 	SECTION ("Board Validation") {
@@ -93,57 +73,46 @@ TEST_CASE ("Board Validation") {
 
 TEST_CASE ("Initial Moves") {
 	ai::checkers_board_t initial_board =
-	"_r_r_r_r" //7
-	"r_r_r_r_" //15
-	"_r_r_r_r" //23
-	"________" //31
-	"________" //39
-	"b_b_b_b_" //47
-	"_b_b_b_b" //55
-	"b_b_b_b_";//63
+	"rrrrrrrrrrrr________bbbbbbbbbbbb";
+	
+	std::string static_red = "rrrrrrrr";
+	std::string static_blk = "____bbbbbbbbbbbb";
 
-	std::string red_states_layers01="_r_r_r_r"
-					"r_r_r_r_";
+	ai::checkers_board_list_t red_states;
 
-	std::vector<std::string> red_states_layer2;
-	std::vector<std::string> red_states_layer3;
+	std::string piece8 = "_rrr";
+	std::string new_location12 = "r___";
+	std::string new_location13 = "_r__";
 
-	red_states_layer2.emplace_back("___r_r_r");
-	red_states_layer3.emplace_back("r_______");
+	red_states.emplace_back(static_red + piece8 + new_location12 + static_blk);
+	red_states.emplace_back(static_red + piece8 + new_location13 + static_blk);
 
-	red_states_layer2.emplace_back("___r_r_r");
-	red_states_layer3.emplace_back("__r_____");
+	std::string piece9 = "r_rr";
+	std::string new_location14 = "__r_";
+	red_states.emplace_back(static_red + piece9 + new_location13 + static_blk);
+	red_states.emplace_back(static_red + piece9 + new_location14 + static_blk);
 
-	red_states_layer2.emplace_back("_r___r_r");
-	red_states_layer3.emplace_back("__r_____");
+	std::string piece10 = "rr_r";
+	std::string new_location15 = "___r";
+	red_states.emplace_back(static_red + piece10 + new_location14 + static_blk);
+	red_states.emplace_back(static_red + piece10 + new_location15 + static_blk);
 
-	red_states_layer2.emplace_back("_r___r_r");
-	red_states_layer3.emplace_back("____r___");
+	std::string piece11 = "rrr_";
+	red_states.emplace_back(static_red + piece11 + new_location15 + static_blk);
 
-	red_states_layer2.emplace_back("_r_r___r");
-	red_states_layer3.emplace_back("____r___");
-
-	red_states_layer2.emplace_back("_r_r___r");
-	red_states_layer3.emplace_back("______r_");
-
-	red_states_layer2.emplace_back("_r_r_r__");
-	red_states_layer3.emplace_back("______r_");
-
-	std::string blk_state = "________"
-				"b_b_b_b_"
-				"_b_b_b_b"
-				"b_b_b_b_";
 
 	ai::checkers_player_t red = "red";
 	ai::checkers_board_list_t red_result = ai::move_generator(initial_board, red);
 
+	for (auto it = red_states.begin(); it != red_states.end(); ++it) {
+		std::cout << *it << std::endl;
+	}
+	REQUIRE( 7 == red_states.size() ); //Adding in self validation.
 	REQUIRE( 7 == red_result.size() );
 
-	for (size_t ii = 0; ii <= red_states_layer2.size(); ++ii) {
-		std::string expected = red_states_layers01 +
-					red_states_layer2[ii] +
-					red_states_layer3[ii] +
-					blk_state;
-		REQUIRE( true == check_boards(expected, red_result) );
+	bool correct_generation = true;
+	for (auto it = red_states.begin(); it != red_states.end(); ++it) {
+		auto location = std::find(red_result.begin(), red_result.end(), *it);
+		REQUIRE( location != red_result.end() );
 	}
 }

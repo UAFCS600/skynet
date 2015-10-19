@@ -47,7 +47,42 @@ TEST_CASE ("Single Piece Moves") {
 
 		check_boards(expected, actual);
 	}
+}
 
+SCENARIO ("Crowning Red King") {
+	ai::checkers_board_t board_state;
+	ai::checkers_board_t expected =
+		"______________________________Rb";
+	ai::checkers_board_list_t actual;
+
+	GIVEN("A pre-crown red pawn state.") {
+		board_state = "__________________________r____b";
+		WHEN ("Generate possible red moves.") {
+			actual = ai::move_generator(board_state, "red");
+			THEN ("The red pawn is crowned.") {
+				REQUIRE( 1 == actual.size() );
+				REQUIRE( expected == actual.back() );
+			}
+		}
+	}
+}
+
+SCENARIO ("Crowning Blk King") {
+	ai::checkers_board_t board_state;
+	ai::checkers_board_t expected =
+		"B_____________________________R_";
+	ai::checkers_board_list_t actual;
+
+	GIVEN("A pre-crown blk pawn state.") {
+		board_state = "____b_________________________R_";
+		WHEN ("Generate possible blk moves.") {
+			actual = ai::move_generator(board_state, "blk");
+			THEN ("The red pawn is crowned.") {
+				REQUIRE( 1 == actual.size() );
+				REQUIRE( expected == actual.back() );
+			}
+		}
+	}
 }
 
 TEST_CASE ("Board Validation") {

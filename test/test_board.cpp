@@ -14,18 +14,6 @@ void check_boards(ai::checkers_board_list_t& expected, const ai::checkers_board_
 	}
 }
 
-TEST_CASE ("Invalid Boards")
-{
-	//test for invalid characters
-	ai::checkers_board_t invalBoard = 
-	"bbbbbbbbbbbb________rrrrrrarrrrr";
-	REQUIRE( false == is_valid_checkers_board(invalBoard) );
-
-	invalBoard = 
-	"________________________________";
-	REQUIRE( false == is_valid_checkers_board(invalBoard) );
-}
-
 TEST_CASE ("Single Piece Moves") {
 
 	SECTION ("Single Red King Left Edge") {
@@ -64,12 +52,35 @@ TEST_CASE ("Single Piece Moves") {
 
 TEST_CASE ("Board Validation") {
 
-	ai::checkers_board_t initial_board =
-	"rrrrrrrrrrrr________bbbbbbbbbbbb";
+	ai::checkers_board_t inval_board;
+	ai::checkers_board_t valid_board;
 
-	// Would need to track a case where pieces are added invalidly
-	SECTION ("Board Validation") {
-		REQUIRE( true == ai::valid_board(initial_board) );
+	SECTION("Empty Board") {
+		inval_board = "";
+		REQUIRE( false == is_valid_checkers_board(inval_board) );
+	}
+
+	SECTION("Oversized Board") {
+		inval_board = "bbbbbbbbbbbb________rrrrrrarrrrr_";
+		REQUIRE( false == is_valid_checkers_board(inval_board) );
+	}
+
+	SECTION("Invalid Characters") {
+		inval_board = "bbbbbbbbbbbb________rrrrrrarrrrr";
+		REQUIRE(  false == is_valid_checkers_board(inval_board) );
+	}
+
+	SECTION("No Pieces") {
+		inval_board = "________________________________";
+		REQUIRE( false == is_valid_checkers_board(inval_board) );
+	}
+
+	SECTION ("Initital Board Validation") {
+		valid_board = "rrrrrrrrrrrr________bbbbbbbbbbbb";
+		REQUIRE( true == is_valid_checkers_board(valid_board) );
+
+		valid_board = "rrrrrrrr_rrrr_______bbbbbbbbbbbb";
+		REQUIRE( true == is_valid_checkers_board(valid_board) );
 	}
 }
 

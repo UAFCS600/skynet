@@ -85,6 +85,32 @@ SCENARIO ("Crowning Blk King") {
 	}
 }
 
+SCENARIO ("Crowning Jumps") {
+	ai::checkers_board_t board_state;
+	ai::checkers_board_t expected;
+	ai::checkers_board_list_t actual;
+
+	GIVEN ("A there are two moves for a pawn to take, then the only aviable move is to jump.") {
+		board_state = "_____r__b_____________r___b_____";
+		WHEN ("Blk evaluates the board for possible moves") {
+			actual = ai::move_generator(board_state, "blk");
+			THEN ("There should only be the jump which results in a crowned piece.") {
+				expected = "_B____________________r___b_____";
+				REQUIRE( 1 == actual.size() );
+				REQUIRE( expected == actual.back() );
+			}
+		}
+		AND_WHEN("Red evaluates the board for possible moves") {
+			actual = ai::move_generator(board_state, "red");
+			THEN ("There there should only be one possible move reported with a crowning jump") {
+				expected = "_____r__b______________________R";
+				REQUIRE( 1 == actual.size() );
+				REQUIRE( expected == actual.back() );
+			}
+		}
+	}
+}
+
 TEST_CASE ("Board Validation") {
 
 	ai::checkers_board_t inval_board;

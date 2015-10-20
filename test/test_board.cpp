@@ -23,8 +23,6 @@ TEST_CASE ("Single Piece Moves") {
 			"________R______________________b", //Result 8
 			"________________R______________b"}; //Result 16
 
-		std::cout << getBoard(red_king) << std::endl;
-
 		ai::checkers_board_list_t actual = ai::move_generator(red_king, "red");
 
 		REQUIRE( 2 == actual.size() );
@@ -42,12 +40,13 @@ TEST_CASE ("Single Piece Moves") {
 			"___________R___________________b", //Result 11
 			"___________________R___________b"}; //Result 19
 
-		std::cout << getBoard(red_king) << std::endl;
-
 		ai::checkers_board_list_t actual = ai::move_generator(red_king, "red");
 
 		REQUIRE( 2 == actual.size() );
-
+		for(int i=0; i<actual.size(); ++i)
+		{
+			REQUIRE( getBoard(actual[i]) == getBoard(expected[i]) );
+		}
 		check_boards(expected, actual);
 	}
 }

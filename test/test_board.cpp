@@ -30,10 +30,7 @@ TEST_CASE ("Single Piece Moves") {
 		REQUIRE( 2 == actual.size() );
 		for(int i=0; i<actual.size(); ++i)
 		{
-			std::cout << getBoard(actual[i]) << std::endl;
-			std::cout << "VS" << std::endl;
-			std::cout << getBoard(expected[i]) << std::endl;
-			std::cout << std::endl << std::endl << std::endl;
+			REQUIRE( getBoard(actual[i]) == getBoard(expected[i]) );
 		}
 		check_boards(expected, actual);
 	}

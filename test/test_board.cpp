@@ -28,7 +28,10 @@ TEST_CASE ("Single Piece Moves") {
 		ai::checkers_board_list_t actual = ai::move_generator(red_king, "red");
 
 		REQUIRE( 2 == actual.size() );
-	
+		for(int i=0; i<actual.size(); ++i)
+		{
+			REQUIRE( getBoard(actual[i]) == getBoard(expected[i]) );
+		}
 		check_boards(expected, actual);
 	}
 

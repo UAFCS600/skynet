@@ -34,7 +34,7 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 				value += c;
 				continue;
 			}
-			_tokens.push_back(token_t(NUM,value));
+			tokens.push_back(token_t(NUM,value));
 			value = "";
 			concatNum = false;
 			decimal = true;
@@ -57,78 +57,81 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 				break;
 			case '+':
 			case '-':
-				_tokens.push_back(token_t(E_OP,s));
+				tokens.push_back(token_t(E_OP,s));
 				break;
 			case '*':
 			case '/':
-				_tokens.push_back(token_t(T_OP,s));
+				tokens.push_back(token_t(T_OP,s));
 				break;
 			case '^':
-				_tokens.push_back(token_t(F_OP,s));
+				tokens.push_back(token_t(F_OP,s));
 				break;
 			case '(':
-				_tokens.push_back(token_t(LPAREN,s));
+				tokens.push_back(token_t(LPAREN,s));
 				break;
 			case ')':
-				_tokens.push_back(token_t(RPAREN,s));
+				tokens.push_back(token_t(RPAREN,s));
 				break;
 			case 'x':
-				_tokens.push_back(token_t(VAR,s));
+				tokens.push_back(token_t(VAR,s));
+				break;
+			case 'e':
+				tokens.push_back(token_t(EXP,s));
 				break;
 			case 's':
 				if(expr[i+1] == 'i' && expr[i+2] == 'n')
 				{
-					_tokens.push_back(token_t(FUNC,"sin"));
+					tokens.push_back(token_t(FUNC,"sin"));
 					i += 2;
 				}
 				else
 				{
-					_tokens.push_back(token_t(INVALID,s));
+					tokens.push_back(token_t(INVALID,s));
 				}
 				break;
 			case 'c':
 				if(expr[i+1] == 'o' && expr[i+2] == 's')
 				{
-					_tokens.push_back(token_t(FUNC,"cos"));
+					tokens.push_back(token_t(FUNC,"cos"));
 					i += 2;
 				}
 				else
 				{
-					_tokens.push_back(token_t(INVALID,s));
+					tokens.push_back(token_t(INVALID,s));
 				}
 				break;
 			case 'l':
 				if(expr[i+1] == 'o' && expr[i+2] == 'g')
 				{
-					_tokens.push_back(token_t(FUNC,"log"));
+					tokens.push_back(token_t(FUNC,"log"));
 					i += 2;
 				}
 				else
 				{
-					_tokens.push_back(token_t(INVALID,s));
+					tokens.push_back(token_t(INVALID,s));
 				}
 				break;
 			default:
-				_tokens.push_back(token_t(INVALID,s));
+				tokens.push_back(token_t(INVALID,s));
 		}
 	}
 	
 	// Extra check to catch single number values
-	if(value.compare("")) _tokens.push_back(token_t(NUM,value));
+	if(value.compare("")) tokens.push_back(token_t(NUM,value));
 }
 
 // Check next token and return if it matches the type.
 // Also advances to next token if it matches.
 bool expr_parser_t::match(token_type_t the_type)
 {
-	if(_index == _tokens.size()) return false;
+	if(index == tokens.size()) return false;
 	
-	token_t t = _tokens[_index];
+	token_t t = tokens[index];
 	
 	if(t.first == the_type)
 	{
-		_index++;
-		_cur_val = t.second;
+		index++;
+		cur_val = t.second;
 		return true;
 	}
 	
@@ -139,21 +142,21 @@ bool expr_parser_t::match(token_type_t the_type)
 double expr_parser_t::eval(double x)
 {
 	// Set index to first token
-	_index = 0;
+	index = 0;
 	
 	// Evaluate expression with given x
 	double value = parse_expr(x);
 	
 	// Deal with excess tokens
-	while(_index < _tokens.size())
+	while(index < tokens.size())
 	{
 		if(match(NUM) || match(E_OP) || match(T_OP) || match(F_OP) ||
 			match(RPAREN) || match(LPAREN) || match(VAR) || match(INVALID))
 		{
-			_errors.append("Invalid token: " + _cur_val + "\n");
+			errors.append("Invalid token: " + cur_val + "\n");
 		}
 		
-		_index++;
+		index++;
 	}
 	
 	// Report error to checker
@@ -163,13 +166,13 @@ double expr_parser_t::eval(double x)
 // Returns whether the last evaluation was valid
 bool expr_parser_t::valid()
 {
-	return (_errors.size() == 0);
+	return (errors.size() == 0);
 }
 
 // Get error string
-std::string expr_parser_t::getErrors()
+std::string expr_parser_t::get_errors()
 {
-	return _errors;
+	return errors;
 }
 
 // Parse: expr -> term + expr | term - expr | term
@@ -178,7 +181,7 @@ double expr_parser_t::parse_expr(double x)
 	double value = parse_term(x);
 	
 	while(match(E_OP)){
-		if(_cur_val[0] == '+')
+		if(cur_val[0] == '+')
 		{
 			value += parse_term(x);
 		}
@@ -198,7 +201,7 @@ double expr_parser_t::parse_term(double x)
 	
 	while(match(T_OP))
 	{
-		if(_cur_val[0] == '*')
+		if(cur_val[0] == '*')
 		{
 			value *= parse_factor(x);
 		}
@@ -208,7 +211,7 @@ double expr_parser_t::parse_term(double x)
 			
 			if(term == 0)
 			{
-				_errors.append("Attempted division by 0\n");
+				errors.append("Attempted division by 0\n");
 				return 0;
 			}
 			
@@ -232,17 +235,22 @@ double expr_parser_t::parse_factor(double x)
 	return value;
 }
 
-// Parse: value -> NUM | VAR | (expr) | sin(expr) | cos(expr) | log(expr)
+// Parse: value -> NUM | VAR | EXP | (expr) | sin(expr) | cos(expr) | log(expr)
 double expr_parser_t::parse_value(double x)
 {
 	if(match(NUM))
 	{
-		return std::stod(_cur_val);
+		return std::stod(cur_val);
 	}
 	
 	if(match(VAR))
 	{
 		return x;
+	}
+	
+	if(match(EXP))
+	{
+		return std::exp(1.0);
 	}
 	
 	if(match(LPAREN))
@@ -254,14 +262,14 @@ double expr_parser_t::parse_value(double x)
 		}
 		else
 		{
-			_errors.append("Missing )\n");
+			errors.append("Missing )\n");
 			return 0;
 		}
 	}
 	
 	if(match(FUNC))
 	{
-		char func = _cur_val[0];
+		char func = cur_val[0];
 		
 		if(match(LPAREN))
 		{
@@ -281,7 +289,7 @@ double expr_parser_t::parse_value(double x)
 				{
 					if(val < 1)
 					{
-						_errors.append("Attempted log(x) with x<1\n");
+						errors.append("Attempted log(x) with x<1\n");
 						return 0;
 					}
 					return std::log(val);
@@ -289,13 +297,13 @@ double expr_parser_t::parse_value(double x)
 			}
 			else
 			{
-				_errors.append("Missing )\n");
+				errors.append("Missing )\n");
 				return 0;
 			}
 		}
 		else
 		{
-			_errors.append("Missing ( after function\n");
+			errors.append("Missing ( after function\n");
 			return 0;
 		}
 	}
@@ -303,7 +311,7 @@ double expr_parser_t::parse_value(double x)
 	if(match(NUM) || match(E_OP) || match(T_OP) || match(F_OP) ||
 		match(RPAREN) || match(LPAREN) || match(VAR) || match(INVALID))
 	{
-		_errors.append("Invalid token: " + _cur_val + "\n");
+		errors.append("Invalid token: " + cur_val + "\n");
 	}
 	
 	return 0;

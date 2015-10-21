@@ -19,13 +19,13 @@ enum token_type_t
     LPAREN, // '('
     END,    // '.'
     VAR,    // 'x'
+    EXP,	// 'e'
     FUNC,   // Function: "sin", "cos", "log"
     INVALID // Anything else
 };
 
 // Lexer tokens of <type, lexeme>
 typedef std::pair<token_type_t,std::string> token_t;
-
 
 // Expression evaluator constructed from string expression
 class expr_parser_t
@@ -41,7 +41,7 @@ class expr_parser_t
         bool valid();
         
         // Get error string
-        std::string getErrors();
+        std::string get_errors();
 
     private:
         // Check next token and return if it matches the type.
@@ -49,7 +49,7 @@ class expr_parser_t
         bool match(token_type_t the_type);
         
         // Stores value from match
-        std::string _cur_val;
+        std::string cur_val;
         
         // Parse expression (expr -> expr + term | expr - term | term)
         double parse_expr(double);
@@ -63,14 +63,13 @@ class expr_parser_t
         double parse_value(double);
 
         // Vector of tokens from parser
-        std::vector<token_t> _tokens;
+        std::vector<token_t> tokens;
         
         // Tracks evaluator index
-        int _index;
+        int index;
         
         // Queue of parse errors
-        std::string _errors;
-
+        std::string errors;
 };
 
 #endif

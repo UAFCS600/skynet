@@ -287,9 +287,9 @@ double expr_parser_t::parse_value(double x)
 				}
 				else
 				{
-					if(val < 1)
+					if(val <= 0)
 					{
-						errors.append("Attempted log(x) with x<1\n");
+						errors.append("Attempted log(x) with x<=0\n");
 						return 0;
 					}
 					return std::log(val);

@@ -64,10 +64,20 @@ bool is_valid_checkers_board(const checkers_board_t& board)
 	{
 		if (board[i]!='_' && board[i]!='B' && board[i]!='b' && board[i]!='R' && board[i]!='r')
 		{
+			std::cout << "got tripped" << std::endl;
 			return false;
 		}
 	}
-	std::cout << board << std::endl;
+
+	int numPieces=0;
+	for(int i=0; i<board.size(); ++i)
+	{
+		if (board[i]=='B' && board[i]=='b' && board[i]=='R' && board[i]=='r')
+			{numPieces++;}
+	}
+	if(!numPieces)
+	{return false;}
+	//std::cout << board << std::endl;
 	return true;
 }
 
@@ -672,248 +682,196 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 			//black king
 			if (board[i]=='B')
 			{
-				//odd rows
-				if (row%2==1)
-				{
-					if (board[i-4]=='_')
+					if (i==3)	//corner
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i-4]='B';
-						validMoves.push_back(temp);
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='B';
+							validMoves.push_back(temp);
+						}
 					}
-					if (board[i-5]=='_')
+					else if (i==28)	//corner
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i-5]='B';
-						validMoves.push_back(temp);
+						if (board[i-4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-4]='B';
+							validMoves.push_back(temp);
+						}
 					}
-					if (board[i+3]=='_')
+					else if (i<4) // we can only jump back
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i+3]='B';
-						validMoves.push_back(temp);
-					}
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='B';
+							validMoves.push_back(temp);
+						}
+				
 
-					if (board[i+4]=='_')
-					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i+4]='B';
-						validMoves.push_back(temp);
 					}
-				}
-				else
-				{
-					if (board[i-4]=='_')
+					else if (i>27)	//we can only jump forward
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i-4]='B';
-						validMoves.push_back(temp);
+						if (board[i-4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-4]='B';
+							validMoves.push_back(temp);
+						}
+							if (board[i-5]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-5]='B';
+							validMoves.push_back(temp);
+						}
 					}
-					if (board[i+5]=='_')
+					else if(i%8==4 || i%8==3)		//left edge
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i+5]='B';
-						validMoves.push_back(temp);
+						if (board[i-4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-4]='B';
+							validMoves.push_back(temp);
+						}
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='B';
+							validMoves.push_back(temp);
+						}
 					}
-					if (board[i-3]=='_')
+					else if (row%2)  //odd rows
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i-3]='B';
-						validMoves.push_back(temp);
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='B';
+							validMoves.push_back(temp);
+						}
+						if (board[i+5]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+5]='B';
+							validMoves.push_back(temp);
+						}
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='B';
+							validMoves.push_back(temp);
+						}
+						if (board[i+5]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+5]='B';
+							validMoves.push_back(temp);
+						}
 					}
-
-					if (board[i+4]=='_')
+					else
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i+4]='B';
-						validMoves.push_back(temp);
+						if (board[i-4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-4]='B';
+							validMoves.push_back(temp);
+						}
+						if (board[i-5]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-5]='B';
+							validMoves.push_back(temp);
+						}
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='B';
+							validMoves.push_back(temp);
+						}
+						if (board[i+3]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+3]='B';
+							validMoves.push_back(temp);
+						}
 					}
-				}
-
-
 			}
 			else if (board[i]=='b')	//black pawn
 			{
-				if(i==0)	//corner with one jump
-				{
-					if(tolower(board[i+5])=='r' && board[i+9]=='_')
+				
+					if (i==3)	//corner
 					{
-						std::string temp(board);
-						temp[i-5]='_';
-						temp[i-9]='B';
-						validMoves.push_back(temp);
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='b';
+							validMoves.push_back(temp);
+						}
 					}
-				}
-				else if (i==3)	//corner
-				{
-					if(tolower(board[i+4])=='r' && board[i+7]=='_')
+					else if(i%8==4 || i%8==3)		//edges
 					{
-						std::string temp(board);
-						temp[i-4]='_';
-						temp[i-7]='B';
-						validMoves.push_back(temp);
-					}
-				}
-				else if (i==28)	//corner
-				{
-					if(tolower(board[i-4])=='r' && board[i-7]=='_')
-					{
-						std::string temp(board);
-						temp[i-4]='_';
-						temp[i-7]='B';
-						validMoves.push_back(temp);
-					}
-				}
-				else if (i==31) //corner
-				{
-					if(tolower(board[i-5])=='r' && board[i-9]=='_')
-					{
-						std::string temp(board);
-						temp[i-5]='_';
-						temp[i-9]='B';
-						validMoves.push_back(temp);
-					}
-				}
-				else if (i<4) // we can only jump back
-				{
-					if(tolower(board[i+5])=='r' && board[i+9]=='_')
-					{
-						std::string temp(board);
-						temp[i-5]='_';
-						temp[i-9]='B';
-						validMoves.push_back(temp);
-					}
-					if(tolower(board[i+4])=='r' && board[i+7]=='_')
-					{
-						std::string temp(board);
-						temp[i-4]='_';
-						temp[i-7]='B';
-						validMoves.push_back(temp);
-					}
-				}
-				else if (i>27)	//we can only jump forward
-				{
-					if(tolower(board[i-5])=='r' && board[i-9]=='_')
-					{
-						std::string temp(board);
-						temp[i-5]='_';
-						temp[i-9]='B';
-						validMoves.push_back(temp);
-					}
-					if(tolower(board[i-4])=='r' && board[i-7]=='_')
-					{
-						std::string temp(board);
-						temp[i-4]='_';
-						temp[i-7]='B';
-						validMoves.push_back(temp);
-					}
-				}
-				else if(i%4==0)		//left edge
-				{
-					if(tolower(board[i-4])=='r' && board[i-7]=='_')
-					{
-						std::string temp(board);
-						temp[i-4]='_';
-						temp[i-7]='B';
-						validMoves.push_back(temp);
-					}
-					if(tolower(board[i+4])=='r' && board[i+9]=='_')
-					{
-						std::string temp(board);
-						temp[i+4]='_';
-						temp[i+9]='B';
-						validMoves.push_back(temp);
-					}
+						if (board[i-4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-4]='b';
+							validMoves.push_back(temp);
+						}
 
-				}
-				else if (i%4==3)	//right edge
-				{
-					if(tolower(board[i+4])=='r' && board[i+7]=='_')
-					{
-						std::string temp(board);
-						temp[i+4]='_';
-						temp[i+7]='B';
-						validMoves.push_back(temp);
 					}
-					if(tolower(board[i-4])=='r' && board[i-9]=='_')
+					else if (row%2)  //odd rows
 					{
-						std::string temp(board);
-						temp[i-4]='_';
-						temp[i-9]='B';
-						validMoves.push_back(temp);
+						if (board[i-4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-4]='b';
+							validMoves.push_back(temp);
+						}
+						if (board[i-5]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-5]='b';
+							validMoves.push_back(temp);
+						}
+			
 					}
-				}
-				else if (row%2)  //odd rows
-				{
-
-					if(tolower(board[i-5])=='r' && board[i-9]=='_')
+					else
 					{
-						std::string temp(board);
-						temp[i-5]='_';
-						temp[i-9]='B';
-						validMoves.push_back(temp);
+						if (board[i-4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-4]='b';
+							validMoves.push_back(temp);
+						}
+						if (board[i-3]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-3]='b';
+							validMoves.push_back(temp);
+						}
+				
 					}
-					if(tolower(board[i-4])=='r' && board[i-7]=='_')
-					{
-						std::string temp(board);
-						temp[i-4]='_';
-						temp[i-7]='B';
-						validMoves.push_back(temp);
-					}
-					if(tolower(board[i+3])=='r' && board[i+7]=='_')
-					{
-						std::string temp(board);
-						temp[i+3]='_';
-						temp[i+7]='B';
-						validMoves.push_back(temp);
-					}
-					if(tolower(board[i+4])=='r' && board[i+9]=='_')
-					{
-						std::string temp(board);
-						temp[i+4]='_';
-						temp[i+9]='B';
-						validMoves.push_back(temp);
-					}
-				}
-				else
-				{
-					if(tolower(board[i-4])=='r' && board[i-9]=='_')
-					{
-						std::string temp(board);
-						temp[i-4]='_';
-						temp[i-9]='B';
-						validMoves.push_back(temp);
-					}
-					if(tolower(board[i-3])=='r' && board[i-7]=='_')
-					{
-						std::string temp(board);
-						temp[i-3]='_';
-						temp[i-7]='B';
-						validMoves.push_back(temp);
-					}
-					if(tolower(board[i+5])=='r' && board[i+9]=='_')
-					{
-						std::string temp(board);
-						temp[i-5]='_';
-						temp[i-9]='B';
-						validMoves.push_back(temp);
-					}
-					if(tolower(board[i+4])=='r' && board[i+7]=='_')
-					{
-						std::string temp(board);
-						temp[i-4]='_';
-						temp[i-7]='B';
-						validMoves.push_back(temp);
-					}
-				}
+				
 			}
 			
 			//increment the rows
@@ -930,92 +888,194 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 		{
 			if (board[i]=='R')
 			{
-				//even rows
-				if (row%2==0)
-				{
-					if (board[i-4]=='_')
+				if (i==3)	//corner
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i-4]='R';
-						validMoves.push_back(temp);
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='R';
+							validMoves.push_back(temp);
+						}
 					}
-					if (board[i-5]=='_')
+					else if (i==28)	//corner
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i-5]='R';
-						validMoves.push_back(temp);
+						if (board[i-4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-4]='R';
+							validMoves.push_back(temp);
+						}
 					}
-					if (board[i+3]=='_')
+					else if (i<4) // we can only jump back
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i+3]='R';
-						validMoves.push_back(temp);
-					}
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='R';
+							validMoves.push_back(temp);
+						}
+				
 
-					if (board[i+4]=='_')
-					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i+4]='R';
-						validMoves.push_back(temp);
 					}
-				}
-				else
-				{
-					if (board[i-4]=='_')
+					else if (i>27)	//we can only jump forward
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i-4]='R';
-						validMoves.push_back(temp);
+						if (board[i-4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-4]='R';
+							validMoves.push_back(temp);
+						}
+							if (board[i-5]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-5]='R';
+							validMoves.push_back(temp);
+						}
 					}
-					if (board[i+5]=='_')
+					else if(i%8==4 || i%8==3)		//left edge
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i+5]='R';
-						validMoves.push_back(temp);
+						if (board[i-4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-4]='R';
+							validMoves.push_back(temp);
+						}
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='R';
+							validMoves.push_back(temp);
+						}
 					}
-					if (board[i-3]=='_')
+					else if (row%2)  //odd rows
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i-3]='R';
-						validMoves.push_back(temp);
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='R';
+							validMoves.push_back(temp);
+						}
+						if (board[i+5]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+5]='R';
+							validMoves.push_back(temp);
+						}
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='R';
+							validMoves.push_back(temp);
+						}
+						if (board[i+5]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+5]='R';
+							validMoves.push_back(temp);
+						}
 					}
-
-					if (board[i+4]=='_')
+					else
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i+4]='R';
-						validMoves.push_back(temp);
+						if (board[i-4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-4]='R';
+							validMoves.push_back(temp);
+						}
+						if (board[i-5]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-5]='R';
+							validMoves.push_back(temp);
+						}
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='R';
+							validMoves.push_back(temp);
+						}
+						if (board[i+3]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+3]='R';
+							validMoves.push_back(temp);
+						}
 					}
-				}
 			}
 			else if (board[i]=='r')
 			{
-				//even rows
-				if (row%2==0)
-				{
-					if (board[i+3]=='_')
+					if (i==8)	//corner
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i+3]='r';
-						validMoves.push_back(temp);
+						if (board[i-4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i-4]='r';
+							validMoves.push_back(temp);
+						}
 					}
-					if (board[i+4]=='_')
+					else if(i%8==4 || i%8==3)		//edges
 					{
-						std::string temp(board);
-						temp[i]='_';
-						temp[i+4]='r';
-						validMoves.push_back(temp);
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='r';
+							validMoves.push_back(temp);
+						}
+
 					}
-				}
+					else if (row%2)  //odd rows
+					{
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='r';
+							validMoves.push_back(temp);
+						}
+						if (board[i+5]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+5]='r';
+							validMoves.push_back(temp);
+						}
+			
+					}
+					else
+					{
+						if (board[i+4]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+4]='r';
+							validMoves.push_back(temp);
+						}
+						if (board[i+3]=='_')
+						{
+							std::string temp(board);
+							temp[i]='_';
+							temp[i+3]='r';
+							validMoves.push_back(temp);
+						}
+				
+					}
 			}
 			//increment the rows
 			if (i!=0  && i%4==0 )

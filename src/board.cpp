@@ -3,14 +3,14 @@
 #include <locale>
 
 /*
- *	Note specifically NOT pass by reference 
+ *	Note specifically NOT pass by reference
  *	since we'd be passing a const object
  *
  */
 std::string toLowerCase(std::string  orig)
 {
 	std::string rv="";
-	for(int i=0; i<orig.size(); ++i)
+	for(size_t i=0; i<orig.size(); ++i)
 	{
 		rv+=std::tolower(orig[i]);
 	}
@@ -21,7 +21,7 @@ std::string getBoard(const checkers_board_t & rhs)
 {
 	std::ostringstream oss;
 	int row=1; //keeps track of which row we're on
-	for(int i=rhs.size(); i>=0; --i)
+	for(size_t i=rhs.size(); i>=0; --i)
 	{
 		if(row%2==0)
 		{
@@ -51,32 +51,26 @@ checkers_board_t init_board()
 
 bool is_valid_checkers_board(const checkers_board_t& board)
 {
-	//reality check to make sure the board is 
+	std::cout<<"ERROR - |"<<board<<"|"<<std::endl;
+	//reality check to make sure the board is
 	//the right size
 	if (board.size()!=32)
 	{
+		std::cout<<"ERROR 0"<<std::endl;
 		return false;
 	}
 
 	//reality check to validate that only r, R, b, B,
 	// and _ are used in the board
-	for(int i=0; i<board.size(); ++i)
+	for(size_t i=0; i<board.size(); ++i)
 	{
 		if (board[i]!='_' && board[i]!='B' && board[i]!='b' && board[i]!='R' && board[i]!='r')
 		{
-			std::cout << "got tripped" << std::endl;
+			std::cout << "got tripped " << board[i]<< std::endl;
 			return false;
 		}
 	}
 
-	int numPieces=0;
-	for(int i=0; i<board.size(); ++i)
-	{
-		if (board[i]=='B' && board[i]=='b' && board[i]=='R' && board[i]=='r')
-			{numPieces++;}
-	}
-	if(!numPieces)
-	{return false;}
 	//std::cout << board << std::endl;
 	return true;
 }
@@ -91,7 +85,7 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 		return validMoves;
 	}
 	//generate the jumps first
-	//will return if the size of the list 
+	//will return if the size of the list
 	//is non 0 after looking for jumps
 	//since jumps have to be taken if available
 
@@ -99,10 +93,10 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 	if(toLowerCase(player)=="black")
 	{
 		int row=0;
-		for(int i=0; i<board.size(); ++i)
+		for(size_t i=0; i<board.size(); ++i)
 		{
 			if (board[i]=='B')
-			{	
+			{
 				if(i==0)	//corner with one jump
 				{
 					if(tolower(board[i+5])=='r' && board[i+9]=='_')
@@ -278,7 +272,7 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 			}
 			else if(board[i]=='b')
 			{
-						
+
 				if (i==28)	//corner
 				{
 					if(tolower(board[i-4])=='r' && board[i-7]=='_')
@@ -381,7 +375,7 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 	else if (toLowerCase(player)=="red")
 	{
 		int row=0;
-		for(int i=0; i<board.size(); ++i)
+		for(size_t i=0; i<board.size(); ++i)
 		{
 			if (board[i]=='R')
 			{
@@ -620,7 +614,7 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 						temp[i+7]='r';
 						validMoves.push_back(temp);
 					}
-	
+
 				}
 				else if (row%2)  //odd rows
 				{
@@ -661,12 +655,12 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 				}
 
 			}
-		
+
 		}
 	}
 
 	//return if we have jumps
-	//this way we ensure that we have jumps instead 
+	//this way we ensure that we have jumps instead
 	//of moves
 	if (validMoves.size())
 	{
@@ -677,7 +671,7 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 	if(toLowerCase(player)=="black")
 	{
 		int row=0;
-		for(int i=0; i<board.size(); ++i)
+		for(size_t i=0; i<board.size(); ++i)
 		{
 			//black king
 			if (board[i]=='B')
@@ -711,7 +705,7 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 							temp[i+4]='B';
 							validMoves.push_back(temp);
 						}
-				
+
 
 					}
 					else if (i>27)	//we can only jump forward
@@ -813,7 +807,7 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 			}
 			else if (board[i]=='b')	//black pawn
 			{
-				
+
 					if (i==3)	//corner
 					{
 						if (board[i+4]=='_')
@@ -851,7 +845,7 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 							temp[i-5]='b';
 							validMoves.push_back(temp);
 						}
-			
+
 					}
 					else
 					{
@@ -869,11 +863,11 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 							temp[i-3]='b';
 							validMoves.push_back(temp);
 						}
-				
+
 					}
-				
+
 			}
-			
+
 			//increment the rows
 			if (i!=0  && i%4==0 )
 			{
@@ -883,8 +877,8 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 	}
 	else if (toLowerCase(player)=="red") //red moves
 	{
-		int row=0;
-		for(int i=0; i<board.size(); ++i)
+		size_t row=0;
+		for(size_t i=0; i<board.size(); ++i)
 		{
 			if (board[i]=='R')
 			{
@@ -917,7 +911,7 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 							temp[i+4]='R';
 							validMoves.push_back(temp);
 						}
-				
+
 
 					}
 					else if (i>27)	//we can only jump forward
@@ -1056,7 +1050,7 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 							temp[i+5]='r';
 							validMoves.push_back(temp);
 						}
-			
+
 					}
 					else
 					{
@@ -1074,7 +1068,7 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 							temp[i+3]='r';
 							validMoves.push_back(temp);
 						}
-				
+
 					}
 			}
 			//increment the rows

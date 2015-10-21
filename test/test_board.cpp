@@ -28,7 +28,7 @@ TEST_CASE ("Single Piece Moves") {
 		REQUIRE( 2 == actual.size() );
 		std::sort(expected.begin(), expected.end());
 		std::sort(actual.begin(), actual.end());
-		for(int i=0; i<actual.size(); ++i)
+		for(size_t i=0; i<actual.size(); ++i)
 		{
 			REQUIRE( getBoard(actual[i]) == getBoard(expected[i]) );
 		}
@@ -47,7 +47,7 @@ TEST_CASE ("Single Piece Moves") {
 		REQUIRE( 2 == actual.size() );
 		std::sort(expected.begin(), expected.end());
 		std::sort(actual.begin(), actual.end());
-		for(int i=0; i<actual.size(); ++i)
+		for(size_t i=0; i<actual.size(); ++i)
 		{
 			REQUIRE( getBoard(actual[i]) == getBoard(expected[i]) );
 		}

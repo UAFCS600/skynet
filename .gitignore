@@ -1,7 +1,4 @@
 server
 server.exe
-*.swp #Ignore Vi swap files.
-*.o #build objects
-
-#Build directory for binaries.
-/build
+unit_tests
+unit_tests.exe

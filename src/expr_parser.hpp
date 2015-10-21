@@ -2,26 +2,24 @@
 #define EXPR_PARSER_HPP
  
 #include <string>
-#include <queue>
 #include <utility>
-#include <cctype>
 #include <cmath>
 #include <vector>
 
-// token types
+// Token types
 enum token_type_t
 {
-    NUM,    // Number of form [0-9]
-    E_OP,    // Expression operation: '+' or '-'
-    F_OP,    // Factor operation: '*' or '/'
-    T_OP,    // Term operation: '^'
-    RPAREN, // ')'
-    LPAREN, // '('
-    END,    // '.'
-    VAR,    // 'x'
-    EXP,	// 'e'
-    FUNC,   // Function: "sin", "cos", "log"
-    INVALID // Anything else
+	NUM,	// Number of form [0-9]
+	E_OP,	// Expression operation: '+' or '-'
+	F_OP,	// Factor operation: '*' or '/'
+	T_OP,	// Term operation: '^'
+	RPAREN,	// ')'
+	LPAREN,	// '('
+	END,	// '.'
+	VAR,	// 'x'
+	EXP,	// 'e'
+	FUNC,	// Function: "sin", "cos", "log"
+	INVALID	// Anything else
 };
 
 // Lexer tokens of <type, lexeme>
@@ -30,46 +28,47 @@ typedef std::pair<token_type_t,std::string> token_t;
 // Expression evaluator constructed from string expression
 class expr_parser_t
 {
-    public:
-        // Lex input expression and 
-        expr_parser_t(const std::string & expr);
-        
-        // Evaluate f(x) w/ given x value, returns true if there are no errors
-        double eval(double x = 0);
-        
-        // Returns whether the last evaluation was valid
-        bool valid();
-        
-        // Get error string
-        std::string get_errors();
+	public:
+		// Lex input expression into tokens
+		expr_parser_t(const std::string & expr);
+		
+		// Evaluate f(x) w/ given x value, returns true if there are no errors
+		double eval(double x = 0);
+		
+		// Returns whether the last evaluation was valid
+		bool valid();
+		
+		// Get error string
+		std::string get_errors();
 
-    private:
-        // Check next token and return if it matches the type.
-        // Also advances to next token_t if it matches.
-        bool match(token_type_t the_type);
-        
-        // Stores value from match
-        std::string cur_val;
-        
-        // Parse expression (expr -> expr + term | expr - term | term)
-        double parse_expr(double);
+	private:
+		// Check next token and return if it matches the type
+		// If true it advances index to next token
+		bool match(token_type_t the_type);
+		
+		// Stores value from match
+		std::string cur_val;
+		
+		// Parse: expr -> term + expr | term - expr | term
+		double parse_expr(double x);
 
-        // Parse term (expr -> term * factor | term / factor | factor)
-        double parse_term(double);
+		// Parse: term -> factor * term | factor / term | factor
+		double parse_term(double x);
 
-        // Parse factor (factor -> INT | (expr))
-        double parse_factor(double);
+		// Parse: factor -> value ^ factor | value
+		double parse_factor(double x);
+		
+		// Parse: value -> NUM | VAR | EXP | (expr) | sin(expr) | cos(expr) | log(expr)
+		double parse_value(double x);
 
-        double parse_value(double);
-
-        // Vector of tokens from parser
-        std::vector<token_t> tokens;
-        
-        // Tracks evaluator index
-        int index;
-        
-        // Queue of parse errors
-        std::string errors;
+		// Vector of tokens from parser
+		std::vector<token_t> tokens;
+		
+		// Tracks evaluator index
+		int index;
+		
+		// String of parse errors
+		std::string errors;
 };
 
 #endif

@@ -8,7 +8,7 @@
  
 #include "expr_parser.hpp"
 
-// Parse source into tokens
+// Lex input expression into tokens
 expr_parser_t::expr_parser_t(const std::string & expr)
 {
 	bool concatNum = false;
@@ -120,24 +120,6 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 	if(value.compare("")) tokens.push_back(token_t(NUM,value));
 }
 
-// Check next token and return if it matches the type.
-// Also advances to next token if it matches.
-bool expr_parser_t::match(token_type_t the_type)
-{
-	if(index == tokens.size()) return false;
-	
-	token_t t = tokens[index];
-	
-	if(t.first == the_type)
-	{
-		index++;
-		cur_val = t.second;
-		return true;
-	}
-	
-	return false;
-}
-
 // Evaluate f(x) w/ given x value, returns true if there are no errors
 double expr_parser_t::eval(double x)
 {
@@ -173,6 +155,24 @@ bool expr_parser_t::valid()
 std::string expr_parser_t::get_errors()
 {
 	return errors;
+}
+
+// Check next token and return if it matches the type
+// If true it advances index to next token
+bool expr_parser_t::match(token_type_t the_type)
+{
+	if(index == tokens.size()) return false;
+	
+	token_t t = tokens[index];
+	
+	if(t.first == the_type)
+	{
+		index++;
+		cur_val = t.second;
+		return true;
+	}
+	
+	return false;
 }
 
 // Parse: expr -> term + expr | term - expr | term

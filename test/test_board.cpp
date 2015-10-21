@@ -147,24 +147,56 @@ TEST_CASE ("Board Validation") {
 	}
 }
 
-TEST_CASE ("Initial Moves") {
-	ai::checkers_board_t initial_board =
-	"rrrrrrrrrrrr________bbbbbbbbbbbb";
+SCENARIO ("Initial Board") {
+	ai::checkers_board_list_t actual;
 
-	SECTION ("Red Initial Moves") {
-		ai::checkers_board_list_t expected = {
-			"rrrrrrrr_rrrr_______bbbbbbbbbbbb",
-			"rrrrrrrr_rrr_r______bbbbbbbbbbbb",
-			"rrrrrrrrr_rr_r______bbbbbbbbbbbb",
-			"rrrrrrrrr_rr__r_____bbbbbbbbbbbb",
-			"rrrrrrrrrr_r__r_____bbbbbbbbbbbb",
-			"rrrrrrrrrr_r___r____bbbbbbbbbbbb",
-			"rrrrrrrrrrr____r____bbbbbbbbbbbb"};
+	GIVEN ("Given an initial board state") {
+		ai::checkers_board_t initial_board =
+			"rrrrrrrrrrrr________bbbbbbbbbbbb";
 
-		ai::checkers_board_list_t actual = ai::move_generator(initial_board, "red");
+		WHEN ("The red player evalues for possible moves") {
+			actual = ai::move_generator(initial_board, "red");
 
-		REQUIRE( expected.size() == actual.size() ); 
+			THEN ("Each red piece in row 2 should have two moves but the right edge piece") {
+				REQUIRE( 7 == actual.size() );
 
-		check_boards(expected, actual);
+			} AND_THEN ("Each possible red move should be represented.") {
+				ai::checkers_board_list_t expected = {
+					"rrrrrrrr_rrrr_______bbbbbbbbbbbb",
+					"rrrrrrrr_rrr_r______bbbbbbbbbbbb",
+					"rrrrrrrrr_rr_r______bbbbbbbbbbbb",
+					"rrrrrrrrr_rr__r_____bbbbbbbbbbbb",
+					"rrrrrrrrrr_r__r_____bbbbbbbbbbbb",
+					"rrrrrrrrrr_r___r____bbbbbbbbbbbb",
+					"rrrrrrrrrrr____r____bbbbbbbbbbbb"};
+				std::sort(expected.begin(), expected.end());
+				std::sort(actual.begin(), actual.end());
+				for (size_t ii = 0; ii < actual.size() && ii < expected.size(); ++ii) {
+					REQUIRE( actual[ii] == expected[ii] );
+				}
+			}
+		}
+		AND_WHEN ("The blk player generates moves for an initial board") {
+			actual = ai::move_generator(initial_board, "blk");
+
+			THEN ("Each blk piece in row 5 should have 2 moves but one piece") {
+				REQUIRE( 7 == actual.size() );
+
+			} AND_THEN ("Each possible blk move should be represented.") {
+				ai::checkers_board_list_t expected = {
+					"rrrrrrrrrrrr____b____bbbbbbbbbbb",
+					"rrrrrrrrrrrr____b___b_bbbbbbbbbb",
+					"rrrrrrrrrrrr_____b__b_bbbbbbbbbb",
+					"rrrrrrrrrrrr_____b__bb_bbbbbbbbb",
+					"rrrrrrrrrrrr______b_bb_bbbbbbbbb",
+					"rrrrrrrrrrrr______b_bbb_bbbbbbbb",
+					"rrrrrrrrrrrr_______bbbb_bbbbbbbb"};
+				std::sort(expected.begin(), expected.end());
+				std::sort(actual.begin(), actual.end());
+				for (size_t ii = 0; ii < actual.size() && ii < expected.size(); ++ii) {
+					REQUIRE( actual[ii] == expected[ii] );
+				}
+			}
+		}
 	}
 }

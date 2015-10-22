@@ -2,7 +2,7 @@
 #include <vector>
 
 #define CATCH_CONFIG_MAIN
-#include <Catch/catch.hpp>
+#include <catch/catch.hpp>
 
 #include "api_outline.hpp"
 #include "board.hpp"

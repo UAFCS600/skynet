@@ -7,7 +7,10 @@
  A compiler that supports the C++11 standard.
 
 ## Web Component
- Compile with "make".
+ * To build server
+ ```
+ $make server
+ ```
 
  Using Mongoose (https://github.com/cesanta/mongoose) for an embedded server environment.
 
@@ -23,12 +26,12 @@
 
  * To build the tests
  ```
- $make tests
+ $make unit_tests
  ```
 
  * Execute test suite
  ```
- $make run
+ $./unit_tests
  ```
 
 ## Cleaning Build

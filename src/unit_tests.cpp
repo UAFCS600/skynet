@@ -94,22 +94,23 @@ SCENARIO ("Crowning Red King") {
 			actual = ai::move_generator(board_state, "red");
 			THEN ("The red pawn is crowned.") {
 				REQUIRE( 1 == actual.size() );
-				REQUIRE( expected == actual.back() );
+				REQUIRE( expected == actual[0] );
+				
 			}
 		}
 	}
 }
 
-SCENARIO ("Crowning Blk King") {
+SCENARIO ("Crowning black King") {
 	ai::checkers_board_t board_state;
 	ai::checkers_board_t expected =
 		"B_____________________________R_";
 	ai::checkers_board_list_t actual;
 
-	GIVEN("A pre-crown blk pawn state.") {
+	GIVEN("A pre-crown black pawn state.") {
 		board_state = "____b_________________________R_";
-		WHEN ("Generate possible blk moves.") {
-			actual = ai::move_generator(board_state, "blk");
+		WHEN ("Generate possible black moves.") {
+			actual = ai::move_generator(board_state, "black");
 			THEN ("The red pawn is crowned.") {
 				REQUIRE( 1 == actual.size() );
 				REQUIRE( expected == actual.back() );
@@ -124,11 +125,12 @@ SCENARIO ("Crowning Jumps") {
 	ai::checkers_board_list_t actual;
 
 	GIVEN ("A there are two moves for a pawn to take, then the only aviable move is to jump.") {
-		board_state = "_____r__b_____________r___b_____";
-		WHEN ("Blk evaluates the board for possible moves") {
-			actual = ai::move_generator(board_state, "blk");
+		board_state = "_____r__b__________r______b_____";
+		WHEN ("black evaluates the board for possible moves") {
+			actual = ai::move_generator(board_state, "black");
+			std::cout << actual[0] << std::endl;
 			THEN ("There should only be the jump which results in a crowned piece.") {
-				expected = "_B____________________r___b_____";
+				expected = "_B_________________r_____b_____";
 				REQUIRE( 1 == actual.size() );
 				REQUIRE( expected == actual.back() );
 			}
@@ -164,10 +166,6 @@ TEST_CASE ("Board Validation") {
 		REQUIRE(  false == ai::is_valid_checkers_board(inval_board) );
 	}
 
-	SECTION("No Pieces") {
-		inval_board = "________________________________";
-		REQUIRE( false == ai::is_valid_checkers_board(inval_board) );
-	}
 
 	SECTION ("Initital Board Validation") {
 		valid_board = "rrrrrrrrrrrr________bbbbbbbbbbbb";
@@ -207,13 +205,13 @@ SCENARIO ("Initial Board") {
 				}
 			}
 		}
-		AND_WHEN ("The blk player generates moves for an initial board") {
-			actual = ai::move_generator(initial_board, "blk");
+		AND_WHEN ("The black player generates moves for an initial board") {
+			actual = ai::move_generator(initial_board, "black");
 
-			THEN ("Each blk piece in row 5 should have 2 moves but one piece") {
+			THEN ("Each black piece in row 5 should have 2 moves but one piece") {
 				REQUIRE( 7 == actual.size() );
 
-			} AND_THEN ("Each possible blk move should be represented.") {
+			} AND_THEN ("Each possible black move should be represented.") {
 				ai::checkers_board_list_t expected = {
 					"rrrrrrrrrrrr____b____bbbbbbbbbbb",
 					"rrrrrrrrrrrr____b___b_bbbbbbbbbb",

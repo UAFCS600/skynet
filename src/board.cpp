@@ -57,12 +57,12 @@ ai::checkers_board_t init_board()
 
 bool ai::is_valid_checkers_board(const ai::checkers_board_t & board)
 {
-	std::cout<<"ERROR - |"<<board<<"|"<<std::endl;
+	
 	//reality check to make sure the board is
 	//the right size
 	if (board.size()!=32)
 	{
-		std::cout<<"ERROR 0"<<std::endl;
+		
 		return false;
 	}
 
@@ -72,7 +72,7 @@ bool ai::is_valid_checkers_board(const ai::checkers_board_t & board)
 	{
 		if (board[i]!='_' && board[i]!='B' && board[i]!='b' && board[i]!='R' && board[i]!='r')
 		{
-			std::cout << "got tripped " << board[i]<< std::endl;
+			
 			return false;
 		}
 	}
@@ -91,7 +91,7 @@ void makeKing(ai::checkers_board_t & board)
 	for(int i=28; i<32; ++i)
 	{
 		if (board[i]=='r')
-			board[i]='B';
+			board[i]='R';
 	}
 }
 ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,const ai::checkers_player_t& player)
@@ -107,7 +107,7 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 	//is non 0 after looking for jumps
 	//since jumps have to be taken if available
 
-	//DPRINT(player);
+	
 
 	//black jumps
 	if(toLowerCase(player)=="black")
@@ -359,14 +359,14 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 					{
 						std::string temp(board);
 						temp[i-5]='_';
-						temp[i-9]='B';
+						temp[i-9]='b';
 						validMoves.push_back(temp);
 					}
 					if(tolower(board[i-4])=='r' && board[i-7]=='_')
 					{
 						std::string temp(board);
 						temp[i-4]='_';
-						temp[i-7]='B';
+						temp[i-7]='b';
 						validMoves.push_back(temp);
 					}
 
@@ -377,14 +377,14 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 					{
 						std::string temp(board);
 						temp[i-4]='_';
-						temp[i-9]='B';
+						temp[i-9]='b';
 						validMoves.push_back(temp);
 					}
 					if(tolower(board[i-3])=='r' && board[i-7]=='_')
 					{
 						std::string temp(board);
 						temp[i-3]='_';
-						temp[i-7]='B';
+						temp[i-7]='b';
 						validMoves.push_back(temp);
 					}
 
@@ -477,7 +477,7 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 				}
 				else if(i%4==0)		//left edge
 				{
-					DPRINT("EDGE");
+					
 					if(tolower(board[i-4])=='b' && board[i-7]=='_')
 					{
 						std::string temp(board);
@@ -496,7 +496,7 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 				}
 				else if (i%4==3)	//right edge
 				{
-					DPRINT("RIGHT EDGE JUMP");
+					
 					if(tolower(board[i+4])=='b' && board[i+7]=='_')
 					{
 						std::string temp(board);
@@ -687,8 +687,10 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 	//of moves
 	if (validMoves.size())
 	{
-		for(size_t i=0; i<validMoves.size(); ++i)
+		for(size_t i=0; i<validMoves.size(); ++i){
 			makeKing(validMoves[i]);
+			std::cout << validMoves[i] << std::endl;
+		}
 		return validMoves;
 	}
 
@@ -958,7 +960,7 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 					}
 					else if(i%8==4 || i%8==3)		//left edge
 					{
-						DPRINT("RED EDGE MOVE");
+				
 
 						if (board[i-4]=='_')
 						{
@@ -1040,7 +1042,7 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 			}
 			else if (board[i]=='r')
 			{
-					if (i==8)	//corner
+					if (i==3)	//corner
 					{
 						if (board[i-4]=='_')
 						{
@@ -1061,10 +1063,11 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 						}
 
 					}
-					else if (row%2)  //odd rows
+					else if (row%2==0)  //odd rows
 					{
 						if (board[i+4]=='_')
 						{
+							
 							std::string temp(board);
 							temp[i]='_';
 							temp[i+4]='r';
@@ -1072,6 +1075,7 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 						}
 						if (board[i+5]=='_')
 						{
+							
 							std::string temp(board);
 							temp[i]='_';
 							temp[i+5]='r';
@@ -1081,8 +1085,10 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 					}
 					else
 					{
+
 						if (board[i+4]=='_')
 						{
+							
 							std::string temp(board);
 							temp[i]='_';
 							temp[i+4]='r';
@@ -1090,6 +1096,7 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 						}
 						if (board[i+3]=='_')
 						{
+							
 							std::string temp(board);
 							temp[i]='_';
 							temp[i+3]='r';
@@ -1107,6 +1114,10 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 
 	}
 
+	for(size_t i=0; i<validMoves.size(); ++i)
+	{
+		makeKing(validMoves[i]);
+	}
 	return validMoves;
 }
 

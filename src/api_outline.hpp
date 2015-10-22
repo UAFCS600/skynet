@@ -30,7 +30,7 @@ namespace ai
 	typedef std::string checkers_status_t;
 	typedef std::string checkers_board_t;
 	typedef std::vector<checkers_board_t> checkers_board_list_t;
-	bool valid_board(const checkers_board_t& board);
+	bool is_valid_checkers_board(const checkers_board_t& board);
 	checkers_board_list_t move_generator(const checkers_board_t& board,const checkers_player_t& player);
 
 	//Alpha Beta

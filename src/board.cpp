@@ -1,7 +1,13 @@
-#include "board.hpp"
+//#include "board.hpp"
+#include "api_outline.hpp"
 #include <algorithm>
 #include <locale>
+#include <sstream>
+#include <string>
+#include <iostream>
 
+
+#define DPRINT(s) (std::cout << s << std::endl);
 /*
  *	Note specifically NOT pass by reference
  *	since we'd be passing a const object
@@ -17,11 +23,11 @@ std::string toLowerCase(std::string  orig)
 	return rv;
 }
 
-std::string getBoard(const checkers_board_t & rhs)
+std::string getBoard(const ai::checkers_board_t & rhs)
 {
 	std::ostringstream oss;
 	int row=1; //keeps track of which row we're on
-	for(size_t i=rhs.size(); i>=0; --i)
+	for(int i=rhs.size(); i>=0; --i)
 	{
 		if(row%2==0)
 		{
@@ -43,13 +49,13 @@ std::string getBoard(const checkers_board_t & rhs)
 }
 
 
-checkers_board_t init_board()
+ai::checkers_board_t init_board()
 {
-	checkers_board_t theBoard="rrrrrrrrrrrr________bbbbbbbbbbbb";
+	ai::checkers_board_t theBoard="rrrrrrrrrrrr________bbbbbbbbbbbb";
 	return theBoard;
 }
 
-bool is_valid_checkers_board(const checkers_board_t& board)
+bool ai::is_valid_checkers_board(const ai::checkers_board_t & board)
 {
 	std::cout<<"ERROR - |"<<board<<"|"<<std::endl;
 	//reality check to make sure the board is
@@ -75,11 +81,23 @@ bool is_valid_checkers_board(const checkers_board_t& board)
 	return true;
 }
 
-
-checkers_board_list_t move_generator(const checkers_board_t& board,const checkers_player_t& player)
+void makeKing(ai::checkers_board_t & board)
+{
+	for(int i=0; i<4; ++i)
+	{
+		if(board[i]=='b')
+			board[i]='B';
+	}
+	for(int i=28; i<32; ++i)
+	{
+		if (board[i]=='r')
+			board[i]='B';
+	}
+}
+ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,const ai::checkers_player_t& player)
 {
 	//returns an empty vector if the board is invalid
-	checkers_board_list_t validMoves;
+	ai::checkers_board_list_t validMoves;
 	if (!is_valid_checkers_board(board))
 	{
 		return validMoves;
@@ -88,6 +106,8 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 	//will return if the size of the list
 	//is non 0 after looking for jumps
 	//since jumps have to be taken if available
+
+	//DPRINT(player);
 
 	//black jumps
 	if(toLowerCase(player)=="black")
@@ -422,6 +442,7 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 				}
 				else if (i<4) // we can only jump back
 				{
+
 					if(tolower(board[i+5])=='b' && board[i+9]=='_')
 					{
 						std::string temp(board);
@@ -456,6 +477,7 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 				}
 				else if(i%4==0)		//left edge
 				{
+					DPRINT("EDGE");
 					if(tolower(board[i-4])=='b' && board[i-7]=='_')
 					{
 						std::string temp(board);
@@ -474,6 +496,7 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 				}
 				else if (i%4==3)	//right edge
 				{
+					DPRINT("RIGHT EDGE JUMP");
 					if(tolower(board[i+4])=='b' && board[i+7]=='_')
 					{
 						std::string temp(board);
@@ -664,6 +687,8 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 	//of moves
 	if (validMoves.size())
 	{
+		for(size_t i=0; i<validMoves.size(); ++i)
+			makeKing(validMoves[i]);
 		return validMoves;
 	}
 
@@ -933,6 +958,8 @@ checkers_board_list_t move_generator(const checkers_board_t& board,const checker
 					}
 					else if(i%8==4 || i%8==3)		//left edge
 					{
+						DPRINT("RED EDGE MOVE");
+
 						if (board[i-4]=='_')
 						{
 							std::string temp(board);

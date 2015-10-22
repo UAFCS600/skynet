@@ -2,7 +2,7 @@
 #include <vector>
 
 #define CATCH_CONFIG_MAIN
-#include <Catch/catch.hpp>
+#include <Catch/include/catch.hpp>
 
 #include "api_outline.hpp"
 #include "board.hpp"
@@ -63,10 +63,10 @@ TEST_CASE ("Single Piece Moves") {
 
 	SECTION ("Single Red King Right Edge") {
 		ai::checkers_board_t red_king =
-			"_______________R_______________b"; //Position 15: 11, 19
+			"___________R___________________b"; //Position 15: 11, 19
 		ai::checkers_board_list_t expected = {
-			"___________R___________________b", //Result 11
-			"___________________R___________b"}; //Result 19
+			"_______R_______________________b", //Result 11
+			"_______________R_______________b"}; //Result 19
 
 		ai::checkers_board_list_t actual = ai::move_generator(red_king, "red");
 
@@ -75,6 +75,7 @@ TEST_CASE ("Single Piece Moves") {
 		std::sort(actual.begin(), actual.end());
 		for(size_t i=0; i<actual.size(); ++i)
 		{
+			std::cout << actual[i] << std::endl;
 			REQUIRE( getBoard(actual[i]) == getBoard(expected[i]) );
 		}
 		check_boards(expected, actual);
@@ -150,30 +151,30 @@ TEST_CASE ("Board Validation") {
 
 	SECTION("Empty Board") {
 		inval_board = "";
-		REQUIRE( false == is_valid_checkers_board(inval_board) );
+		REQUIRE( false == ai::is_valid_checkers_board(inval_board) );
 	}
 
 	SECTION("Oversized Board") {
 		inval_board = "bbbbbbbbbbbb________rrrrrrarrrrr_";
-		REQUIRE( false == is_valid_checkers_board(inval_board) );
+		REQUIRE( false == ai::is_valid_checkers_board(inval_board) );
 	}
 
 	SECTION("Invalid Characters") {
 		inval_board = "bbbbbbbbbbbb________rrrrrrarrrrr";
-		REQUIRE(  false == is_valid_checkers_board(inval_board) );
+		REQUIRE(  false == ai::is_valid_checkers_board(inval_board) );
 	}
 
 	SECTION("No Pieces") {
 		inval_board = "________________________________";
-		REQUIRE( false == is_valid_checkers_board(inval_board) );
+		REQUIRE( false == ai::is_valid_checkers_board(inval_board) );
 	}
 
 	SECTION ("Initital Board Validation") {
 		valid_board = "rrrrrrrrrrrr________bbbbbbbbbbbb";
-		REQUIRE( true == is_valid_checkers_board(valid_board) );
+		REQUIRE( true == ai::is_valid_checkers_board(valid_board) );
 
 		valid_board = "rrrrrrrr_rrrr_______bbbbbbbbbbbb";
-		REQUIRE( true == is_valid_checkers_board(valid_board) );
+		REQUIRE( true == ai::is_valid_checkers_board(valid_board) );
 	}
 }
 

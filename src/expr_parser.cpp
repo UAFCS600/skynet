@@ -135,7 +135,7 @@ double expr_parser_t::eval(double x)
 		if(match(NUM) || match(E_OP) || match(T_OP) || match(F_OP) ||
 			match(RPAREN) || match(LPAREN) || match(VAR) || match(INVALID))
 		{
-			errors.append("Invalid token: " + cur_val + "\n");
+			throw std::runtime_error("Invalid token: " + cur_val);
 		}
 		
 		index++;
@@ -143,18 +143,6 @@ double expr_parser_t::eval(double x)
 	
 	// Report error to checker
 	return value;
-}
-
-// Returns whether the last evaluation was valid
-bool expr_parser_t::valid()
-{
-	return (errors.size() == 0);
-}
-
-// Get error string
-std::string expr_parser_t::get_errors()
-{
-	return errors;
 }
 
 // Check next token and return if it matches the type
@@ -211,7 +199,7 @@ double expr_parser_t::parse_term(double x)
 			
 			if(term == 0)
 			{
-				errors.append("Attempted division by 0\n");
+				throw std::runtime_error("Attempted division by 0");
 				return 0;
 			}
 			
@@ -262,7 +250,7 @@ double expr_parser_t::parse_value(double x)
 		}
 		else
 		{
-			errors.append("Missing )\n");
+			throw std::runtime_error("Missing ending \')\'");
 			return 0;
 		}
 	}
@@ -289,7 +277,7 @@ double expr_parser_t::parse_value(double x)
 				{
 					if(val <= 0)
 					{
-						errors.append("Attempted log(x) with x<=0\n");
+						throw std::runtime_error("Attempted log(x) with x<=0");
 						return 0;
 					}
 					return std::log(val);
@@ -297,13 +285,13 @@ double expr_parser_t::parse_value(double x)
 			}
 			else
 			{
-				errors.append("Missing )\n");
+				throw std::runtime_error("Missing ending \')\'");
 				return 0;
 			}
 		}
 		else
 		{
-			errors.append("Missing ( after function\n");
+			throw std::runtime_error("Missing \'(\' after function");
 			return 0;
 		}
 	}
@@ -311,7 +299,7 @@ double expr_parser_t::parse_value(double x)
 	if(match(NUM) || match(E_OP) || match(T_OP) || match(F_OP) ||
 		match(RPAREN) || match(LPAREN) || match(VAR) || match(INVALID))
 	{
-		errors.append("Invalid token: " + cur_val + "\n");
+		throw std::runtime_error("Invalid token: " + cur_val);
 	}
 	
 	return 0;

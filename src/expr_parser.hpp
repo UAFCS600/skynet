@@ -5,6 +5,7 @@
 #include <utility>
 #include <cmath>
 #include <vector>
+#include <stdexcept>
 
 // Token types
 enum token_type_t
@@ -34,12 +35,6 @@ class expr_parser_t
 		
 		// Evaluate f(x) w/ given x value, returns true if there are no errors
 		double eval(double x = 0);
-		
-		// Returns whether the last evaluation was valid
-		bool valid();
-		
-		// Get error string
-		std::string get_errors();
 
 	private:
 		// Check next token and return if it matches the type
@@ -66,9 +61,6 @@ class expr_parser_t
 		
 		// Tracks evaluator index
 		int index;
-		
-		// String of parse errors
-		std::string errors;
 };
 
 #endif

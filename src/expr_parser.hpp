@@ -33,8 +33,8 @@ class expr_parser_t
 		// Lex input expression into tokens
 		expr_parser_t(const std::string & expr);
 		
-		// Evaluate f(x) w/ given x value, returns true if there are no errors
-		double eval(double x = 0);
+		// Evaluate expression
+		double operator()(double x);
 
 	private:
 		// Check next token and return if it matches the type

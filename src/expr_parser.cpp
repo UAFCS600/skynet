@@ -120,8 +120,8 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 	if(value.compare("")) tokens.push_back(token_t(NUM,value));
 }
 
-// Evaluate f(x) w/ given x value, returns true if there are no errors
-double expr_parser_t::eval(double x)
+// Evaluate f(x) w/ given x value
+double expr_parser_t::operator()(double x)
 {
 	// Set index to first token
 	index = 0;
@@ -135,7 +135,7 @@ double expr_parser_t::eval(double x)
 		if(match(NUM) || match(E_OP) || match(T_OP) || match(F_OP) ||
 			match(RPAREN) || match(LPAREN) || match(VAR) || match(INVALID))
 		{
-			throw std::runtime_error("Invalid token: " + cur_val);
+			throw std::runtime_error("Invalid token \'" + cur_val + "\'.");
 		}
 		
 		index++;
@@ -199,7 +199,7 @@ double expr_parser_t::parse_term(double x)
 			
 			if(term == 0)
 			{
-				throw std::runtime_error("Attempted division by 0");
+				throw std::runtime_error("Attempted division by 0.");
 				return 0;
 			}
 			
@@ -250,7 +250,7 @@ double expr_parser_t::parse_value(double x)
 		}
 		else
 		{
-			throw std::runtime_error("Missing ending \')\'");
+			throw std::runtime_error("Missing ending \')\'.");
 			return 0;
 		}
 	}
@@ -277,7 +277,7 @@ double expr_parser_t::parse_value(double x)
 				{
 					if(val <= 0)
 					{
-						throw std::runtime_error("Attempted log(x) with x<=0");
+						throw std::runtime_error("Attempted log(x) with x<=0.");
 						return 0;
 					}
 					return std::log(val);
@@ -285,13 +285,13 @@ double expr_parser_t::parse_value(double x)
 			}
 			else
 			{
-				throw std::runtime_error("Missing ending \')\'");
+				throw std::runtime_error("Missing ending \')\'.");
 				return 0;
 			}
 		}
 		else
 		{
-			throw std::runtime_error("Missing \'(\' after function");
+			throw std::runtime_error("Missing \'(\' after function.");
 			return 0;
 		}
 	}
@@ -299,7 +299,7 @@ double expr_parser_t::parse_value(double x)
 	if(match(NUM) || match(E_OP) || match(T_OP) || match(F_OP) ||
 		match(RPAREN) || match(LPAREN) || match(VAR) || match(INVALID))
 	{
-		throw std::runtime_error("Invalid token: " + cur_val);
+		throw std::runtime_error("Invalid token \'" + cur_val + "\'.");
 	}
 	
 	return 0;

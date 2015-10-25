@@ -79,7 +79,7 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 				tokens.push_back(token_t(EXP,s));
 				break;
 			case 's':
-				if(expr[i + 1] == 'i' && expr[i + 2] == 'n')
+				if(expr[i] == 'i' && expr[i + 1] == 'n')
 				{
 					tokens.push_back(token_t(FUNC,"sin"));
 					i += 2;
@@ -90,7 +90,7 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 				}
 				break;
 			case 'c':
-				if(expr[i + 1] == 'o' && expr[i + 2] == 's')
+				if(expr[i] == 'o' && expr[i + 1] == 's')
 				{
 					tokens.push_back(token_t(FUNC,"cos"));
 					i += 2;
@@ -101,7 +101,7 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 				}
 				break;
 			case 'l':
-				if(expr[i + 1] == 'o' && expr[i + 2] == 'g')
+				if(expr[i] == 'o' && expr[i + 1] == 'g')
 				{
 					tokens.push_back(token_t(FUNC,"log"));
 					i += 2;

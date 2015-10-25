@@ -41,9 +41,6 @@ class expr_parser_t
 		// If true it advances index to next token
 		bool match(token_type_t the_type);
 		
-		// Stores value from match
-		std::string cur_val;
-		
 		// Parse: expr -> term + expr | term - expr | term
 		double parse_expr(double x);
 
@@ -55,6 +52,9 @@ class expr_parser_t
 		
 		// Parse: value -> NUM | VAR | EXP | (expr) | sin(expr) | cos(expr) | log(expr)
 		double parse_value(double x);
+		
+		// Stores value from match
+		std::string cur_val;
 
 		// Vector of tokens from parser
 		std::vector<token_t> tokens;

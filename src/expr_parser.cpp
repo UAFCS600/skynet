@@ -25,7 +25,7 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 		{
 			if(c >= '0' && c <= '9')
 			{
-				value+=c;
+				value += c;
 				continue;
 			}
 			else if(c == '.' && !decimal)
@@ -79,7 +79,7 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 				tokens.push_back(token_t(EXP,s));
 				break;
 			case 's':
-				if(expr[i+1] == 'i' && expr[i+2] == 'n')
+				if(expr[i + 1] == 'i' && expr[i + 2] == 'n')
 				{
 					tokens.push_back(token_t(FUNC,"sin"));
 					i += 2;
@@ -90,7 +90,7 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 				}
 				break;
 			case 'c':
-				if(expr[i+1] == 'o' && expr[i+2] == 's')
+				if(expr[i + 1] == 'o' && expr[i + 2] == 's')
 				{
 					tokens.push_back(token_t(FUNC,"cos"));
 					i += 2;
@@ -101,7 +101,7 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 				}
 				break;
 			case 'l':
-				if(expr[i+1] == 'o' && expr[i+2] == 'g')
+				if(expr[i + 1] == 'o' && expr[i + 2] == 'g')
 				{
 					tokens.push_back(token_t(FUNC,"log"));
 					i += 2;
@@ -200,7 +200,6 @@ double expr_parser_t::parse_term(double x)
 			if(term == 0)
 			{
 				throw std::runtime_error("Attempted division by 0.");
-				return 0;
 			}
 			
 			value /= term;
@@ -251,7 +250,6 @@ double expr_parser_t::parse_value(double x)
 		else
 		{
 			throw std::runtime_error("Missing ending \')\'.");
-			return 0;
 		}
 	}
 	
@@ -278,7 +276,6 @@ double expr_parser_t::parse_value(double x)
 					if(val <= 0)
 					{
 						throw std::runtime_error("Attempted log(x) with x<=0.");
-						return 0;
 					}
 					return std::log(val);
 				}
@@ -286,13 +283,11 @@ double expr_parser_t::parse_value(double x)
 			else
 			{
 				throw std::runtime_error("Missing ending \')\'.");
-				return 0;
 			}
 		}
 		else
 		{
 			throw std::runtime_error("Missing \'(\' after function.");
-			return 0;
 		}
 	}
 	

@@ -11,7 +11,7 @@
 // Lex input expression into tokens
 expr_parser_t::expr_parser_t(const std::string & expr)
 {
-	bool concatNum = false;
+	bool concat_num = false;
 	bool decimal = false;
 	std::string value;
 	int i = 0;
@@ -21,7 +21,7 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 		char c = expr[i++];
 		std::string s(1,c);
 		
-		if(concatNum)
+		if(concat_num)
 		{
 			if(c >= '0' && c <= '9')
 			{
@@ -36,7 +36,7 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 			}
 			tokens.push_back(token_t(NUM,value));
 			value = "";
-			concatNum = false;
+			concat_num = false;
 			decimal = true;
 		}
 		
@@ -47,11 +47,11 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 			case '4': case '5':
 			case '6': case '7':
 			case '8': case '9':
-				concatNum = true;
+				concat_num = true;
 				value += c;
 				break;
 			case '.':
-				concatNum = true;
+				concat_num = true;
 				decimal = true;
 				value += c;
 				break;

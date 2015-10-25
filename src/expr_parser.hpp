@@ -10,7 +10,7 @@
 // Token types
 enum token_type_t
 {
-	NUM,	// Number of form [0-9]
+	NUM,	// Number of from [0-9]
 	E_OP,	// Expression operation: '+' or '-'
 	F_OP,	// Factor operation: '*' or '/'
 	T_OP,	// Term operation: '^'

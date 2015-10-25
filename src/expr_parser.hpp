@@ -10,6 +10,7 @@
 // Token types
 enum token_type_t
 {
+	ANY,	// Never assigned, used to match any token
 	NUM,	// Number of from [0-9]
 	E_OP,	// Expression operation: '+' or '-'
 	F_OP,	// Factor operation: '*' or '/'
@@ -20,7 +21,7 @@ enum token_type_t
 	VAR,	// 'x'
 	EXP,	// 'e'
 	FUNC,	// Function: "sin", "cos", "log"
-	INVALID	// Anything else
+	INVALID	// Invalid
 };
 
 // Lexer tokens of <type, lexeme>

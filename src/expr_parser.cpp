@@ -130,15 +130,9 @@ double expr_parser_t::operator()(double x)
 	double value = parse_expr(x);
 	
 	// Deal with excess tokens
-	while(index < tokens.size())
+	if(match(ANY))
 	{
-		if(match(NUM) || match(E_OP) || match(T_OP) || match(F_OP) ||
-			match(RPAREN) || match(LPAREN) || match(VAR) || match(INVALID))
-		{
-			throw std::runtime_error("Invalid token \'" + cur_val + "\'.");
-		}
-		
-		index++;
+		throw std::runtime_error("Invalid token \'" + cur_val + "\'.");
 	}
 	
 	// Report error to checker
@@ -153,7 +147,7 @@ bool expr_parser_t::match(token_type_t the_type)
 	
 	token_t t = tokens[index];
 	
-	if(t.first == the_type)
+	if(t.first == the_type || the_type == ANY)
 	{
 		index++;
 		cur_val = t.second;
@@ -291,8 +285,7 @@ double expr_parser_t::parse_value(double x)
 		}
 	}
 	
-	if(match(NUM) || match(E_OP) || match(T_OP) || match(F_OP) ||
-		match(RPAREN) || match(LPAREN) || match(VAR) || match(INVALID))
+	if(match(ANY))
 	{
 		throw std::runtime_error("Invalid token \'" + cur_val + "\'.");
 	}

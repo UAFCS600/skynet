@@ -33,7 +33,7 @@ neuralnet_t::neuralnet_t(const std::vector<size_t>& layers,const std::vector<dou
 	set_node_weights_m(weights);
 }
 
-double neuralnet_t::evaluate(const std::vector<double>& inputs,const size_t sigmoid_index)
+double neuralnet_t::evaluate(const std::vector<double>& inputs,expr_parser_t& sigmoid)
 {
 	for(size_t ii=0;ii<node_layers_m[0].size();++ii)
 		node_layers_m[0][ii].value=inputs[ii];
@@ -47,7 +47,7 @@ double neuralnet_t::evaluate(const std::vector<double>& inputs,const size_t sigm
 			for(size_t kk=0;kk<node_layers_m[ii-1].size();++kk)
 				node_layers_m[ii][jj].value+=node_layers_m[ii-1][kk].value*node_layers_m[ii-1][kk].weights[jj];
 
-			node_layers_m[ii][jj].value=sigmoid(node_layers_m[ii][jj].value,sigmoid_index);
+			node_layers_m[ii][jj].value=sigmoid(node_layers_m[ii][jj].value);
 		}
 	}
 

@@ -1,6 +1,6 @@
 #ifndef EXPR_PARSER_HPP
 #define EXPR_PARSER_HPP
- 
+
 #include <string>
 #include <utility>
 #include <cmath>
@@ -33,7 +33,7 @@ class expr_parser_t
 	public:
 		// Lex input expression into tokens
 		expr_parser_t(const std::string & expr);
-		
+
 		// Evaluate expression
 		double operator()(double x);
 
@@ -41,7 +41,7 @@ class expr_parser_t
 		// Check next token and return if it matches the type
 		// If true it advances index to next token
 		bool match(token_type_t the_type);
-		
+
 		// Parse: expr -> term + expr | term - expr | term
 		double parse_expr(double x);
 
@@ -50,18 +50,18 @@ class expr_parser_t
 
 		// Parse: factor -> value ^ factor | value
 		double parse_factor(double x);
-		
-		// Parse: value -> NUM | VAR | EXP | (expr) | sin(expr) | cos(expr) | log(expr)
+
+		// Parse: value -> NUM | VAR | EXP | (expr) | sin(expr) | cos(expr) | log(expr) | pow(expr)
 		double parse_value(double x);
-		
+
 		// Stores value from match
 		std::string cur_val;
 
 		// Vector of tokens from parser
 		std::vector<token_t> tokens;
-		
+
 		// Tracks evaluator index
-		int index;
+		size_t index;
 };
 
 #endif

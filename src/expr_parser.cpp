@@ -2,10 +2,10 @@
  * expr_parser.cpp
  * Author: Aven Bross
  * Date: 10/18/2015
- * 
+ *
  * Recursive descent parser for custom sigmoid
  */
- 
+
 #include "expr_parser.hpp"
 
 // Lex input expression into tokens
@@ -15,12 +15,12 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 	bool decimal = false;
 	std::string value;
 	int i = 0;
-	
+
 	while(i < expr.size())
 	{
 		char c = expr[i++];
 		std::string s(1,c);
-		
+
 		if(concat_num)
 		{
 			if(c >= '0' && c <= '9')
@@ -34,13 +34,13 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 				value += c;
 				continue;
 			}
-			
+
 			tokens.push_back(token_t(NUM,value));
 			value = "";
 			concat_num = false;
 			decimal = true;
 		}
-		
+
 		switch(c)
 		{
 			case '0': case '1':
@@ -116,7 +116,7 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 				tokens.push_back(token_t(INVALID,s));
 		}
 	}
-	
+
 	// Extra check to catch single number values
 	if(value.compare("")) tokens.push_back(token_t(NUM,value));
 }
@@ -126,16 +126,16 @@ double expr_parser_t::operator()(double x)
 {
 	// Set index to first token
 	index = 0;
-	
+
 	// Evaluate expression with given x
 	double value = parse_expr(x);
-	
+
 	// Deal with excess tokens
 	if(match(ANY))
 	{
 		throw std::runtime_error("Invalid token \'" + cur_val + "\'.");
 	}
-	
+
 	return value;
 }
 
@@ -144,16 +144,16 @@ double expr_parser_t::operator()(double x)
 bool expr_parser_t::match(token_type_t the_type)
 {
 	if(index == tokens.size()) return false;
-	
+
 	token_t t = tokens[index];
-	
+
 	if(t.first == the_type || the_type == ANY)
 	{
 		index++;
 		cur_val = t.second;
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -161,7 +161,7 @@ bool expr_parser_t::match(token_type_t the_type)
 double expr_parser_t::parse_expr(double x)
 {
 	double value = parse_term(x);
-	
+
 	while(match(E_OP))
 	{
 		if(cur_val[0] == '+')
@@ -173,7 +173,7 @@ double expr_parser_t::parse_expr(double x)
 			value -= parse_term(x);
 		}
 	}
-	
+
 	return value;
 }
 
@@ -181,7 +181,7 @@ double expr_parser_t::parse_expr(double x)
 double expr_parser_t::parse_term(double x)
 {
 	double value = parse_factor(x);
-	
+
 	while(match(T_OP))
 	{
 		if(cur_val[0] == '*')
@@ -191,16 +191,16 @@ double expr_parser_t::parse_term(double x)
 		else
 		{
 			double term = parse_factor(x);
-			
+
 			if(term == 0)
 			{
 				throw std::runtime_error("Attempted division by 0.");
 			}
-			
+
 			value /= term;
 		}
 	}
-	
+
 	return value;
 }
 
@@ -208,12 +208,12 @@ double expr_parser_t::parse_term(double x)
 double expr_parser_t::parse_factor(double x)
 {
 	double value = parse_value(x);
-	
+
 	while(match(F_OP))
 	{
 		value = std::pow(value, parse_value(x));
 	}
-	
+
 	return value;
 }
 
@@ -224,17 +224,17 @@ double expr_parser_t::parse_value(double x)
 	{
 		return std::stod(cur_val);
 	}
-	
+
 	if(match(VAR))
 	{
 		return x;
 	}
-	
+
 	if(match(EXP))
 	{
 		return std::exp(1.0);
 	}
-	
+
 	if(match(LPAREN))
 	{
 		double val = parse_expr(x);
@@ -247,15 +247,15 @@ double expr_parser_t::parse_value(double x)
 			throw std::runtime_error("Missing ending \')\'.");
 		}
 	}
-	
+
 	if(match(FUNC))
 	{
 		char func = cur_val[0];
-		
+
 		if(match(LPAREN))
 		{
 			double val = parse_expr(x);
-			
+
 			if(match(RPAREN))
 			{
 				if(func == 's')
@@ -272,7 +272,7 @@ double expr_parser_t::parse_value(double x)
 					{
 						throw std::runtime_error("Attempted log(x) with x<=0.");
 					}
-					
+
 					return std::log(val);
 				}
 			}
@@ -286,11 +286,11 @@ double expr_parser_t::parse_value(double x)
 			throw std::runtime_error("Missing \'(\' after function.");
 		}
 	}
-	
+
 	if(match(ANY))
 	{
 		throw std::runtime_error("Invalid token \'" + cur_val + "\'.");
 	}
-	
+
 	return 0;
 }

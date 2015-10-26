@@ -1,7 +1,3 @@
-//$$y=x$$
-//$$y=\frac{1}{1+e^{-x}}$$
-//$$y=\frac{2}{1+e^{-x/2}}-1$$
-
 function error_t(div,message)
 {
 	if(!div)
@@ -78,13 +74,8 @@ function evaluator_t(div)
 		{
 			label:document.createElement("label"),
 			text:"Sigmoid",
-			radiogroup:
-			[
-				"<img src='/images/0.png'/>",
-				"<img src='/images/1.png'/>",
-				"<img src='/images/2.png'/>"
-			],
-			radios:[]
+			input:document.createElement("input"),
+			value:"x"
 		},
 		submit:
 		{
@@ -125,40 +116,6 @@ function evaluator_t(div)
 				this.data[key].input.rows=this.data[key].rows;
 		}
 
-		var first_checked=false;
-
-		if(this.data[key].radiogroup)
-		{
-			for(var key2 in this.data[key].radiogroup)
-			{
-				var radio_div=document.createElement("div");
-				radio_div.style.marginTop="-40px";
-				this.data[key].div.appendChild(radio_div);
-
-				var radio=document.createElement("input");
-				radio_div.appendChild(radio);
-				this.data[key].radios.push(radio);
-				radio.type="radio";
-				radio.name="sigmoid";
-				radio.className="radio";
-				radio.style.display="inline";
-				radio.style.verticalAlign="middle";
-				radio.style.height="100px";
-				radio.style.marginRight="10px";
-
-				if(!first_checked)
-				{
-					first_checked=true;
-					radio.checked=true;
-				}
-
-				var label=document.createElement("div");
-				label.style.display="inline";
-				label.innerHTML=this.data[key].radiogroup[key2];
-				radio_div.appendChild(label);
-			}
-		}
-
 		if(this.data[key].button)
 		{
 			this.data[key].div.appendChild(this.data[key].button);
@@ -190,7 +147,7 @@ evaluator_t.prototype.validate=function()
 		layers:null,
 		weights:null,
 		inputs:null,
-		sigmoid_index:null
+		sigmoid:null
 	};
 
 	try
@@ -241,19 +198,7 @@ evaluator_t.prototype.validate=function()
 			throw error;
 		}
 
-		json.sigmoid_index=null;
-		var sigmoid_counter=0;
-
-		for(var key in this.data.sigmoid.radios)
-		{
-			if(this.data.sigmoid.radios[key].checked)
-			{
-				json.sigmoid_index=sigmoid_counter;
-				break;
-			}
-
-			++sigmoid_counter;
-		}
+		json.sigmoid=this.data.sigmoid.input.value;
 
 		if(json.layers.length!=layer_length)
 		{
@@ -332,7 +277,7 @@ evaluator_t.prototype.submit=function()
 				modal.get_content().appendChild(document.createElement("br"));
 				modal.get_content().appendChild(document.createTextNode("Time: "+json.ns+"ns"));
 				modal.get_content().appendChild(document.createElement("br"));
-				var boards_per_second = Math.ceil(1e9/json.ns);
+				var boards_per_second=Math.ceil(1e9/json.ns);
 				modal.get_content().appendChild(document.createTextNode("Board Evaluations Per Second: "+boards_per_second.toExponential()));
 				modal.show();
 			}

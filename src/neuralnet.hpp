@@ -1,6 +1,8 @@
 #ifndef NEURALNET_HPP
 #define NEURALNET_HPP
 
+#include "expr_parser.hpp"
+
 #include <cstdlib>
 #include <vector>
 
@@ -14,7 +16,7 @@ class neuralnet_t
 
 	public:
 		neuralnet_t(const std::vector<size_t>& layers,const std::vector<double>& weights);
-		double evaluate(const std::vector<double>& inputs,const size_t sigmoid_index);
+		double evaluate(const std::vector<double>& inputs,expr_parser_t& sigmoid);
 
 	private:
 		void create_node_layers_m();

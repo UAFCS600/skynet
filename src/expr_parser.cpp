@@ -224,7 +224,6 @@ double expr_parser_t::parse_signval(double x)
 	{
 		double sign = -1;
 		
-		
 		if(cur_val[0]=='+')
 		{
 			sign = 1;

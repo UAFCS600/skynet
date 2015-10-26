@@ -14,7 +14,7 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 	bool concat_num = false;
 	bool decimal = false;
 	std::string value;
-	int i = 0;
+	size_t i = 0;
 
 	while(i < expr.size())
 	{

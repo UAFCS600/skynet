@@ -162,7 +162,8 @@ double expr_parser_t::parse_expr(double x)
 {
 	double value = parse_term(x);
 	
-	while(match(E_OP)){
+	while(match(E_OP))
+	{
 		if(cur_val[0] == '+')
 		{
 			value += parse_term(x);

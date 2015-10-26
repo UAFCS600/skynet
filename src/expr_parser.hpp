@@ -48,8 +48,11 @@ class expr_parser_t
 		// Parse: term -> factor * term | factor / term | factor
 		double parse_term(double x);
 
-		// Parse: factor -> value ^ factor | value
+		// Parse: factor -> signal ^ factor | signval
 		double parse_factor(double x);
+		
+		// Parse: signval -> + value | - value | value
+		double parse_signval(double x);
 
 		// Parse: value -> NUM | VAR | EXP | (expr) | sin(expr) | cos(expr) | log(expr) | pow(expr)
 		double parse_value(double x);

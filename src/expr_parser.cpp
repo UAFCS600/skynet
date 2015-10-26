@@ -38,7 +38,7 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 			tokens.push_back(token_t(NUM,value));
 			value = "";
 			concat_num = false;
-			decimal = true;
+			decimal = false;
 		}
 
 		switch(c)
@@ -204,17 +204,38 @@ double expr_parser_t::parse_term(double x)
 	return value;
 }
 
-// Parse: factor -> value ^ factor | value
+// Parse: factor -> signval ^ factor | signval
 double expr_parser_t::parse_factor(double x)
 {
-	double value = parse_value(x);
-
+	double value = parse_signval(x);
+	
 	while(match(F_OP))
 	{
-		value = std::pow(value, parse_value(x));
+		value = std::pow(value, parse_signval(x));
 	}
-
+	
 	return value;
+}
+
+// Parse: signval -> + value | - value | value
+double expr_parser_t::parse_signval(double x)
+{
+	if(match(E_OP))
+	{
+		double sign = -1;
+		
+		
+		if(cur_val[0]=='+')
+		{
+			sign = 1;
+		}
+		
+		return sign * parse_value(x);
+	}
+	else
+	{
+		return parse_value(x);
+	}
 }
 
 // Parse: value -> NUM | VAR | EXP | (expr) | sin(expr) | cos(expr) | log(expr)

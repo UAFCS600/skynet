@@ -75,7 +75,7 @@ function evaluator_t(div)
 			label:document.createElement("label"),
 			text:"Sigmoid",
 			input:document.createElement("input"),
-			value:"x"
+			value:"1/(1+e^(-x))"
 		},
 		submit:
 		{

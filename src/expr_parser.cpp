@@ -34,6 +34,7 @@ expr_parser_t::expr_parser_t(const std::string & expr)
 				value += c;
 				continue;
 			}
+			
 			tokens.push_back(token_t(NUM,value));
 			value = "";
 			concat_num = false;
@@ -135,7 +136,6 @@ double expr_parser_t::operator()(double x)
 		throw std::runtime_error("Invalid token \'" + cur_val + "\'.");
 	}
 	
-	// Report error to checker
 	return value;
 }
 
@@ -272,6 +272,7 @@ double expr_parser_t::parse_value(double x)
 					{
 						throw std::runtime_error("Attempted log(x) with x<=0.");
 					}
+					
 					return std::log(val);
 				}
 			}

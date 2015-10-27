@@ -95,7 +95,7 @@ SCENARIO ("Crowning Red King") {
 			THEN ("The red pawn is crowned.") {
 				REQUIRE( 1 == actual.size() );
 				REQUIRE( expected == actual[0] );
-				
+
 			}
 		}
 	}
@@ -130,7 +130,7 @@ SCENARIO ("Crowning Jumps") {
 			actual = ai::move_generator(board_state, "black");
 			std::cout << actual[0] << std::endl;
 			THEN ("There should only be the jump which results in a crowned piece.") {
-				expected = "_B_________________r_____b_____";
+				expected = "_B_________________r______b_____";
 				REQUIRE( 1 == actual.size() );
 				REQUIRE( expected == actual.back() );
 			}
@@ -138,7 +138,7 @@ SCENARIO ("Crowning Jumps") {
 		AND_WHEN("Red evaluates the board for possible moves") {
 			actual = ai::move_generator(board_state, "red");
 			THEN ("There there should only be one possible move reported with a crowning jump") {
-				expected = "_____r__b______________________R";
+				expected = "____________r______r______b_____";
 				REQUIRE( 1 == actual.size() );
 				REQUIRE( expected == actual.back() );
 			}

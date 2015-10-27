@@ -37,7 +37,7 @@ function checkerboard_editor_t(div)
 	this.input.style.marginLeft="auto";
 	this.input.style.marginRight="auto";
 	this.input.className="form-control";
-	this.input.value="Rrrrrrrrrrrr________Bbbbbbbbbbbb";
+	this.input.value="rrrrrrrrrrrr________bbbbbbbbbbbb";
 	this.input.onchange=function(){myself.draw_board(this.value);};
 	this.input.onkeydown=function(){myself.draw_board(this.value);};
 	this.input.onkeyup=function(){myself.draw_board(this.value);};

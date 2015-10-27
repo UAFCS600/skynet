@@ -179,8 +179,6 @@ checkerboard_editor_t.prototype.onmouseclick_m=function(xx,yy)
 
 		var index=y_coord*4+x_coord/2;
 
-		console.log(this.input.value[index]);
-
 		if(this.input.value[index]=='r')
 			this.input.value=this.input.value.replace_at(index,'R');
 		else if(this.input.value[index]=='R')

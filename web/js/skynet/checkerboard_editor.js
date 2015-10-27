@@ -17,6 +17,7 @@ function checkerboard_editor_t(div)
 	this.canvas.style.display="block";
 	this.canvas.style.marginLeft="auto";
 	this.canvas.style.marginRight="auto";
+	this.canvas.style.marginBottom="20px";
 	this.canvas.addEventListener('mousemove',function(event)
 	{
 		var box=myself.canvas.getBoundingClientRect();

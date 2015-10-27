@@ -1,4 +1,4 @@
-function checkerboard_editor_t(div)
+function checkers_board_editor_t(div)
 {
 	if(!div)
 		return null;
@@ -47,10 +47,18 @@ function checkerboard_editor_t(div)
 	this.crown_sprite_loaded=false;
 	this.crown_sprite=new Image();
 	this.crown_sprite.onload=function(){myself.crown_sprite_loaded=true;};
+
 	this.crown_sprite.src="/images/crown.png";
+
+	var options=parse_uri();
+
+	if(options.board)
+		this.input.value=options.board;
+
+	this.draw_board(this.input.value);
 };
 
-checkerboard_editor_t.prototype.draw_board=function(board)
+checkers_board_editor_t.prototype.draw_board=function(board)
 {
 	this.el.className="form-group has-feedback";
 
@@ -98,7 +106,7 @@ checkerboard_editor_t.prototype.draw_board=function(board)
 	}
 }
 
-checkerboard_editor_t.prototype.validate_board=function(board)
+checkers_board_editor_t.prototype.validate_board=function(board)
 {
 	if(board.length!=32)
 		throw "Invalid board length (expected 32 got "+board.length+").";
@@ -108,7 +116,7 @@ checkerboard_editor_t.prototype.validate_board=function(board)
 			throw "Invalid piece at position "+ii+" '"+board[ii]+"'.";
 }
 
-checkerboard_editor_t.prototype.draw_piece_m=function(xx,yy,piece)
+checkers_board_editor_t.prototype.draw_piece_m=function(xx,yy,piece)
 {
 	if(piece!="_")
 	{
@@ -142,7 +150,7 @@ checkerboard_editor_t.prototype.draw_piece_m=function(xx,yy,piece)
 	}
 }
 
-checkerboard_editor_t.prototype.create_error_m=function(error)
+checkers_board_editor_t.prototype.create_error_m=function(error)
 {
 	var error_box=new error_t(this.el,error);
 	error_box.div.style.width="320px";
@@ -153,7 +161,7 @@ checkerboard_editor_t.prototype.create_error_m=function(error)
 	return error_box;
 }
 
-checkerboard_editor_t.prototype.onmousemove_m=function(xx,yy)
+checkers_board_editor_t.prototype.onmousemove_m=function(xx,yy)
 {
 	var x_coord=Math.floor(xx/this.canvas.width*8);
 	var y_coord=Math.floor(yy/this.canvas.height*8);
@@ -168,7 +176,7 @@ checkerboard_editor_t.prototype.onmousemove_m=function(xx,yy)
 	}
 }
 
-checkerboard_editor_t.prototype.onmouseclick_m=function(xx,yy)
+checkers_board_editor_t.prototype.onmouseclick_m=function(xx,yy)
 {
 	var x_coord=Math.floor(xx/this.canvas.width*8);
 	var y_coord=Math.floor(yy/this.canvas.height*8);
@@ -195,7 +203,7 @@ checkerboard_editor_t.prototype.onmouseclick_m=function(xx,yy)
 	}
 }
 
-checkerboard_editor_t.prototype.draw_crown_sprite_m=function(draw_x,draw_y,radius)
+checkers_board_editor_t.prototype.draw_crown_sprite_m=function(draw_x,draw_y,radius)
 {
 	if(this.crown_sprite_loaded)
 	{

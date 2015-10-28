@@ -9,3 +9,14 @@ function to_unsigned_int(str)
 
 	return parseInt(str);
 }
+
+function make_button(text,onclick)
+{
+	var button=document.createElement("input");
+	button.className="btn btn-primary";
+	button.disabled=false;
+	button.type="button";
+	button.value=text;
+	button.onclick=onclick;
+	return button;
+}

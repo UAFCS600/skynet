@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <fstream>
 #include <vector>
 
 #define CATCH_CONFIG_MAIN
@@ -9,11 +10,13 @@
 
 //Testing Utility Function
 //    Absolute checks if the expected boards are the exact set of all boards expected...
-//    not just a subset of the expected board...
+//    not just a subset of the expected boards...
 void test_checkers_board(const skynet::checkers_board_t& board,const skynet::checkers_player_t& player,
 	const bool absolute,skynet::checkers_board_list_t expected_boards)
 {
 	REQUIRE(skynet::is_valid(board));
+
+	REQUIRE((player=="red"||player=="black"));
 
 	auto out_boards=skynet::move_generator(board,player);
 	std::sort(out_boards.begin(),out_boards.end());
@@ -40,6 +43,83 @@ void test_checkers_board(const skynet::checkers_board_t& board,const skynet::che
 
 	if(absolute)
 		REQUIRE(out_boards.size()==expected_boards.size());
+}
+
+//Testing Utility Function
+//    Reads file for tests, format is:
+//    test_board_0
+//    side_to_test_0
+//    contains|absolute
+//    expected_board_0
+//    expected_board_1
+//    expected_board_2
+//    ...
+//    \n
+//    test_board_1
+//    side_to_test_1
+//    contains|absolute
+//    expected_board_0
+//    expected_board_1
+//    expected_board_2
+//    ...
+//    \n
+void test_checkers_board_from_file(const std::string& filename)
+{
+	std::ifstream istr(filename);
+	bool done=false;
+	std::string temp;
+
+	while(!done)
+	{
+		temp="";
+
+		while(true)
+		{
+			if(!std::getline(istr,temp)||temp.size()!=0)
+				break;
+		}
+
+		skynet::checkers_board_t board(temp);
+
+		if(!skynet::is_valid(temp))
+			throw std::runtime_error("Invalid test board \""+temp+"\".");
+
+		if(!std::getline(istr,temp))
+			break;
+
+		skynet::checkers_player_t player(temp);
+
+		if(player!="red"&&player!="black")
+			throw std::runtime_error("Invalid player value \""+temp+"\" (expected \"red\" or \"black\").");
+
+		if(!std::getline(istr,temp))
+			break;
+
+		if(temp!="absolute"&&temp!="contains")
+			throw std::runtime_error("Invalid absolute value \""+temp+"\" (expected \"absolute\" or \"contains\").");
+
+		bool absolute(temp=="absolute");
+
+		skynet::checkers_board_list_t expected;
+
+		while(true)
+		{
+			if(!std::getline(istr,temp))
+			{
+				temp="";
+				done=true;
+			}
+
+
+			if(temp.size()==0)
+			{
+				test_checkers_board(board,player,absolute,expected);
+				break;
+			}
+
+			expected.push_back(temp);
+		}
+	}
 }
 
 TEST_CASE("Neural Network Construction")
@@ -247,4 +327,9 @@ SCENARIO("Initial Board")
 			}
 		}
 	}
+}
+
+SCENARIO("Blondie24 Boards")
+{
+	test_checkers_board_from_file("tests/blondie24.txt");
 }

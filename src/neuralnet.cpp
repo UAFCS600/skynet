@@ -25,9 +25,9 @@ neuralnet_t::neuralnet_t(const std::vector<size_t>& layers,const std::vector<dou
 	if(layers_m.size()<=0)
 		throw std::runtime_error("Invalid number of layers(expected value >= 0).");
 
-	if(layers_m[layers_m.size()-1]!=1)
-		throw std::runtime_error("Expected last layer value of 1(got "+
-			std::to_string(layers_m[layers_m.size()-1])+").");
+	if(layers_m.back()!=1)
+		throw std::invalid_argument("Expected last layer value of 1(got "+
+			std::to_string(layers_m.back())+").");
 
 	create_node_layers_m();
 	set_node_weights_m(weights);

@@ -4,227 +4,246 @@
 #define CATCH_CONFIG_MAIN
 #include <catch/catch.hpp>
 
-#include "api_outline.hpp"
-#include "board.hpp"
-#include "neuralnet.hpp"
+#include "skynet/checkers_board.hpp"
+#include "skynet/neuralnet.hpp"
 
-const std::vector<double> eval_data_null(32, 0);
-const std::vector<double> eval_data_full(32, 1);
-TEST_CASE ("Neural Network Construction") {
-	std::vector<size_t> standard_network_topography = {32, 40, 10, 1};
-	std::vector<size_t> topography = {};
-	std::vector<double> invalid_weights(0.0, 0);
-	std::vector<double> weights(1690, 1.0); //TODO: Show how many weights are required?
-
-	SECTION ("Construction Exceptions") {
-		REQUIRE_THROWS( neuralnet_t base_network(standard_network_topography, invalid_weights) );
-		REQUIRE_THROWS( neuralnet_t base_network(topography, invalid_weights) );
-
-		neuralnet_t base_network(standard_network_topography, weights);
-	}
-
-	SECTION ("Evaluation") {
-		int result = 0;
-
-		neuralnet_t base_network(standard_network_topography, weights);
-		result = base_network.evaluate(eval_data_null, 0);
-		REQUIRE( 0 == result );
-	}
-}
-
-void check_boards(ai::checkers_board_list_t& expected, const ai::checkers_board_list_t& actual)
+//Testing Utility Function
+//    Absolute checks if the expected boards are the exact set of all boards expected...
+//    not just a subset of the expected board...
+void test_checkers_board(const skynet::checkers_board_t& board,const skynet::checkers_player_t& player,
+	const bool absolute,skynet::checkers_board_list_t expected_boards)
 {
-	for (auto it = expected.begin(); it != expected.end(); ++it) {
-		auto location = std::find(actual.begin(), actual.end(), *it);
-		REQUIRE( location != actual.end() );
-	}
-}
+	REQUIRE(skynet::is_valid(board));
 
-TEST_CASE ("Single Piece Moves") {
+	auto out_boards=skynet::move_generator(board,player);
+	std::sort(out_boards.begin(),out_boards.end());
 
-	SECTION ("Single Red King Left Edge") {
-		ai::checkers_board_t red_king =
-			"____________R__________________b"; //Position 12: 8, 16
-		ai::checkers_board_list_t expected = {
-			"________R______________________b", //Result 8
-			"________________R______________b"}; //Result 16
+	std::sort(expected_boards.begin(),expected_boards.end());
 
-		ai::checkers_board_list_t actual = ai::move_generator(red_king, "red");
+	size_t found=0;
 
-		REQUIRE( 2 == actual.size() );
-		std::sort(expected.begin(), expected.end());
-		std::sort(actual.begin(), actual.end());
-		for(size_t i=0; i<actual.size(); ++i)
+	for(auto expected_board:expected_boards)
+	{
+		REQUIRE(skynet::is_valid(expected_board));
+
+		for(auto out_board:out_boards)
 		{
-			REQUIRE( getBoard(actual[i]) == getBoard(expected[i]) );
+			if(out_board==expected_board)
+			{
+				++found;
+				break;
+			}
 		}
-		check_boards(expected, actual);
 	}
 
-	SECTION ("Single Red King Right Edge") {
-		ai::checkers_board_t red_king =
-			"___________R___________________b"; //Position 15: 11, 19
-		ai::checkers_board_list_t expected = {
-			"_______R_______________________b", //Result 11
-			"_______________R_______________b"}; //Result 19
+	REQUIRE(found==expected_boards.size());
 
-		ai::checkers_board_list_t actual = ai::move_generator(red_king, "red");
+	if(absolute)
+		REQUIRE(out_boards.size()==expected_boards.size());
+}
 
-		REQUIRE( 2 == actual.size() );
-		std::sort(expected.begin(), expected.end());
-		std::sort(actual.begin(), actual.end());
-		for(size_t i=0; i<actual.size(); ++i)
+TEST_CASE("Neural Network Construction")
+{
+	std::vector<size_t> topography{32,40,10,1};
+	std::vector<double> weights(1690,1);
+
+	std::vector<size_t> invalid_topography{};
+	std::vector<double> invalid_weights(0.0,0);
+
+	SECTION("Construction Exceptions")
+	{
+		REQUIRE_NOTHROW(skynet::neuralnet_t neuralnet(topography,weights));
+		REQUIRE_THROWS(skynet::neuralnet_t neuralnet(topography,invalid_weights));
+		REQUIRE_THROWS(skynet::neuralnet_t neuralnet(invalid_topography,weights));
+		REQUIRE_THROWS(skynet::neuralnet_t neuralnet(invalid_topography,invalid_weights));
+	}
+
+	SECTION("Evaluation")
+	{
+		skynet::neuralnet_t neuralnet(topography,weights);
+		const std::vector<double> zeros(32,0);
+		const std::vector<double> ones(32,1);
+
+		REQUIRE(neuralnet.evaluate(zeros,0)==0);
+		REQUIRE(neuralnet.evaluate(ones,0)==12800);
+	}
+}
+
+TEST_CASE("Board Validation")
+{
+
+	SECTION("Empty Board")
+	{
+		REQUIRE(!skynet::is_valid(""));
+	}
+
+	SECTION("Oversized Board")
+	{
+		REQUIRE(!skynet::is_valid("bbbbbbbbbbbb________rrrrrrarrrrr_"));
+	}
+
+	SECTION("Invalid Characters")
+	{
+		REQUIRE(!skynet::is_valid("bbbbbbbbbbbb________rrrrrrarrrrr"));
+	}
+
+
+	SECTION("Initital Board Validation")
+	{
+		REQUIRE(skynet::is_valid("rrrrrrrrrrrr________bbbbbbbbbbbb"));
+		REQUIRE(skynet::is_valid("rrrrrrrr_rrrr_______bbbbbbbbbbbb"));
+	}
+}
+
+TEST_CASE("Single Piece Moves")
+{
+	SECTION("Single Red King Left Edge")
+	{
+		skynet::checkers_board_t board("____________R__________________b");
+
+		skynet::checkers_board_list_t expected
 		{
-			std::cout << actual[i] << std::endl;
-			REQUIRE( getBoard(actual[i]) == getBoard(expected[i]) );
-		}
-		check_boards(expected, actual);
+			"________R______________________b",
+			"________________R______________b"
+		};
+
+		test_checkers_board(board,"red",true,expected);
+	}
+
+	SECTION("Single Red King Right Edge")
+	{
+		skynet::checkers_board_t board("___________R___________________b");
+
+		skynet::checkers_board_list_t expected
+		{
+			"_______R_______________________b",
+			"_______________R_______________b"
+		};
+
+		test_checkers_board(board,"red",true,expected);
 	}
 }
 
-SCENARIO ("Crowning Red King") {
-	ai::checkers_board_t board_state;
-	ai::checkers_board_t expected =
-		"______________________________Rb";
-	ai::checkers_board_list_t actual;
 
-	GIVEN("A pre-crown red pawn state.") {
-		board_state = "__________________________r____b";
-		WHEN ("Generate possible red moves.") {
-			actual = ai::move_generator(board_state, "red");
-			THEN ("The red pawn is crowned.") {
-				REQUIRE( 1 == actual.size() );
-				REQUIRE( expected == actual[0] );
+SCENARIO("Crowning Red King")
+{
+	skynet::checkers_board_t board=("__________________________r____b");
 
+	skynet::checkers_board_list_t expected
+	{
+		"______________________________Rb"
+	};
+
+	GIVEN("A pre-crown red pawn state.")
+	{
+		WHEN("Generate possible red moves.")
+		{
+			THEN("The red pawn is crowned.")
+			{
+				test_checkers_board(board,"red",true,expected);
 			}
 		}
 	}
 }
 
-SCENARIO ("Crowning black King") {
-	ai::checkers_board_t board_state;
-	ai::checkers_board_t expected =
-		"B_____________________________R_";
-	ai::checkers_board_list_t actual;
+SCENARIO("Crowning Black King")
+{
+	skynet::checkers_board_t board("____b_________________________R_");
 
-	GIVEN("A pre-crown black pawn state.") {
-		board_state = "____b_________________________R_";
-		WHEN ("Generate possible black moves.") {
-			actual = ai::move_generator(board_state, "black");
-			THEN ("The red pawn is crowned.") {
-				REQUIRE( 1 == actual.size() );
-				REQUIRE( expected == actual.back() );
+	skynet::checkers_board_list_t expected
+	{
+		"B_____________________________R_"
+	};
+
+	GIVEN("A pre-crown black pawn state.")
+	{
+		WHEN("Generate possible black moves.")
+		{
+			THEN("The black pawn is crowned.")
+			{
+				test_checkers_board(board,"black",true,expected);
 			}
 		}
 	}
 }
 
-SCENARIO ("Crowning Jumps") {
-	ai::checkers_board_t board_state;
-	ai::checkers_board_t expected;
-	ai::checkers_board_list_t actual;
 
-	GIVEN ("A there are two moves for a pawn to take, then the only aviable move is to jump.") {
-		board_state = "_____r__b__________r______b_____";
-		WHEN ("black evaluates the board for possible moves") {
-			actual = ai::move_generator(board_state, "black");
-			std::cout << actual[0] << std::endl;
-			THEN ("There should only be the jump which results in a crowned piece.") {
-				expected = "_B_________________r______b_____";
-				REQUIRE( 1 == actual.size() );
-				REQUIRE( expected == actual.back() );
+SCENARIO("Crowning Jumps")
+{
+	skynet::checkers_board_t board("_____r__b__________r______b_____");
+
+	GIVEN("A there are two moves for a pawn to take,then the only aviable move is to jump.")
+	{
+		WHEN("black evaluates the board for possible moves")
+		{
+			THEN("There should only be the jump which results in a crowned piece.")
+			{
+				skynet::checkers_board_list_t expected
+				{
+					"_B_________________r______b_____"
+				};
+
+				test_checkers_board(board,"black",true,expected);
 			}
 		}
-		AND_WHEN("Red evaluates the board for possible moves") {
-			actual = ai::move_generator(board_state, "red");
-			THEN ("There there should only be one possible move reported with a crowning jump") {
-				expected = "____________r______r______b_____";
-				REQUIRE( 1 == actual.size() );
-				REQUIRE( expected == actual.back() );
+		AND_WHEN("Red evaluates the board for possible moves")
+		{
+			THEN("There there should only be one possible move reported with a crowning jump")
+			{
+				skynet::checkers_board_list_t expected
+				{
+					"____________r______r______b_____"
+				};
+
+				test_checkers_board(board,"red",true,expected);
 			}
 		}
 	}
 }
 
-TEST_CASE ("Board Validation") {
+SCENARIO("Initial Board")
+{
+	skynet::checkers_board_list_t actual;
 
-	ai::checkers_board_t inval_board;
-	ai::checkers_board_t valid_board;
+	GIVEN("Given an initial board state")
+	{
+		skynet::checkers_board_t board("rrrrrrrrrrrr________bbbbbbbbbbbb");
 
-	SECTION("Empty Board") {
-		inval_board = "";
-		REQUIRE( false == ai::is_valid_checkers_board(inval_board) );
-	}
-
-	SECTION("Oversized Board") {
-		inval_board = "bbbbbbbbbbbb________rrrrrrarrrrr_";
-		REQUIRE( false == ai::is_valid_checkers_board(inval_board) );
-	}
-
-	SECTION("Invalid Characters") {
-		inval_board = "bbbbbbbbbbbb________rrrrrrarrrrr";
-		REQUIRE(  false == ai::is_valid_checkers_board(inval_board) );
-	}
-
-
-	SECTION ("Initital Board Validation") {
-		valid_board = "rrrrrrrrrrrr________bbbbbbbbbbbb";
-		REQUIRE( true == ai::is_valid_checkers_board(valid_board) );
-
-		valid_board = "rrrrrrrr_rrrr_______bbbbbbbbbbbb";
-		REQUIRE( true == ai::is_valid_checkers_board(valid_board) );
-	}
-}
-
-SCENARIO ("Initial Board") {
-	ai::checkers_board_list_t actual;
-
-	GIVEN ("Given an initial board state") {
-		ai::checkers_board_t initial_board =
-			"rrrrrrrrrrrr________bbbbbbbbbbbb";
-
-		WHEN ("The red player evalues for possible moves") {
-			actual = ai::move_generator(initial_board, "red");
-
-			THEN ("Each red piece in row 2 should have two moves but the right edge piece") {
-				REQUIRE( 7 == actual.size() );
-
-			} AND_THEN ("Each possible red move should be represented.") {
-				ai::checkers_board_list_t expected = {
+		WHEN("The red player evalues for possible moves")
+		{
+			THEN("Each possible red move should be represented.")
+			{
+				skynet::checkers_board_list_t expected
+				{
 					"rrrrrrrr_rrrr_______bbbbbbbbbbbb",
 					"rrrrrrrr_rrr_r______bbbbbbbbbbbb",
 					"rrrrrrrrr_rr_r______bbbbbbbbbbbb",
 					"rrrrrrrrr_rr__r_____bbbbbbbbbbbb",
 					"rrrrrrrrrr_r__r_____bbbbbbbbbbbb",
 					"rrrrrrrrrr_r___r____bbbbbbbbbbbb",
-					"rrrrrrrrrrr____r____bbbbbbbbbbbb"};
-				std::sort(expected.begin(), expected.end());
-				std::sort(actual.begin(), actual.end());
-				for (size_t ii = 0; ii < actual.size() && ii < expected.size(); ++ii) {
-					REQUIRE( actual[ii] == expected[ii] );
-				}
+					"rrrrrrrrrrr____r____bbbbbbbbbbbb"
+
+				};
+
+				test_checkers_board(board,"red",true,expected);
 			}
 		}
-		AND_WHEN ("The black player generates moves for an initial board") {
-			actual = ai::move_generator(initial_board, "black");
-
-			THEN ("Each black piece in row 5 should have 2 moves but one piece") {
-				REQUIRE( 7 == actual.size() );
-
-			} AND_THEN ("Each possible black move should be represented.") {
-				ai::checkers_board_list_t expected = {
+		AND_WHEN("The black player generates moves for an initial board")
+		{
+			THEN("Each possible black move should be represented.")
+			{
+				skynet::checkers_board_list_t expected
+				{
 					"rrrrrrrrrrrr____b____bbbbbbbbbbb",
 					"rrrrrrrrrrrr____b___b_bbbbbbbbbb",
 					"rrrrrrrrrrrr_____b__b_bbbbbbbbbb",
 					"rrrrrrrrrrrr_____b__bb_bbbbbbbbb",
 					"rrrrrrrrrrrr______b_bb_bbbbbbbbb",
 					"rrrrrrrrrrrr______b_bbb_bbbbbbbb",
-					"rrrrrrrrrrrr_______bbbb_bbbbbbbb"};
-				std::sort(expected.begin(), expected.end());
-				std::sort(actual.begin(), actual.end());
-				for (size_t ii = 0; ii < actual.size() && ii < expected.size(); ++ii) {
-					REQUIRE( actual[ii] == expected[ii] );
-				}
+					"rrrrrrrrrrrr_______bbbb_bbbbbbbb"
+				};
+
+				test_checkers_board(board,"black",true,expected);
 			}
 		}
 	}

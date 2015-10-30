@@ -6,7 +6,7 @@
 #include <utility>
 
 #include "json.hpp"
-#include "neuralnet.hpp"
+#include "skynet/neuralnet.hpp"
 
 std::string get_query(const mg_connection* connection,const std::string& var)
 {
@@ -42,7 +42,7 @@ int eval_handler(mg_connection* connection,mg_event event,const std::string& pos
 		auto weights=to_double_array(json["weights"]);
 		size_t sigmoid_index=json["sigmoid_index"].asUInt();
 
-		neuralnet_t neuralnet(layers,weights);
+		skynet::neuralnet_t neuralnet(layers,weights);
 
 		if(inputs.size()!=layers[0])
 			throw std::runtime_error("Invalid number of inputs(expected "+std::to_string(layers[0])+" got "+std::to_string(inputs.size())+").");

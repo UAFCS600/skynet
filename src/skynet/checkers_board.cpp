@@ -1,4 +1,4 @@
-#include "board.hpp"
+#include "checkers_board.hpp"
 
 #include <cctype>
 #include <sstream>
@@ -54,7 +54,7 @@ static bool not_same_color(const char piece1,const char piece2)
 	return ((is_red(piece1)&&is_blk(piece2))||(is_blk(piece1)&&is_red(piece2)));
 }
 
-static bool find_jump(const ai::checkers_board_t& board,const size_t position,std::vector<ai::checkers_board_t>& boards)
+static bool find_jump(const skynet::checkers_board_t& board,const size_t position,std::vector<skynet::checkers_board_t>& boards)
 {
 	bool ret=false;
 	bool start=true;
@@ -62,7 +62,7 @@ static bool find_jump(const ai::checkers_board_t& board,const size_t position,st
 	size_t rsp=0;
 	const size_t stack_size=20;
 	size_t stack[stack_size][2];
-	ai::checkers_board_t board_stack[stack_size];
+	skynet::checkers_board_t board_stack[stack_size];
 	board_stack[0]=board;
 	stack[0][0]=position;
 	stack[0][1]=0;
@@ -126,7 +126,7 @@ static bool find_jump(const ai::checkers_board_t& board,const size_t position,st
 	return ret;
 }
 
-bool ai::is_valid_checkers_board(const ai::checkers_board_t& board)
+bool skynet::is_valid(const skynet::checkers_board_t& board)
 {
 	if(board.size()!=32)
 		return false;
@@ -138,9 +138,9 @@ bool ai::is_valid_checkers_board(const ai::checkers_board_t& board)
 	return true;
 }
 
-ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,const ai::checkers_player_t& player)
+skynet::checkers_board_list_t skynet::move_generator(const skynet::checkers_board_t& board,const skynet::checkers_player_t& player)
 {
-	ai::checkers_board_list_t boards;
+	skynet::checkers_board_list_t boards;
 
 	bool jump=false;
 
@@ -159,7 +159,7 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 			{
 				if(look_move[ii][jj]>-1&&is_empty(board[look_move[ii][jj]]))
 				{
-					ai::checkers_board_t b(board);
+					skynet::checkers_board_t b(board);
 					b[ii]='_';
 
 					if(look_move[ii][jj]<4&&is_blk(board[ii]))
@@ -179,7 +179,7 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 			{
 				if(look_move[ii][jj]>-1&&is_empty(board[look_move[ii][jj]]))
 				{
-					ai::checkers_board_t b(board);
+					skynet::checkers_board_t b(board);
 					b[ii]='_';
 
 					if(look_move[ii][jj]>27&&is_red(board[ii]))
@@ -194,30 +194,4 @@ ai::checkers_board_list_t ai::move_generator(const ai::checkers_board_t& board,c
 	}
 
 	return boards;
-}
-
-
-std::string getBoard(const ai::checkers_board_t & rhs)
-{
-	std::ostringstream oss;
-	int row=1; //keeps track of which row we're on
-	for(int i=rhs.size(); i>=0; --i)
-	{
-		if(row%2==0)
-		{
-			oss << rhs[i];
-			oss << " ";
-		}
-		else
-		{
-			oss << " ";
-			oss << rhs[i];
-		}
-		if (i%4==0)
-		{
-			++row;
-			oss << std::endl;
-		}
-	}
-	return oss.str();
 }

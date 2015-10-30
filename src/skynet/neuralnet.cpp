@@ -19,7 +19,7 @@ double sigmoid(double x,size_t index)
 	};
 }
 
-neuralnet_t::neuralnet_t(const std::vector<size_t>& layers,const std::vector<double>& weights):
+skynet::neuralnet_t::neuralnet_t(const std::vector<size_t>& layers,const std::vector<double>& weights):
 	layers_m(layers)
 {
 	if(layers_m.size()<=0)
@@ -33,7 +33,7 @@ neuralnet_t::neuralnet_t(const std::vector<size_t>& layers,const std::vector<dou
 	set_node_weights_m(weights);
 }
 
-double neuralnet_t::evaluate(const std::vector<double>& inputs,const size_t sigmoid_index)
+double skynet::neuralnet_t::evaluate(const std::vector<double>& inputs,const size_t sigmoid_index)
 {
 	for(size_t ii=0;ii<node_layers_m[0].size();++ii)
 		node_layers_m[0][ii].value=inputs[ii];
@@ -54,7 +54,7 @@ double neuralnet_t::evaluate(const std::vector<double>& inputs,const size_t sigm
 	return node_layers_m[node_layers_m.size()-1][0].value;
 }
 
-void neuralnet_t::create_node_layers_m()
+void skynet::neuralnet_t::create_node_layers_m()
 {
 	node_layers_m.clear();
 
@@ -84,7 +84,7 @@ void neuralnet_t::create_node_layers_m()
 	}
 }
 
-void neuralnet_t::set_node_weights_m(const std::vector<double>& weights)
+void skynet::neuralnet_t::set_node_weights_m(const std::vector<double>& weights)
 {
 	std::vector<double*> real_weights;
 

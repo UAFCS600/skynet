@@ -75,9 +75,20 @@ void test_checkers_board_from_file(const std::string& filename)
 
 		while(true)
 		{
-			if(!std::getline(istr,temp)||temp.size()!=0)
+			if(!std::getline(istr,temp))
+			{
+				if(istr.eof())
+					done=true;
+
+				break;
+			}
+
+			if(temp.size()!=0)
 				break;
 		}
+
+		if(done)
+			break;
 
 		skynet::checkers_board_t board(temp);
 

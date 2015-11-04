@@ -39,6 +39,13 @@ void test_checkers_board(const skynet::checkers_board_t& board,const skynet::che
 		}
 	}
 
+	if(found!=expected_boards.size())
+		if(expected_boards.size()>0)
+		{
+			std::cout<<out_boards.size()<<std::endl;
+			std::cout<<board<<"=="<<expected_boards[0]<<std::endl;
+		}
+
 	REQUIRE(found==expected_boards.size());
 
 	if(absolute)
@@ -120,7 +127,6 @@ void test_checkers_board_from_file(const std::string& filename)
 				temp="";
 				done=true;
 			}
-
 
 			if(temp.size()==0)
 			{
@@ -343,4 +349,24 @@ SCENARIO("Initial Board")
 SCENARIO("Blondie24 Boards")
 {
 	test_checkers_board_from_file("tests/blondie24.txt");
+}
+
+SCENARIO("Blondie24 vs Chinook")
+{
+	test_checkers_board_from_file("tests/blondie24_vs_chinook.txt");
+}
+
+SCENARIO("Blondie24 vs Human 1926")
+{
+	test_checkers_board_from_file("tests/blondie24_vs_human1926.txt");
+}
+
+SCENARIO("Blondie24 vs Human 2134")
+{
+	test_checkers_board_from_file("tests/blondie24_vs_human2134.txt");
+}
+
+SCENARIO("Blondie24 vs Human 1771")
+{
+	test_checkers_board_from_file("tests/blondie24_vs_human1771.txt");
 }

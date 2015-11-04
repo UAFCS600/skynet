@@ -1,862 +1,414 @@
 rrrrrrrrrrrr________bbbbbbbbbbbb
 red
 contains
-rrrrrrrr_rrr_r______bbbbbbbbbbbb
+rrrrrrrr_rrrr_______bbbbbbbbbbbb
 
 
-rrrrrrrr_rrr_r______bbbbbbbbbbbb
+rrrrrrrr_rrrr_______bbbbbbbbbbbb
 black
 contains
-rrrrrrrr_rrr_r___b__b_bbbbbbbbbb
+rrrrrrrr_rrrr____b__b_bbbbbbbbbb
 
 
-rrrrrrrr_rrr_r___b__b_bbbbbbbbbb
+rrrrrrrr_rrrr____b__b_bbbbbbbbbb
 red
 contains
-rrrrr_rrrrrr_r___b__b_bbbbbbbbbb
+rrrrrrrr_r_rr_r__b__b_bbbbbbbbbb
 
 
-rrrrr_rrrrrr_r___b__b_bbbbbbbbbb
+rrrrrrrr_r_rr_r__b__b_bbbbbbbbbb
 black
 contains
-rrrrr_rrrrrr_r___b__bbbb_bbbbbbb
+rrrrrrrr_rbrr_______b_bbbbbbbbbb
 
 
-rrrrr_rrrrrr_r___b__bbbb_bbbbbbb
+rrrrrrrr_rbrr_______b_bbbbbbbbbb
 red
 contains
-_rrrrrrrrrrr_r___b__bbbb_bbbbbbb
+rrrrrr_r_r_rr__r____b_bbbbbbbbbb
 
 
-_rrrrrrrrrrr_r___b__bbbb_bbbbbbb
+rrrrrr_r_r_rr__r____b_bbbbbbbbbb
 black
 contains
-_rrrrrrrrrrr_r___b_bbbb__bbbbbbb
+rrrrrr_r_r_rr__r____bbbb_bbbbbbb
 
 
-_rrrrrrrrrrr_r___b_bbbb__bbbbbbb
+rrrrrr_r_r_rr__r____bbbb_bbbbbbb
 red
 contains
-_rrrrrrrrr_r_r_r_b_bbbb__bbbbbbb
+rrrr_r_rrr_rr__r____bbbb_bbbbbbb
 
 
-_rrrrrrrrr_r_r_r_b_bbbb__bbbbbbb
+rrrr_r_rrr_rr__r____bbbb_bbbbbbb
 black
 contains
-_rrrrrrrrrbr_r___b__bbb__bbbbbbb
+rrrr_r_rrr_rr__r_b__b_bb_bbbbbbb
 
 
-_rrrrrrrrrbr_r___b__bbb__bbbbbbb
+rrrr_r_rrr_rr__r_b__b_bb_bbbbbbb
 red
 contains
-_rrrrr_rrr_r_r_r_b__bbb__bbbbbbb
+rr_r_rrrrr_rr__r_b__b_bb_bbbbbbb
 
 
-_rrrrr_rrr_r_r_r_b__bbb__bbbbbbb
+rr_r_rrrrr_rr__r_b__b_bb_bbbbbbb
 black
 contains
-_rrrrr_rrr_r_r_r_b__bbbb_bb_bbbb
+rr_r_rrrrr_rr__r_b__b_bbbbbb_bbb
 
 
-_rrrrr_rrr_r_r_r_b__bbbb_bb_bbbb
+rr_r_rrrrr_rr__r_b__b_bbbbbb_bbb
 red
 contains
-_r_rrrrrrr_r_r_r_b__bbbb_bb_bbbb
+_r_rrrrrrr_rr__r_b__b_bbbbbb_bbb
 
 
-_r_rrrrrrr_r_r_r_b__bbbb_bb_bbbb
+_r_rrrrrrr_rr__r_b__b_bbbbbb_bbb
 black
 contains
-_r_rrrrrrr_r_r_r_bb_bbb__bb_bbbb
+_r_rrrrrrr_rr__r_b__bbbb_bbb_bbb
 
 
-_r_rrrrrrr_r_r_r_bb_bbb__bb_bbbb
+_r_rrrrrrr_rr__r_b__bbbb_bbb_bbb
 red
 contains
-_r_rrrrrrr_r_r___bbrbbb__bb_bbbb
+_r_rrrrrrr_rr____br_bbbb_bbb_bbb
 
 
-_r_rrrrrrr_r_r___bbrbbb__bb_bbbb
+_r_rrrrrrr_rr____br_bbbb_bbb_bbb
 black
 contains
-_r_rrrrrrr_r_r___bbrbbb_bbb_b_bb
+_r_rrrrrrr_rr__b_b__bb_b_bbb_bbb
 
 
-_r_rrrrrrr_r_r___bbrbbb_bbb_b_bb
+_r_rrrrrrr_rr__b_b__bb_b_bbb_bbb
 red
 contains
-_r_rrrr_rrrr_r___bbrbbb_bbb_b_bb
+_r_rrrrrrr__r____br_bb_b_bbb_bbb
 
 
-_r_rrrr_rrrr_r___bbrbbb_bbb_b_bb
+_r_rrrrrrr__r____br_bb_b_bbb_bbb
 black
 contains
-_r_rrrr_rrrr_r__bbbrb_b_bbb_b_bb
+_r_rrrrrrr__r_b__b__bb___bbb_bbb
 
 
-_r_rrrr_rrrr_r__bbbrb_b_bbb_b_bb
+_r_rrrrrrr__r_b__b__bb___bbb_bbb
 red
 contains
-_r_rrrr__rrrrr__bbbrb_b_bbb_b_bb
+_r_rrrrrr___r____br_bb___bbb_bbb
 
 
-_r_rrrr__rrrrr__bbbrb_b_bbb_b_bb
+_r_rrrrrr___r____br_bb___bbb_bbb
 black
 contains
-_r_rrrr_brrrr___b_brb_b_bbb_b_bb
+_r_rrrrrr___r____br_bb_b_b_b_bbb
 
 
-_r_rrrr_brrrr___b_brb_b_bbb_b_bb
+_r_rrrrrr___r____br_bb_b_b_b_bbb
 red
 contains
-_r_rrrr_brrr______brbrb_bbb_b_bb
+_r_rrr_rr_r_r____br_bb_b_b_b_bbb
 
 
-_r_rrrr_brrr______brbrb_bbb_b_bb
+_r_rrr_rr_r_r____br_bb_b_b_b_bbb
 black
 contains
-_r_rrrr_brrr_____bbrb_b__bb_b_bb
+_r_rrr_rr_r_r_b__b__bb___b_b_bbb
 
 
-_r_rrrr_brrr_____bbrb_b__bb_b_bb
+_r_rrr_rr_r_r_b__b__bb___b_b_bbb
 red
 contains
-_r_r_rr__rrr_r___bbrb_b__bb_b_bb
+_r_rrr_r__r_rrb__b__bb___b_b_bbb
 
 
-_r_r_rr__rrr_r___bbrb_b__bb_b_bb
+_r_rrr_r__r_rrb__b__bb___b_b_bbb
 black
 contains
-_r_r_rr_brrr______brb_b__bb_b_bb
+_r_rrr_rb_r_r_b_____bb___b_b_bbb
 
 
-_r_r_rr_brrr______brb_b__bb_b_bb
+_r_rrr_rb_r_r_b_____bb___b_b_bbb
 red
 contains
-_r_r__r__rrrr_____brb_b__bb_b_bb
+_r_rrr_rb___r_______b___rb_b_bbb
 
 
-_r_r__r__rrrr_____brb_b__bb_b_bb
+_r_rrr_rb___r_______b___rb_b_bbb
 black
 contains
-_r_r__r__rrrr_____brbbb___b_b_bb
+_r_rrr_rb___r_______b_b_r__b_bbb
 
 
-_r_r__r__rrrr_____brbbb___b_b_bb
+_r_rrr_rb___r_______b_b_r__b_bbb
 red
 contains
-_r_r__r__r_rr_r___brbbb___b_b_bb
+_r_r_r_r____rr______b_b_r__b_bbb
 
 
-_r_r__r__r_rr_r___brbbb___b_b_bb
+_r_r_r_r____rr______b_b_r__b_bbb
 black
 contains
-_r_r__r__r_rr_r___brbbb___bbb_b_
+_r_r_r_r____rr____b_b___r__b_bbb
 
 
-_r_r__r__r_rr_r___brbbb___bbb_b_
+_r_r_r_r____rr____b_b___r__b_bbb
 red
 contains
-_r_r__r__r_rr______rbbbr__bbb_b_
+_r_r_r_r____rr____b_b______bRbbb
 
 
-_r_r__r__r_rr______rbbbr__bbb_b_
+_r_r_r_r____rr____b_b______bRbbb
 black
 contains
-_r_r__r__r_rr_____brbbb___b_b_b_
+_r_r_r_r____rr____b_b____b_bRb_b
 
 
-_r_r__r__r_rr_____brbbb___b_b_b_
+_r_r_r_r____rr____b_b____b_bRb_b
 red
 contains
-_r____rr_r_rr_____brbbb___b_b_b_
+_r_r___r_r__rr____b_b____b_bRb_b
 
 
-_r____rr_r_rr_____brbbb___b_b_b_
+_r_r___r_r__rr____b_b____b_bRb_b
 black
 contains
-_r____rr_r_rr_____brbbb__bb_b___
+_r_r___r_r__rr_b____b____b_bRb_b
 
 
-_r____rr_r_rr_____brbbb__bb_b___
+_r_r___r_r__rr_b____b____b_bRb_b
 red
 contains
-_____rrr_r_rr_____brbbb__bb_b___
+_r_r_____r_rrr_b____b____b_bRb_b
 
 
-_____rrr_r_rr_____brbbb__bb_b___
+_r_r_____r_rrr_b____b____b_bRb_b
 black
 contains
-_____rrr_r_rr____bbrbb___bb_b___
+_r_r_____rbrrr______b____b_bRb_b
 
 
-_____rrr_r_rr____bbrbb___bb_b___
+_r_r_____rbrrr______b____b_bRb_b
 red
 contains
-______rrrr_rr____bbrbb___bb_b___
+_r_r_____rb_rr_r____b____b_bRb_b
 
 
-______rrrr_rr____bbrbb___bb_b___
+_r_r_____rb_rr_r____b____b_bRb_b
 black
 contains
-______rrrr_rr_b___brbb___bb_b___
+_r_r_____rb_rr_r____b__b_b__Rb_b
 
 
-______rrrr_rr_b___brbb___bb_b___
+_r_r_____rb_rr_r____b__b_b__Rb_b
 red
 contains
-______rrr__rrrb___brbb___bb_b___
+_r_r_____rb_rr_r____b__bRb___b_b
 
 
-______rrr__rrrb___brbb___bb_b___
+_r_r_____rb_rr_r____b__bRb___b_b
 black
 contains
-______rrrb_rrr____brbb___bb_b___
+_r_r_____rb_rr_r____b__bRbb__b__
 
 
-______rrrb_rrr____brbb___bb_b___
+_r_r_____rb_rr_r____b__bRbb__b__
 red
 contains
-_______rrbrrrr____brbb___bb_b___
+_r_r_____rb_rr_____rb__bRbb__b__
 
 
-_______rrbrrrr____brbb___bb_b___
+_r_r_____rb_rr_____rb__bRbb__b__
 black
 contains
-______brr_rrrr____brbb___bb_b___
+_r_r_____rb_rr____brb___Rbb__b__
 
 
-______brr_rrrr____brbb___bb_b___
+_r_r_____rb_rr____brb___Rbb__b__
 red
 contains
-______brr__rrr_r__brbb___bb_b___
+_r_r_____rb__r__r_brb___Rbb__b__
 
 
-______brr__rrr_r__brbb___bb_b___
+_r_r_____rb__r__r_brb___Rbb__b__
 black
 contains
-______brr__rrrbr___rbb___bb_b___
+_r_r_____rb__r__r_brb_b_R_b__b__
 
 
-______brr__rrrbr___rbb___bb_b___
+_r_r_____rb__r__r_brb_b_R_b__b__
 red
 contains
-______brr__rrrb___rrbb___bb_b___
+_r_r_____rb__r__r_brbRb___b__b__
 
 
-______brr__rrrb___rrbb___bb_b___
+_r_r_____rb__r__r_brbRb___b__b__
 black
 contains
-______brrb_rrr____rrbb___bb_b___
+_r_r_____rb__r_br__rbRb___b__b__
 
 
-______brrb_rrr____rrbb___bb_b___
+_r_r_____rb__r_br__rbRb___b__b__
 red
 contains
-______brrb_rrr_____rbb_r_bb_b___
+_r_r_____rb__r_br__rb_b__Rb__b__
 
 
-______brrb_rrr_____rbb_r_bb_b___
+_r_r_____rb__r_br__rb_b__Rb__b__
 black
 contains
-______brrb_rrr_____rbbbr_b__b___
+_r_r_____rb__r_br_brb____Rb__b__
 
 
-______brrb_rrr_____rbbbr_b__b___
+_r_r_____rb__r_br_brb____Rb__b__
 red
 contains
-______b_rbrrrr_____rbbbr_b__b___
+_r_r_____rb__r_br_brb_____b__bR_
 
 
-______b_rbrrrr_____rbbbr_b__b___
+_r_r_____rb__r_br_brb_____b__bR_
 black
 contains
-_B______rbrrrr_____rbbbr_b__b___
+_r_r_____rb__r_br_brb_b______bR_
 
 
-_B______rbrrrr_____rbbbr_b__b___
+_r_r_____rb__r_br_brb_b______bR_
 red
 contains
-_B______rb_rrrr____rbbbr_b__b___
+_r_r_____rb__r_b__brbrb______bR_
 
 
-_B______rb_rrrr____rbbbr_b__b___
+_r_r_____rb__r_b__brbrb______bR_
 black
 contains
-______B_rb_rrrr____rbbbr_b__b___
+_r_r__b__r___r_b__brbrb______bR_
 
 
-______B_rb_rrrr____rbbbr_b__b___
+_r_r__b__r___r_b__brbrb______bR_
 red
 contains
-______B_rb_rrrr____rbbb__br_b___
+___r_____rr__r_b__brbrb______bR_
 
 
-______B_rb_rrrr____rbbb__br_b___
+___r_____rr__r_b__brbrb______bR_
 black
 contains
-_____bB_r__rrrr____rbbb__br_b___
+___r__b__r___r____brbrb______bR_
 
 
-_____bB_r__rrrr____rbbb__br_b___
+___r__b__r___r____brbrb______bR_
 red
 contains
-_____bB_r__rrrr____rbbb__b__b__R
+___r__b__r___r____brbrb___R__b__
 
 
-_____bB_r__rrrr____rbbb__b__b__R
+___r__b__r___r____brbrb___R__b__
 black
 contains
-B_____B_r__rrrr____rbbb__b__b__R
+_B_r_____r___r____brbrb___R__b__
 
 
-B_____B_r__rrrr____rbbb__b__b__R
+_B_r_____r___r____brbrb___R__b__
 red
 contains
-B_____B_r__rrrr____rbbb__bR_b___
+_B_r_____r___r___Rbrbr_______b__
 
 
-B_____B_r__rrrr____rbbb__bR_b___
+_B_r_____r___r___Rbrbr_______b__
 black
 contains
-B_____B_r__rrrr____rbbb_bbR_____
+_B_r_____r___r_b_R_rbr_______b__
 
 
-B_____B_r__rrrr____rbbb_bbR_____
+_B_r_____r___r_b_R_rbr_______b__
 red
 contains
-B_____B_r__rrrr__R_rbb__bb______
+_B_r_____r___r_b___rbrR______b__
 
 
-B_____B_r__rrrr__R_rbb__bb______
+_B_r_____r___r_b___rbrR______b__
 black
 contains
-_____BB_r__rrrr__R_rbb__bb______
+_B_r_____rb__r_____rbrR______b__
 
 
-_____BB_r__rrrr__R_rbb__bb______
+_B_r_____rb__r_____rbrR______b__
 red
 contains
-_____BB_r__rrrr__R__bb_rbb______
+_B_r_____rb__r_____rb_R__r___b__
 
 
-_____BB_r__rrrr__R__bb_rbb______
+_B_r_____rb__r_____rb_R__r___b__
 black
 contains
-_____B__rB_rrrr__R__bb_rbb______
+___r_B___rb__r_____rb_R__r___b__
 
 
-_____B__rB_rrrr__R__bb_rbb______
+___r_B___rb__r_____rb_R__r___b__
 red
 contains
-_____B__rB_rrr___Rr_bb_rbb______
+_____B_r_rb__r_____rb_R__r___b__
 
 
-_____B__rB_rrr___Rr_bb_rbb______
+_____B_r_rb__r_____rb_R__r___b__
 black
 contains
-_____B__r__rr___BRr_bb_rbb______
+___B_B___r___r_____rb_R__r___b__
 
 
-_____B__r__rr___BRr_bb_rbb______
+___B_B___r___r_____rb_R__r___b__
 red
 contains
-_____B__r__rr___BRr_bb__bbr_____
+___B_B___r___r______b_Rr_r___b__
 
 
-_____B__r__rr___BRr_bb__bbr_____
+___B_B___r___r______b_Rr_r___b__
 black
 contains
-_____B__r__rr_b_B_r_b___bbr_____
+___B_________rB_____b_Rr_r___b__
 
 
-_____B__r__rr_b_B_r_b___bbr_____
+___B_________rB_____b_Rr_r___b__
 red
 contains
-_____B__r__r__b___r_b____br_R___
+___B_________rB_____b__r_rR__b__
 
 
-_____B__r__r__b___r_b____br_R___
+___B_________rB_____b__r_rR__b__
 black
 contains
-___________rB_b___r_b____br_R___
+___B_________rB_____b_br__R_____
 
 
-___________rB_b___r_b____br_R___
+___B_________rB_____b_br__R_____
 red
 contains
-___________rB_b___r_b___Rbr_____
+___B______R__r______b__r________
 
 
-___________rB_b___r_b___Rbr_____
+___B______R__r______b__r________
 black
 contains
-________B__r__b___r_b___Rbr_____
+___B______R__r__b______r________
 
 
-________B__r__b___r_b___Rbr_____
+___B______R__r__b______r________
 red
 contains
-________B__r__b___r_b___Rb____R_
+___B______R_________r__r________
 
 
-________B__r__b___r_b___Rb____R_
+___B______R_________r__r________
 black
 contains
-________B__r__b___r_b_b_R_____R_
+_______B__R_________r__r________
 
 
-________B__r__b___r_b_b_R_____R_
+_______B__R_________r__r________
 red
 contains
-________B__r__b_____b___Rr____R_
+___R___B____________r__r________
 
 
-________B__r__b_____b___Rr____R_
-black
-contains
-___________r_Bb_____b___Rr____R_
-
-
-___________r_Bb_____b___Rr____R_
-red
-contains
-___________r_Bb_____b___RrR_____
-
-
-___________r_Bb_____b___RrR_____
-black
-contains
-___________r_Bb_b_______RrR_____
-
-
-___________r_Bb_b_______RrR_____
-red
-contains
-___________r_Bb_b_______R_R___R_
-
-
-___________r_Bb_b_______R_R___R_
-black
-contains
-_________b_r_B__b_______R_R___R_
-
-
-_________b_r_B__b_______R_R___R_
-red
-contains
-_________b___B_rb_______R_R___R_
-
-
-_________b___B_rb_______R_R___R_
-black
-contains
-_________b__bB_r________R_R___R_
-
-
-_________b__bB_r________R_R___R_
-red
-contains
-_________b__bB_r_____R____R___R_
-
-
-_________b__bB_r_____R____R___R_
-black
-contains
-_____b______bB_r_____R____R___R_
-
-
-_____b______bB_r_____R____R___R_
-red
-contains
-_____b______bB____r__R____R___R_
-
-
-_____b______bB____r__R____R___R_
-black
-contains
-_B__________bB____r__R____R___R_
-
-
-_B__________bB____r__R____R___R_
-red
-contains
-_B__________bB_______R_r__R___R_
-
-
-_B__________bB_______R_r__R___R_
-black
-contains
-______B_____bB_______R_r__R___R_
-
-
-______B_____bB_______R_r__R___R_
-red
-contains
-______B_____bB_______RRr______R_
-
-
-______B_____bB_______RRr______R_
-black
-contains
-______B__B__b________RRr______R_
-
-
-______B__B__b________RRr______R_
-red
-contains
-______B__B__b________RR___r___R_
-
-
-______B__B__b________RR___r___R_
-black
-contains
-______B_____bB_______RR___r___R_
-
-
-______B_____bB_______RR___r___R_
-red
-contains
-______B_____bB_______RR_______RR
-
-
-______B_____bB_______RR_______RR
-black
-contains
-______B_b____B_______RR_______RR
-
-
-______B_b____B_______RR_______RR
-red
-contains
-______B_b____B___R____R_______RR
-
-
-______B_b____B___R____R_______RR
-black
-contains
-______B_bB_______R____R_______RR
-
-
-______B_bB_______R____R_______RR
-red
-contains
-______B_bB_______R____R__R_____R
-
-
-______B_bB_______R____R__R_____R
-black
-contains
-________bBB______R____R__R_____R
-
-
-________bBB______R____R__R_____R
-red
-contains
-________bBB______R____R__RR_____
-
-
-________bBB______R____R__RR_____
-black
-contains
-________bB_____B_R____R__RR_____
-
-
-________bB_____B_R____R__RR_____
-red
-contains
-________bB_____B_R___RR___R_____
-
-
-________bB_____B_R___RR___R_____
-black
-contains
-_____b___B_____B_R___RR___R_____
-
-
-_____b___B_____B_R___RR___R_____
-red
-contains
-_____b___B_____BRR____R___R_____
-
-
-_____b___B_____BRR____R___R_____
-black
-contains
-B________B_____BRR____R___R_____
-
-
-B________B_____BRR____R___R_____
-red
-contains
-B________B_____B_R__R_R___R_____
-
-
-B________B_____B_R__R_R___R_____
-black
-contains
-B____B_________B_R__R_R___R_____
-
-
-B____B_________B_R__R_R___R_____
-red
-contains
-B____B_________BRR____R___R_____
-
-
-B____B_________BRR____R___R_____
-black
-contains
-B________B_____BRR____R___R_____
-
-
-B________B_____BRR____R___R_____
-red
-contains
-B________B_____B_R__R_R___R_____
-
-
-B________B_____B_R__R_R___R_____
-black
-contains
-B____B_________B_R__R_R___R_____
-
-
-B____B_________B_R__R_R___R_____
-red
-contains
-B____B_________BRR____R___R_____
-
-
-B____B_________BRR____R___R_____
-black
-contains
-B________B_____BRR____R___R_____
-
-
-B________B_____BRR____R___R_____
-red
-contains
-B________B___R_BR_____R___R_____
-
-
-B________B___R_BR_____R___R_____
-black
-contains
-B____________RBBR_____R___R_____
-
-
-B____________RBBR_____R___R_____
-red
-contains
-B_______R_____BBR_____R___R_____
-
-
-B_______R_____BBR_____R___R_____
-black
-contains
-B_______R_B____BR_____R___R_____
-
-
-B_______R_B____BR_____R___R_____
-red
-contains
-B_______R_B____BRR________R_____
-
-
-B_______R_B____BRR________R_____
-black
-contains
-____B___R_B____BRR________R_____
-
-
-____B___R_B____BRR________R_____
-red
-contains
-____B___R_B__R_BR_________R_____
-
-
-____B___R_B__R_BR_________R_____
-black
-contains
-B_______R_B__R_BR_________R_____
-
-
-B_______R_B__R_BR_________R_____
-red
-contains
-B_______RRB____BR_________R_____
-
-
-B_______RRB____BR_________R_____
-black
-contains
-____B___RRB____BR_________R_____
-
-
-____B___RRB____BR_________R_____
-red
-contains
-____B___RRB__R_B__________R_____
-
-
-____B___RRB__R_B__________R_____
-black
-contains
-____B___RRB__R____B_______R_____
-
-
-____B___RRB__R____B_______R_____
-red
-contains
-____B____RB_RR____B_______R_____
-
-
-____B____RB_RR____B_______R_____
-black
-contains
-B________RB_RR____B_______R_____
-
-
-B________RB_RR____B_______R_____
-red
-contains
-B_______RRB_R_____B_______R_____
-
-
-B_______RRB_R_____B_______R_____
-black
-contains
-____B___RRB_R_____B_______R_____
-
-
-____B___RRB_R_____B_______R_____
-red
-contains
-____B____RB_RR____B_______R_____
-
-
-____B____RB_RR____B_______R_____
-black
-contains
-B________RB_RR____B_______R_____
-
-
-B________RB_RR____B_______R_____
-red
-contains
-B________RB__R__R_B_______R_____
-
-
-B________RB__R__R_B_______R_____
-black
-contains
-____B____RB__R__R_B_______R_____
-
-
-____B____RB__R__R_B_______R_____
-red
-contains
-____B____RB__R____B__R____R_____
-
-
-____B____RB__R____B__R____R_____
-black
-contains
-B________RB__R____B__R____R_____
-
-
-B________RB__R____B__R____R_____
-red
-contains
-B________RB__R___RB_______R_____
-
-
-B________RB__R___RB_______R_____
-black
-contains
-____B____RB__R___RB_______R_____
-
-
-____B____RB__R___RB_______R_____
-red
-contains
-____B____RB__R___RB___________R_
-
-
-____B____RB__R___RB___________R_
-black
-contains
-____B____RB__R___R_____B______R_
-
-
-____B____RB__R___R_____B______R_
-red
-contains
-____B_____B__RR__R_____B______R_
-
-
-____B_____B__RR__R_____B______R_
-black
-contains
-____B________RRB_R_____B______R_
-
-
-____B________RRB_R_____B______R_
-red
-contains
-____B________RRB______RB______R_
-
-
-____B________RRB______RB______R_
-black
-contains
-____B________RR____B__RB______R_
-
-
-____B________RR____B__RB______R_
-red
-contains
-____B________RR____B___B__R___R_
-
-
-____B________RR____B___B__R___R_
-black
-contains
-B____________RR____B___B__R___R_
-
-
-B____________RR____B___B__R___R_
-red
-contains
-B_____________R__R_B___B__R___R_
-
-
-B_____________R__R_B___B__R___R_
-black
-contains
-_____B________R__R_B___B__R___R_
-
-
-_____B________R__R_B___B__R___R_
-red
-contains
-_____B________R____B__RB__R___R_
-
-
-_____B________R____B__RB__R___R_
-black
-contains
-________B_____R____B__RB__R___R_
-
-
-________B_____R____B__RB__R___R_
-red
-contains
-________B_____R___RB___B__R___R_
-
-
-________B_____R___RB___B__R___R_
-black
-contains
-________B_____R___RB______RB__R_

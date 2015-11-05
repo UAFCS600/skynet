@@ -1,17 +1,11 @@
 rrrrrrrrrr_r___r__b_bb_bbbbbbbbb
-black
-contains
-rrrrrrrrrr_r________bbrbbbbbbbbb
-
-
-rrrrrrrrrr_r________bbrbbbbbbbbb
 red
 contains
-rrrrrrrrrr_r______b_bb_bb_bbbbbb
+rrrrrrrrrr_r________bbrbbbbbbbbb
 
 
 rrrrrrrrrr_r______b_bb_bb_bbbbbb
-black
+red
 contains
 rrrrrrr_rrrr______b_bb_bb_bbbbbb
 

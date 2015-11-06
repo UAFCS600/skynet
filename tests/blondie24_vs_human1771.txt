@@ -1,406 +1,474 @@
 rrrrrrrrrrrr________bbbbbbbbbbbb
+should_pass
 red
 contains
 rrrrrrrr_rrrr_______bbbbbbbbbbbb
 
 
 rrrrrrrr_rrrr_______bbbbbbbbbbbb
+should_pass
 black
 contains
 rrrrrrrr_rrrr____b__b_bbbbbbbbbb
 
 
 rrrrrrrr_rrrr____b__b_bbbbbbbbbb
+should_pass
 red
 contains
 rrrrrrrr_r_rr_r__b__b_bbbbbbbbbb
 
 
 rrrrrrrr_r_rr_r__b__b_bbbbbbbbbb
+should_pass
 black
 contains
 rrrrrrrr_rbrr_______b_bbbbbbbbbb
 
 
 rrrrrrrr_rbrr_______b_bbbbbbbbbb
+should_pass
 red
 contains
 rrrrrr_r_r_rr__r____b_bbbbbbbbbb
 
 
 rrrrrr_r_r_rr__r____b_bbbbbbbbbb
+should_pass
 black
 contains
 rrrrrr_r_r_rr__r____bbbb_bbbbbbb
 
 
 rrrrrr_r_r_rr__r____bbbb_bbbbbbb
+should_pass
 red
 contains
 rrrr_r_rrr_rr__r____bbbb_bbbbbbb
 
 
 rrrr_r_rrr_rr__r____bbbb_bbbbbbb
+should_pass
 black
 contains
 rrrr_r_rrr_rr__r_b__b_bb_bbbbbbb
 
 
 rrrr_r_rrr_rr__r_b__b_bb_bbbbbbb
+should_pass
 red
 contains
 rr_r_rrrrr_rr__r_b__b_bb_bbbbbbb
 
 
 rr_r_rrrrr_rr__r_b__b_bb_bbbbbbb
+should_pass
 black
 contains
 rr_r_rrrrr_rr__r_b__b_bbbbbb_bbb
 
 
 rr_r_rrrrr_rr__r_b__b_bbbbbb_bbb
+should_pass
 red
 contains
 _r_rrrrrrr_rr__r_b__b_bbbbbb_bbb
 
 
 _r_rrrrrrr_rr__r_b__b_bbbbbb_bbb
+should_pass
 black
 contains
 _r_rrrrrrr_rr__r_b__bbbb_bbb_bbb
 
 
 _r_rrrrrrr_rr__r_b__bbbb_bbb_bbb
+should_pass
 red
 contains
 _r_rrrrrrr_rr____br_bbbb_bbb_bbb
 
 
 _r_rrrrrrr_rr____br_bbbb_bbb_bbb
+should_pass
 black
 contains
 _r_rrrrrrr_rr__b_b__bb_b_bbb_bbb
 
 
 _r_rrrrrrr_rr__b_b__bb_b_bbb_bbb
+should_pass
 red
 contains
 _r_rrrrrrr__r____br_bb_b_bbb_bbb
 
 
 _r_rrrrrrr__r____br_bb_b_bbb_bbb
+should_pass
 black
 contains
 _r_rrrrrrr__r_b__b__bb___bbb_bbb
 
 
 _r_rrrrrrr__r_b__b__bb___bbb_bbb
+should_pass
 red
 contains
 _r_rrrrrr___r____br_bb___bbb_bbb
 
 
 _r_rrrrrr___r____br_bb___bbb_bbb
+should_pass
 black
 contains
 _r_rrrrrr___r____br_bb_b_b_b_bbb
 
 
 _r_rrrrrr___r____br_bb_b_b_b_bbb
+should_pass
 red
 contains
 _r_rrr_rr_r_r____br_bb_b_b_b_bbb
 
 
 _r_rrr_rr_r_r____br_bb_b_b_b_bbb
+should_pass
 black
 contains
 _r_rrr_rr_r_r_b__b__bb___b_b_bbb
 
 
 _r_rrr_rr_r_r_b__b__bb___b_b_bbb
+should_pass
 red
 contains
 _r_rrr_r__r_rrb__b__bb___b_b_bbb
 
 
 _r_rrr_r__r_rrb__b__bb___b_b_bbb
+should_pass
 black
 contains
 _r_rrr_rb_r_r_b_____bb___b_b_bbb
 
 
 _r_rrr_rb_r_r_b_____bb___b_b_bbb
+should_pass
 red
 contains
 _r_rrr_rb___r_______b___rb_b_bbb
 
 
 _r_rrr_rb___r_______b___rb_b_bbb
+should_pass
 black
 contains
 _r_rrr_rb___r_______b_b_r__b_bbb
 
 
 _r_rrr_rb___r_______b_b_r__b_bbb
+should_pass
 red
 contains
 _r_r_r_r____rr______b_b_r__b_bbb
 
 
 _r_r_r_r____rr______b_b_r__b_bbb
+should_pass
 black
 contains
 _r_r_r_r____rr____b_b___r__b_bbb
 
 
 _r_r_r_r____rr____b_b___r__b_bbb
+should_pass
 red
 contains
 _r_r_r_r____rr____b_b______bRbbb
 
 
 _r_r_r_r____rr____b_b______bRbbb
+should_pass
 black
 contains
 _r_r_r_r____rr____b_b____b_bRb_b
 
 
 _r_r_r_r____rr____b_b____b_bRb_b
+should_pass
 red
 contains
 _r_r___r_r__rr____b_b____b_bRb_b
 
 
 _r_r___r_r__rr____b_b____b_bRb_b
+should_pass
 black
 contains
 _r_r___r_r__rr_b____b____b_bRb_b
 
 
 _r_r___r_r__rr_b____b____b_bRb_b
+should_pass
 red
 contains
 _r_r_____r_rrr_b____b____b_bRb_b
 
 
 _r_r_____r_rrr_b____b____b_bRb_b
+should_pass
 black
 contains
 _r_r_____rbrrr______b____b_bRb_b
 
 
 _r_r_____rbrrr______b____b_bRb_b
+should_pass
 red
 contains
 _r_r_____rb_rr_r____b____b_bRb_b
 
 
 _r_r_____rb_rr_r____b____b_bRb_b
+should_pass
 black
 contains
 _r_r_____rb_rr_r____b__b_b__Rb_b
 
 
 _r_r_____rb_rr_r____b__b_b__Rb_b
+should_pass
 red
 contains
 _r_r_____rb_rr_r____b__bRb___b_b
 
 
 _r_r_____rb_rr_r____b__bRb___b_b
+should_pass
 black
 contains
 _r_r_____rb_rr_r____b__bRbb__b__
 
 
 _r_r_____rb_rr_r____b__bRbb__b__
+should_pass
 red
 contains
 _r_r_____rb_rr_____rb__bRbb__b__
 
 
 _r_r_____rb_rr_____rb__bRbb__b__
+should_pass
 black
 contains
 _r_r_____rb_rr____brb___Rbb__b__
 
 
 _r_r_____rb_rr____brb___Rbb__b__
+should_pass
 red
 contains
 _r_r_____rb__r__r_brb___Rbb__b__
 
 
 _r_r_____rb__r__r_brb___Rbb__b__
+should_pass
 black
 contains
 _r_r_____rb__r__r_brb_b_R_b__b__
 
 
 _r_r_____rb__r__r_brb_b_R_b__b__
+should_pass
 red
 contains
 _r_r_____rb__r__r_brbRb___b__b__
 
 
 _r_r_____rb__r__r_brbRb___b__b__
+should_pass
 black
 contains
 _r_r_____rb__r_br__rbRb___b__b__
 
 
 _r_r_____rb__r_br__rbRb___b__b__
+should_pass
 red
 contains
 _r_r_____rb__r_br__rb_b__Rb__b__
 
 
 _r_r_____rb__r_br__rb_b__Rb__b__
+should_pass
 black
 contains
 _r_r_____rb__r_br_brb____Rb__b__
 
 
 _r_r_____rb__r_br_brb____Rb__b__
+should_pass
 red
 contains
 _r_r_____rb__r_br_brb_____b__bR_
 
 
 _r_r_____rb__r_br_brb_____b__bR_
+should_pass
 black
 contains
 _r_r_____rb__r_br_brb_b______bR_
 
 
 _r_r_____rb__r_br_brb_b______bR_
+should_pass
 red
 contains
 _r_r_____rb__r_b__brbrb______bR_
 
 
 _r_r_____rb__r_b__brbrb______bR_
+should_pass
 black
 contains
 _r_r__b__r___r_b__brbrb______bR_
 
 
 _r_r__b__r___r_b__brbrb______bR_
+should_pass
 red
 contains
 ___r_____rr__r_b__brbrb______bR_
 
 
 ___r_____rr__r_b__brbrb______bR_
+should_pass
 black
 contains
 ___r__b__r___r____brbrb______bR_
 
 
 ___r__b__r___r____brbrb______bR_
+should_pass
 red
 contains
 ___r__b__r___r____brbrb___R__b__
 
 
 ___r__b__r___r____brbrb___R__b__
+should_pass
 black
 contains
 _B_r_____r___r____brbrb___R__b__
 
 
 _B_r_____r___r____brbrb___R__b__
+should_pass
 red
 contains
 _B_r_____r___r___Rbrbr_______b__
 
 
 _B_r_____r___r___Rbrbr_______b__
+should_pass
 black
 contains
 _B_r_____r___r_b_R_rbr_______b__
 
 
 _B_r_____r___r_b_R_rbr_______b__
+should_pass
 red
 contains
 _B_r_____r___r_b___rbrR______b__
 
 
 _B_r_____r___r_b___rbrR______b__
+should_pass
 black
 contains
 _B_r_____rb__r_____rbrR______b__
 
 
 _B_r_____rb__r_____rbrR______b__
+should_pass
 red
 contains
 _B_r_____rb__r_____rb_R__r___b__
 
 
 _B_r_____rb__r_____rb_R__r___b__
+should_pass
 black
 contains
 ___r_B___rb__r_____rb_R__r___b__
 
 
 ___r_B___rb__r_____rb_R__r___b__
+should_pass
 red
 contains
 _____B_r_rb__r_____rb_R__r___b__
 
 
 _____B_r_rb__r_____rb_R__r___b__
+should_pass
 black
 contains
 ___B_B___r___r_____rb_R__r___b__
 
 
 ___B_B___r___r_____rb_R__r___b__
+should_pass
 red
 contains
 ___B_B___r___r______b_Rr_r___b__
 
 
 ___B_B___r___r______b_Rr_r___b__
+should_pass
 black
 contains
 ___B_________rB_____b_Rr_r___b__
 
 
 ___B_________rB_____b_Rr_r___b__
+should_pass
 red
 contains
 ___B_________rB_____b__r_rR__b__
 
 
 ___B_________rB_____b__r_rR__b__
+should_pass
 black
 contains
 ___B_________rB_____b_br__R_____
 
 
 ___B_________rB_____b_br__R_____
+should_pass
 red
 contains
 ___B______R__r______b__r________
 
 
 ___B______R__r______b__r________
+should_pass
 black
 contains
 ___B______R__r__b______r________
 
 
 ___B______R__r__b______r________
+should_pass
 red
 contains
 ___B______R_________r__r________
 
 
 ___B______R_________r__r________
+should_pass
 black
 contains
 _______B__R_________r__r________
@@ -408,6 +476,7 @@ _______B__R_________r__r________
 
 
 _______B__R_________r__r________
+should_pass
 red
 contains
 ___R________________r__r________

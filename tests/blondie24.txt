@@ -1,544 +1,640 @@
 rrrrrrrrrr_r___r__b_bb_bbbbbbbbb
+should_pass
 red
 contains
 rrrrrrrrrr_r________bbrbbbbbbbbb
 
 
 rrrrrrrrrr_r______b_bb_bb_bbbbbb
+should_pass
 red
 contains
 rrrrrrr_rrrr______b_bb_bb_bbbbbb
 
-
 rrrrrrr_rrrr______b_bb_bb_bbbbbb
-red
+should_pass
+black
 contains
 rrrrrrr_rrrr__b_____bb_bb_bbbbbb
 
 
 rrrrrrr_rrrr__b_____bb_bb_bbbbbb
-black
+should_pass
+red
 contains
 rrrrrrr_rr_r_____r__bb_bb_bbbbbb
 
 
 rrrrrrr_rr_r_____r__bb_bb_bbbbbb
-red
+should_pass
+black
 contains
 rrrrrrr_rr_r__b_____b__bb_bbbbbb
 
 
 rrrrrrr_rr_r__b_____b__bb_bbbbbb
-black
+should_pass
+red
 contains
 rrrrrrr_r__r______r_b__bb_bbbbbb
 
 
 rrrrrrr_r__r______r_b__bb_bbbbbb
-red
+should_pass
+black
 contains
 rrrrrrr_r__r__b_____b___b_bbbbbb
 
 
 rrrrrrr_r__r__b_____b___b_bbbbbb
-black
+should_pass
+red
 contains
 rrrrrr__rr_r__b_____b___b_bbbbbb
 
 
 rrrrrr__rr_r__b_____b___b_bbbbbb
-red
+should_pass
+black
 contains
 rrrrrr__rr_r__b_____b__bb__bbbbb
 
 
 rrrrrr__rr_r__b_____b__bb__bbbbb
-black
+should_pass
+red
 contains
 rrrrrr__r__r______r_b__bb__bbbbb
 
 
 rrrrrr__r__r______r_b__bb__bbbbb
-red
+should_pass
+black
 contains
 rrrrrr__r__r__b_____b___b__bbbbb
 
 
 rrrrrr__r__r__b_____b___b__bbbbb
-black
+should_pass
+red
 contains
 rrrrr___rr_r__b_____b___b__bbbbb
 
 
 rrrrr___rr_r__b_____b___b__bbbbb
-red
+should_pass
+black
 contains
 rrrrrb__r__r________b___b__bbbbb
 
 
 rrrrrb__r__r________b___b__bbbbb
-black
+should_pass
+red
 contains
 _rrrr___rr_r________b___b__bbbbb
 
 
 _rrrr___rr_r________b___b__bbbbb
-red
+should_pass
+black
 contains
 _rrrr___rr_r________bb_____bbbbb
 
 
 _rrrr___rr_r________bb_____bbbbb
-black
+should_pass
+red
 contains
 _rrrr____r_r_r______bb_____bbbbb
 
 
 _rrrr____r_r_r______bb_____bbbbb
-red
+should_pass
+black
 contains
 _rrrr____r_r_r______bb___b_bb_bb
 
 
 _rrrr____r_r_r______bb___b_bb_bb
-black
+should_pass
+red
 contains
 _r_rr_r__r_r_r______bb___b_bb_bb
 
 
 _r_rr_r__r_r_r______bb___b_bb_bb
-red
+should_pass
+black
 contains
 _r_rr_r__r_r_r__b___b____b_bb_bb
 
 
 _r_rr_r__r_r_r__b___b____b_bb_bb
-black
+should_pass
+red
 contains
 _r__r_rr_r_r_r__b___b____b_bb_bb
 
 
 _r__r_rr_r_r_r__b___b____b_bb_bb
-red
+should_pass
+black
 contains
 _r__r_rr_r_r_r__b___b_b____bb_bb
 
 
 _r__r_rr_r_r_r__b___b_b____bb_bb
-black
+should_pass
+red
 contains
 _r__r_r__rrr_r__b___b_b____bb_bb
 
 
 _r__r_r__rrr_r__b___b_b____bb_bb
-red
+should_pass
+black
 contains
 _r__r_r__rrr_r__b___b_bb____b_bb
 
 
 _r__r_r__rrr_r__b___b_bb____b_bb
-black
+should_pass
+red
 contains
 _r__r_r__r_r_rr_b___b_bb____b_bb
 
 
 _r__r_r__r_r_rr_b___b_bb____b_bb
-red
+should_pass
+black
 contains
 _r__r_r__r_r_rr_b___b_bb___bb_b_
 
 
 _r__r_r__r_r_rr_b___b_bb___bb_b_
-black
+should_pass
+red
 contains
 _r__r____rrr_rr_b___b_bb___bb_b_
 
 
 _r__r____rrr_rr_b___b_bb___bb_b_
-red
+should_pass
+black
 contains
 _r__r____rrr_rr_b___b_bbb__b__b_
 
 
 _r__r____rrr_rr_b___b_bbb__b__b_
-black
+should_pass
+red
 contains
 _r__r____rrr_r__br__b_bbb__b__b_
 
 
 _r__r____rrr_r__br__b_bbb__b__b_
-red
+should_pass
+black
 contains
 _r__r____rrr_r__brb_b__bb__b__b_
 
 
 _r__r____rrr_r__brb_b__bb__b__b_
-black
+should_pass
+red
 contains
 _r__r____rrr_r__b_b_b_rbb__b__b_
 
 
 _r__r____rrr_r__b_b_b_rbb__b__b_
-red
+should_pass
+black
 contains
 _r__r____rrr_r__b_bbb_r_b__b__b_
 
 
 _r__r____rrr_r__b_bbb_r_b__b__b_
-black
+should_pass
+red
 contains
 _r______rrrr_r__b_bbb_r_b__b__b_
 
 
 _r______rrrr_r__b_bbb_r_b__b__b_
-red
+should_pass
+black
 contains
 _r______rrrrbr____bbb_r_b__b__b_
 
 
 _r______rrrrbr____bbb_r_b__b__b_
-black
+should_pass
+red
 contains
 _r______rrrrb____rbbb_r_b__b__b_
 
 
 _r______rrrrb____rbbb_r_b__b__b_
-red
+should_pass
+black
 contains
 _r___b___rrr_____rbbb_r_b__b__b_
 
 
 _r___b___rrr_____rbbb_r_b__b__b_
-black
+should_pass
+red
 contains
 ________rrrr_____rbbb_r_b__b__b_
 
 
 ________rrrr_____rbbb_r_b__b__b_
-red
+should_pass
+black
 contains
 ________rrrr____brbb__r_b__b__b_
 
 
 ________rrrr____brbb__r_b__b__b_
-black
+should_pass
+red
 contains
 _________rrrr___brbb__r_b__b__b_
 
 
 _________rrrr___brbb__r_b__b__b_
-red
+should_pass
+black
 contains
 _________rrrr_b_br_b__r_b__b__b_
 
 
 _________rrrr_b_br_b__r_b__b__b_
-black
+should_pass
+red
 contains
 __________rrr___brrb__r_b__b__b_
 
 
 __________rrr___brrb__r_b__b__b_
-red
+should_pass
+black
 contains
 __________rrrb___rrb__r_b__b__b_
 
 
 __________rrrb___rrb__r_b__b__b_
-black
+should_pass
+red
 contains
 __________rr_b__rrrb__r_b__b__b_
 
 
 __________rr_b__rrrb__r_b__b__b_
-red
+should_pass
+black
 contains
 __________rr_b__rrrbb_r____b__b_
 
 
 __________rr_b__rrrbb_r____b__b_
-black
+should_pass
+red
 contains
 __________rr_b___rrbbrr____b__b_
 
 
 __________rr_b___rrbbrr____b__b_
-red
+should_pass
+black
 contains
 ________b_rr_____rrbbrr____b__b_
 
 
 ________b_rr_____rrbbrr____b__b_
-black
+should_pass
+red
 contains
 ________b__r__r__rrbbrr____b__b_
 
 
 ________b__r__r__rrbbrr____b__b_
-red
+should_pass
+black
 contains
 _____b_____r__r__rrbbrr____b__b_
 
 
 _____b_____r__r__rrbbrr____b__b_
-black
+should_pass
+red
 contains
 _____b_____r__r__rrbb_r__r_b__b_
 
 
+
+
+
+
+
+
 _____b_____r__r__rrbb_r__r_b__b_
-red
+should_pass
+black
 contains
 _____b_____r__r__rrbbbr____b____
 
 
 _____b_____r__r__rrbbbr____b____
-black
+should_pass
+red
 contains
 _____b_____r__r___rbb_r_r__b____
 
 
 _____b_____r__r___rbb_r_r__b____
-red
+should_pass
+black
 contains
 B__________r__r___rbb_r_r__b____
 
 
 B__________r__r___rbb_r_r__b____
-black
+should_pass
+red
 contains
 B__________r_____rrbb_r_r__b____
 
 
 B__________r_____rrbb_r_r__b____
-red
+should_pass
+black
 contains
 _____B_____r_____rrbb_r_r__b____
 
 
 _____B_____r_____rrbb_r_r__b____
-black
+should_pass
+red
 contains
 _____B_____r_____rrbb___r_rb____
 
 
 _____B_____r_____rrbb___r_rb____
-red
+should_pass
+black
 contains
 _________B_r_____rrbb___r_rb____
 
 
 _________B_r_____rrbb___r_rb____
-black
+should_pass
+red
 contains
 _________B_r______rbbr__r_rb____
 
 
 _________B_r______rbbr__r_rb____
-red
+should_pass
+black
 contains
 ___________r__B___rbbr__r_rb____
 
 
 ___________r__B___rbbr__r_rb____
-black
+should_pass
+red
 contains
 ___________r__B____bbrr_r_rb____
 
 
 ___________r__B____bbrr_r_rb____
-red
+should_pass
+black
 contains
 ___________r__Bb____brr_r_rb____
 
 
 ___________r__Bb____brr_r_rb____
-black
+should_pass
+red
 contains
 ______________B___r_brr_r_rb____
 
 
 ______________B___r_brr_r_rb____
-red
+should_pass
+black
 contains
 ____________________brr_r__b__B_
 
 
 ____________________brr_r__b__B_
-black
+should_pass
+red
 contains
 ____________________brr____bR_B_
 
 
 ____________________brr____bR_B_
-red
+should_pass
+black
 contains
 ________________b____rr____bR_B_
 
 
 ________________b____rr____bR_B_
-black
+should_pass
+red
 contains
 ________________b_____r_r__bR_B_
 
 
 ________________b_____r_r__bR_B_
-red
+should_pass
+black
 contains
 ____________b_________r_r__bR_B_
 
 
 ____________b_________r_r__bR_B_
-black
+should_pass
+red
 contains
 ____________b_________r____bRRB_
 
 
 ____________b_________r____bRRB_
-red
+should_pass
+black
 contains
 ________b_____________r____bRRB_
 
 
 ________b_____________r____bRRB_
-black
+should_pass
+red
 contains
 ________b_____________r_R__bR_B_
 
 
 ________b_____________r_R__bR_B_
-red
+should_pass
+black
 contains
 ____b_________________r_R__bR_B_
 
 
 ____b_________________r_R__bR_B_
-black
+should_pass
+red
 contains
 ____b___________________Rr_bR_B_
 
 
 ____b___________________Rr_bR_B_
-red
+should_pass
+black
 contains
 ____b________________B__R__bR___
 
 
 ____b________________B__R__bR___
-black
+should_pass
+red
 contains
 ____b____________R_________bR___
 
 
 ____b____________R_________bR___
-red
+should_pass
+black
 contains
 B________________R_________bR___
 
 
 B________________R_________bR___
-black
+should_pass
+red
 contains
 B________________R______R__b____
 
 
 B________________R______R__b____
-red
+should_pass
+black
 contains
 ____B____________R______R__b____
 
 
 ____B____________R______R__b____
-black
+should_pass
+red
 contains
 ____B________R__________R__b____
 
 
 ____B________R__________R__b____
-red
+should_pass
+black
 contains
 ____B________R_________bR_______
 
 
 ____B________R_________bR_______
-black
+should_pass
+red
 contains
 ____B________R_______R_b________
 
 
 ____B________R_______R_b________
-red
+should_pass
+black
 contains
 ____B________R____b__R__________
 
 
 ____B________R____b__R__________
-black
+should_pass
+red
 contains
 ____B________R___Rb_____________
 
 
 ____B________R___Rb_____________
-red
+should_pass
+black
 contains
 ____B________R_b_R______________
 
 
 ____B________R_b_R______________
-black
+should_pass
+red
 contains
 ____B________RRb________________
 
 
 ____B________RRb________________
-red
+should_pass
+black
 contains
 ____B______b_RR_________________
 
 
 ____B______b_RR_________________
-black
+should_pass
+red
 contains
 ____B_____Rb_R__________________
 
 
 ____B_____Rb_R__________________
-red
+should_pass
+black
 contains
 B_________Rb_R__________________
 
 
 B_________Rb_R__________________
-black
+should_pass
+red
 contains
 B_______R_Rb____________________
 
 
 B_______R_Rb____________________
-red
+should_pass
+black
 contains
 ____B___R_Rb____________________
 
 
 ____B___R_Rb____________________
-black
+should_pass
+red
 contains
 ____BR____Rb____________________
 
 
 ____BR____Rb____________________
-red
-contains
-B____R____Rb____________________
-
-
-B____R____Rb____________________
+should_pass
 black
 contains
-B_______R_Rb____________________
+B____R____Rb____________________
 
 
-B_______R_Rb____________________
+B____R____Rb____________________
+should_pass
 red
+contains
+B_______R_Rb____________________
+
+
+B_______R_Rb____________________
+should_pass
+black
 contains
 ____B___R_Rb____________________

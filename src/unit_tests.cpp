@@ -198,7 +198,7 @@ void test_checkers_board_validation()
 void test_checkers_move(const std::string& message,const skynet::checkers_board_t& board,const skynet::checkers_player_t& player,
 	const bool absolute,skynet::checkers_board_list_t expected_boards,bool should_fail)
 {
-	bool passed=true;
+	bool passed=false;
 	std::string error_message="";
 
 	try
@@ -245,17 +245,29 @@ void test_checkers_move(const std::string& message,const skynet::checkers_board_
 
 		if(found_count<expected_boards.size())
 			throw std::runtime_error("Expected at least "+std::to_string(expected_boards.size())+" out board(s) got "+std::to_string(found_count));
+
+		if(should_fail)
+		{
+			passed=false;
+			error_message="Should fail but passed";
+		}
+		else
+		{
+			passed=true;
+		}
 	}
 	catch(std::exception& error)
 	{
-		passed=should_fail;
+		if(!should_fail)
+			passed=false;
 
 		if(!passed)
 			error_message=error.what();
 	}
 	catch(...)
 	{
-		passed=should_fail;
+		if(!should_fail)
+			passed=false;
 
 		if(!passed)
 			error_message="unknown";
@@ -277,7 +289,10 @@ void test_checkers_move(const std::string& message,const skynet::checkers_board_
 		if(!passed)
 	#endif
 	{
-		std::cout<<message<<" (\""<<board<<"\")."<<std::endl;
+		if(message.size()>0)
+			std::cout<<message<<" "<<std::flush;
+
+		std::cout<<"(\""<<board<<"\")."<<std::endl;
 	}
 
 	if(!passed)
@@ -466,11 +481,9 @@ void test_checkers_move_file(const std::string& title,const std::string& filenam
 			if(!std::getline(istr,temp))
 				break;
 
-			if(temp=="should_pass")
-				should_fail=false;
-			else if(temp=="should_fail")
+			if(temp=="should_fail")
 				should_fail=true;
-			else
+			else if(temp!="should_pass")
 				throw std::runtime_error("Invalid pass/fail value \""+temp+"\" (expected \"should_pass\" or \"should_fail\").");
 
 			if(!std::getline(istr,temp))
@@ -511,9 +524,13 @@ void test_checkers_move_file(const std::string& title,const std::string& filenam
 	}
 	catch(std::exception& error)
 	{
+		std::cout<<"Error testing file named \""+filename+"\" ("+error.what()+")."<<std::endl;
+		failed=true;
 	}
 	catch(...)
 	{
+		std::cout<<"Error testing file named \""+filename+"\" (unknown)."<<std::endl;
+		failed=true;
 	}
 }
 

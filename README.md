@@ -9,7 +9,12 @@
 ## Web Component
  * To build server
  ```
- $make server
+ make server
+ ```
+
+ * Execute server
+ ```
+ ./server
  ```
 
  Using Mongoose (https://github.com/cesanta/mongoose) for an embedded server environment.
@@ -26,15 +31,15 @@
 
  * To build the tests
  ```
- $make unit_tests
+ make unit_tests
  ```
 
  * Execute test suite
  ```
- $./unit_tests
+ ./unit_tests
  ```
 
 ## Cleaning Build
  ```
- $make clean
+ make clean
  ```

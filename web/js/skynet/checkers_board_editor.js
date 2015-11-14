@@ -10,24 +10,9 @@ function checkers_board_editor_t(div)
 
 	this.error_boxes=[];
 
-	this.canvas=document.createElement("canvas");
-	this.el.appendChild(this.canvas);
-	this.canvas.width=320;
-	this.canvas.height=320;
-	this.canvas.style.display="block";
-	this.canvas.style.marginLeft="auto";
-	this.canvas.style.marginRight="auto";
-	this.canvas.style.marginBottom="20px";
-	this.canvas.addEventListener('mousemove',function(event)
-	{
-		var box=myself.canvas.getBoundingClientRect();
-		myself.onmousemove_m(event.clientX-box.left,event.clientY-box.top);
-	});
-	this.canvas.addEventListener('mouseup',function(event)
-	{
-		var box=myself.canvas.getBoundingClientRect();
-		myself.onmouseclick_m(event.clientX-box.left,event.clientY-box.top);
-	});
+	this.board=new checkers_board_t(this.el);
+	this.board.onerror=function(error){myself.append_error_m(error);};
+	this.board.onclick=function(index){myself.onmouseclick_m(index);};
 
 	this.input_div=document.createElement("div");
 	this.el.appendChild(this.input_div);
@@ -44,15 +29,9 @@ function checkers_board_editor_t(div)
 	this.input.style.marginRight="auto";
 	this.input.style.marginBottom="10px";
 	this.input.style.padding="10px";
-	this.input.onchange=function(){myself.draw_board(this.value);};
-	this.input.onkeydown=function(){myself.draw_board(this.value);};
-	this.input.onkeyup=function(){myself.draw_board(this.value);};
-
-	this.crown_sprite_loaded=false;
-	this.crown_sprite=new Image();
-	this.crown_sprite.onload=function(){myself.crown_sprite_loaded=true;};
-
-	this.crown_sprite.src="/images/crown.png";
+	this.input.onchange=function(){myself.draw_board_m(this.value);};
+	this.input.onkeydown=function(){myself.draw_board_m(this.value);};
+	this.input.onkeyup=function(){myself.draw_board_m(this.value);};
 
 	this.button_group=document.createElement("div");
 	this.el.appendChild(this.button_group);
@@ -80,116 +59,37 @@ function checkers_board_editor_t(div)
 	var options=parse_uri();
 
 	if(options.board)
-	{
-		this.input.value=options.board;
-		this.draw_board(this.input.value);
-	}
+		this.set_value(options.board);
 };
-
-checkers_board_editor_t.prototype.draw_board=function(board)
-{
-	this.el.className="form-group has-feedback";
-
-	for(var key in this.error_boxes)
-		this.error_boxes[key].destroy();
-
-	this.error_boxes=[];
-
-	try
-	{
-		this.validate_board(board);
-
-		var light="#FCCCA1";
-		var dark="#D38944";
-
-		this.ctx=this.canvas.getContext("2d");
-		this.ctx.fillStyle="#FF0000";
-		this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
-
-		var width=this.canvas.width/8;
-		var height=this.canvas.height/8;
-
-		var counter=0;
-
-		for(var yy=0;yy<8;++yy)
-		{
-			for(var xx=0;xx<8;++xx)
-			{
-				if((xx+yy)%2==0)
-					this.ctx.fillStyle=light;
-				else
-					this.ctx.fillStyle=dark;
-
-				this.ctx.fillRect(xx*width,yy*height,(xx+1)*width,(yy+1)*height);
-
-				if((xx+yy)%2!=0)
-					this.draw_piece_m(xx,yy,board[counter++]);
-			}
-		}
-
-		this.url.href=window.location.href.split('?')[0]+"?board="+board;
-	}
-	catch(error)
-	{
-		this.el.className="form-group has-feedback has-error";
-		this.error_boxes.push(this.create_error_m(error));
-	}
-}
-
-checkers_board_editor_t.prototype.validate_board=function(board)
-{
-	if(board.length!=32)
-		throw "Invalid board length (expected 32 got "+board.length+").";
-
-	for(var ii=0;ii<32;++ii)
-		if((board[ii]!='r'&&board[ii]!='R'&&board[ii]!='b'&&board[ii]!='B'&&board[ii]!='_'))
-			throw "Invalid piece at position "+ii+" '"+board[ii]+"'.";
-}
 
 checkers_board_editor_t.prototype.reset=function()
 {
-	this.input.value="rrrrrrrrrrrr________bbbbbbbbbbbb";
-	this.draw_board(this.input.value);
+	this.clear_errors_m();
+	this.board.reset();
+	this.input.value=this.board.get_value();
+	this.update_url_m(this.input.value);
 }
 
 checkers_board_editor_t.prototype.clear=function()
 {
-	this.input.value="________________________________";
-	this.draw_board(this.input.value);
+	this.clear_errors_m();
+	this.board.clear();
+	this.input.value=this.board.get_value();
+	this.update_url_m(this.input.value);
 }
 
-checkers_board_editor_t.prototype.draw_piece_m=function(xx,yy,piece)
+checkers_board_editor_t.prototype.set_value=function(value)
 {
-	if(piece!="_")
-	{
-		var width=this.canvas.width/8.0;
-		var height=this.canvas.height/8.0;
-		var radius=width/2.0*0.8;
-		var dot_radius=width/2.0*0.2;
+	this.input.value=value;
+	this.draw_board_m(value);
+}
 
-		if(piece=="r"||piece=="R")
-			this.ctx.fillStyle="red";
-		else if(piece=="b"||piece=="B")
-			this.ctx.fillStyle="#555555";
+checkers_board_editor_t.prototype.draw_board_m=function(board)
+{
+	this.clear_errors_m();
+	this.board.set_value(board);
 
-		var start_x=0;
-
-		if((xx+yy)%2==0)
-			start_x+=width;
-
-		var draw_x=xx*width+width/2+start_x;
-		var draw_y=yy*height+height/2;
-
-		this.ctx.beginPath();
-		this.ctx.arc(draw_x,draw_y,radius,0,2*Math.PI,false);
-		this.ctx.fill();
-		this.ctx.lineWidth=3;
-		this.ctx.strokeStyle="#000000";
-		this.ctx.stroke();
-
-		if(piece=="R"||piece=="B")
-			this.draw_crown_sprite_m(draw_x,draw_y,radius);
-	}
+	this.update_url_m(board);
 }
 
 checkers_board_editor_t.prototype.create_error_m=function(error)
@@ -203,55 +103,39 @@ checkers_board_editor_t.prototype.create_error_m=function(error)
 	return error_box;
 }
 
-checkers_board_editor_t.prototype.onmousemove_m=function(xx,yy)
+checkers_board_editor_t.prototype.append_error_m=function(error)
 {
-	var x_coord=Math.floor(xx/this.canvas.width*8);
-	var y_coord=Math.floor(yy/this.canvas.height*8);
-
-	if((x_coord+y_coord)%2!=0)
-		this.canvas.style.cursor="pointer";
-	else
-		this.canvas.style.cursor="default";
+	this.el.className="form-group has-feedback has-error";
+	this.error_boxes.push(this.create_error_m(error));
 }
 
-checkers_board_editor_t.prototype.onmouseclick_m=function(xx,yy)
+checkers_board_editor_t.prototype.clear_errors_m=function()
 {
-	var x_coord=Math.floor(xx/this.canvas.width*8);
-	var y_coord=Math.floor(yy/this.canvas.height*8);
+	this.el.className="form-group has-feedback";
 
-	if((x_coord+y_coord)%2!=0)
-	{
-		if(x_coord%2!=0)
-			x_coord-=1;
+	for(var key in this.error_boxes)
+		this.error_boxes[key].destroy();
 
-		var index=y_coord*4+x_coord/2;
-
-		if(this.input.value[index]=='r')
-			this.input.value=this.input.value.replace_at(index,'R');
-		else if(this.input.value[index]=='R')
-			this.input.value=this.input.value.replace_at(index,'b');
-		else if(this.input.value[index]=='b')
-			this.input.value=this.input.value.replace_at(index,'B');
-		else if(this.input.value[index]=='B')
-			this.input.value=this.input.value.replace_at(index,'_');
-		else
-			this.input.value=this.input.value.replace_at(index,'r');
-
-		this.draw_board(this.input.value);
-	}
+	this.error_boxes=[];
 }
 
-checkers_board_editor_t.prototype.draw_crown_sprite_m=function(draw_x,draw_y,radius)
+checkers_board_editor_t.prototype.onmouseclick_m=function(index)
 {
-	if(this.crown_sprite_loaded)
-	{
-		var img_w=radius*1.2;
-		var img_h=this.crown_sprite.height/this.crown_sprite.width*img_w;
-		this.ctx.drawImage(this.crown_sprite,draw_x-img_w/2.0,draw_y-img_h/2.0,img_w,img_h);
-	}
+	if(this.input.value[index]=='r')
+		this.input.value=this.input.value.replace_at(index,'R');
+	else if(this.input.value[index]=='R')
+		this.input.value=this.input.value.replace_at(index,'b');
+	else if(this.input.value[index]=='b')
+		this.input.value=this.input.value.replace_at(index,'B');
+	else if(this.input.value[index]=='B')
+		this.input.value=this.input.value.replace_at(index,'_');
 	else
-	{
-		var myself=this;
-		setTimeout(function(){myself.draw_crown_sprite_m(draw_x,draw_y,radius);},100);
-	}
+		this.input.value=this.input.value.replace_at(index,'r');
+
+	this.set_value(this.input.value);
+}
+
+checkers_board_editor_t.prototype.update_url_m=function(value)
+{
+	this.url.href=window.location.href.split('?')[0]+"?board="+value;
 }

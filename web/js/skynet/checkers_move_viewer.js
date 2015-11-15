@@ -13,11 +13,8 @@ function checkers_move_viewer_t(div)
 	this.boards=[];
 	this.boards_ptr=0;
 
-	this.error_region=document.createElement("div");
-	this.el.appendChild(this.error_region);
-
 	this.side_by_side=document.createElement("div");
-	this.error_region.appendChild(this.side_by_side);
+	this.el.appendChild(this.side_by_side);
 	this.side_by_side.className="row";
 	this.side_by_side.style.display="block";
 	this.side_by_side.style.marginLeft="auto";
@@ -31,17 +28,28 @@ function checkers_move_viewer_t(div)
 	this.board_col=document.createElement("div");
 	this.side_by_side.appendChild(this.board_col);
 	this.board_col.className="col-md-4";
-	this.board=new checkers_board_t(this.board_col);
-	this.board.onerror=function(error){myself.append_error_m(error);};
+	this.board_editor=new checkers_board_editor_t(this.board_col);
+	this.board_editor.input.readOnly=true;
+	this.board_editor.show_buttons(false);
+	this.board_editor.show_url(false);
+	this.board_editor.show_errors(false);
+	this.board=this.board_editor.board;
+	this.board.onclick=null;
 	this.board.style.display="block";
 	this.board.style.marginLeft="auto";
 	this.board.style.marginRight="auto";
 
 	this.list_col=document.createElement("div");
 	this.side_by_side.appendChild(this.list_col);
-	this.list_col.className="col-md-4";
+	this.list_col.className="col-md-5";
+
+	this.error_region=document.createElement("div");
+	this.list_col.appendChild(this.error_region);
+	this.error_region.style.padding="0px";
+	this.error_region.style.margin="0px";
+
 	this.list=document.createElement("textarea");
-	this.list_col.appendChild(this.list);
+	this.error_region.appendChild(this.list);
 	this.list.className="form-control input-normal";
 	this.list.style.resize="none";
 	this.list.style.width="320px";
@@ -68,20 +76,19 @@ function checkers_move_viewer_t(div)
 		"rrrrrr__rr_r__b_____b__bb__bbbbb";
 	this.list.onchange=function(){myself.update_boards_m();};
 
-	this.right_margin=document.createElement("div");
-	this.side_by_side.appendChild(this.right_margin);
-	this.right_margin.className="col-md-3";
+	this.error_region.appendChild(document.createElement("br"));
 
 	this.input_div=document.createElement("div");
 	this.error_region.appendChild(this.input_div);
-	this.input_div.style.marginTop="-10px";
-	this.input_div.style.width="500px";
+	this.input_div.style.width="100%";
 	this.input_div.style.height="12px";
+	this.input_div.style.marginTop="-4px";
+
+	this.list_col.appendChild(document.createElement("br"));
 
 	this.button_group=document.createElement("div");
-	this.el.appendChild(this.button_group);
+	this.list_col.appendChild(this.button_group);
 	this.button_group.className="text-center";
-	this.button_group.style.marginBottom="14px";
 
 	this.prev_button=make_button("Prev",function(){myself.prev_move();});
 	this.button_group.appendChild(this.prev_button);
@@ -103,6 +110,10 @@ function checkers_move_viewer_t(div)
 	this.button_group.appendChild(this.next_button);
 	this.next_button.style.marginLeft="5px";
 
+	this.right_margin=document.createElement("div");
+	this.side_by_side.appendChild(this.right_margin);
+	this.right_margin.className="col-md-1";
+
 	this.board.reset();
 	this.update_boards_m();
 };
@@ -110,14 +121,14 @@ function checkers_move_viewer_t(div)
 checkers_move_viewer_t.prototype.prev_move=function()
 {
 	this.boards_ptr-=1;
-	this.board.set_value(this.boards[this.boards_ptr]);
+	this.board_editor.set_value(this.boards[this.boards_ptr]);
 	this.update_disables_m();
 }
 
 checkers_move_viewer_t.prototype.next_move=function()
 {
 	this.boards_ptr+=1;
-	this.board.set_value(this.boards[this.boards_ptr]);
+	this.board_editor.set_value(this.boards[this.boards_ptr]);
 	this.update_disables_m();
 }
 
@@ -137,7 +148,7 @@ checkers_move_viewer_t.prototype.update_boards_m=function()
 	this.boards=this.parse_line_boards_m(this.list.value);
 
 	if(this.boards.length>0)
-		this.board.set_value(this.boards[this.boards_ptr]);
+		this.board_editor.set_value(this.boards[this.boards_ptr]);
 
 	this.update_disables_m();
 }

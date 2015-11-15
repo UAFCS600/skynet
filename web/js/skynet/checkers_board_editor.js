@@ -39,6 +39,9 @@ function checkers_board_editor_t(div)
 	this.input.onkeydown=function(){myself.draw_board_m(this.value);};
 	this.input.onkeyup=function(){myself.draw_board_m(this.value);};
 
+	this.error_region=document.createElement("div");
+	this.input_div.appendChild(this.error_region);
+
 	this.button_group=document.createElement("div");
 	this.el.appendChild(this.button_group);
 	this.button_group.className="text-center";
@@ -90,6 +93,34 @@ checkers_board_editor_t.prototype.set_value=function(value)
 	this.draw_board_m(value);
 }
 
+checkers_board_editor_t.prototype.show_buttons=function(show)
+{
+	if(show)
+		this.button_group.style.display="visible";
+	else
+		this.button_group.style.display="none";
+}
+
+checkers_board_editor_t.prototype.show_url=function(show)
+{
+	if(show)
+		this.url.style.display="visible";
+	else
+		this.url.style.display="none";
+}
+
+checkers_board_editor_t.prototype.show_errors=function(show)
+{
+	if(show)
+		this.error_region.style.display="visible";
+	else
+		this.error_region.style.display="none";
+}
+
+
+
+
+
 checkers_board_editor_t.prototype.draw_board_m=function(board)
 {
 	this.clear_errors_m();
@@ -100,9 +131,12 @@ checkers_board_editor_t.prototype.draw_board_m=function(board)
 
 checkers_board_editor_t.prototype.create_error_m=function(error)
 {
-	var error_box=new error_t(this.input_div,error);
+	var error_box=new error_t(this.error_region,error);
 	error_box.div.style.textAlign="center";
-	error_box.div.style.display="block";
+	if(this.error_region.style.display=="none")
+		error_box.div.style.display="none";
+	else
+		error_box.div.style.display="block";
 	error_box.div.style.marginLeft="auto";
 	error_box.div.style.marginRight="auto";
 	return error_box;

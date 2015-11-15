@@ -83,6 +83,18 @@ function checkers_move_viewer_t(div)
 	this.button_group.appendChild(this.prev_button);
 	this.prev_button.style.marginRight="5px";
 
+	this.index_indicator=document.createElement("input");
+	this.index_indicator.type="text";
+	this.button_group.appendChild(this.index_indicator);
+	this.index_indicator.className="form-control";
+	this.index_indicator.style.width="32px";
+	this.index_indicator.style.display="inline";
+	this.index_indicator.style.textAlign="center";
+	this.index_indicator.style.paddingLeft="0px";
+	this.index_indicator.style.paddingRight="0px";
+	this.index_indicator.value="";
+	this.index_indicator.readOnly=true;
+
 	this.next_button=make_button("Next",function(){myself.next_move();});
 	this.button_group.appendChild(this.next_button);
 	this.next_button.style.marginLeft="5px";
@@ -130,6 +142,18 @@ checkers_move_viewer_t.prototype.update_disables_m=function()
 {
 	this.next_button.disabled=(this.boards_ptr+1>=this.boards.length);
 	this.prev_button.disabled=(this.boards_ptr-1<0||this.boards.length<=1);
+
+	if(this.boards.length>0)
+		this.index_indicator.value=""+this.boards_ptr+"";
+	else
+		this.index_indicator.value="-";
+
+	var width=16+16*this.index_indicator.value.length;
+
+	if(width<48)
+		width=48;
+
+	this.index_indicator.style.width=width+"px";
 }
 
 checkers_move_viewer_t.prototype.parse_line_boards_m=function(str)

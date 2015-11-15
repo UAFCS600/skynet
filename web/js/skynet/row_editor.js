@@ -40,6 +40,11 @@ row_editor_t.prototype.set_value=function(str)
 		this.onchange_m();
 }
 
+row_editor_t.prototype.set_disabled=function(disabled)
+{
+	this.list.readOnly=disabled;
+}
+
 row_editor_t.prototype.onchange_m=function()
 {
 	this.error_div.clear();

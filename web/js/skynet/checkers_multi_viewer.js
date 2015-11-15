@@ -1,4 +1,4 @@
-function checkers_move_viewer_t(div)
+function checkers_multi_viewer_t(div)
 {
 	if(!div)
 		return null;
@@ -91,14 +91,14 @@ function checkers_move_viewer_t(div)
 	);
 };
 
-checkers_move_viewer_t.prototype.prev_move=function()
+checkers_multi_viewer_t.prototype.prev_move=function()
 {
 	this.boards_ptr-=1;
 	this.board_editor.set_value(this.boards[this.boards_ptr]);
 	this.update_disables_m();
 }
 
-checkers_move_viewer_t.prototype.next_move=function()
+checkers_multi_viewer_t.prototype.next_move=function()
 {
 	this.boards_ptr+=1;
 	this.board_editor.set_value(this.boards[this.boards_ptr]);
@@ -111,7 +111,7 @@ checkers_move_viewer_t.prototype.next_move=function()
 
 
 
-checkers_move_viewer_t.prototype.update_boards_m=function()
+checkers_multi_viewer_t.prototype.update_boards_m=function()
 {
 	this.list.error_div.clear();
 	this.boards_ptr=0;
@@ -125,7 +125,7 @@ checkers_move_viewer_t.prototype.update_boards_m=function()
 	this.update_disables_m();
 }
 
-checkers_move_viewer_t.prototype.update_disables_m=function()
+checkers_multi_viewer_t.prototype.update_disables_m=function()
 {
 	this.next_button.disabled=(this.boards_ptr+1>=this.boards.length);
 	this.prev_button.disabled=(this.boards_ptr-1<0||this.boards.length<=1);

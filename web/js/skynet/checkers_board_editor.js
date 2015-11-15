@@ -8,23 +8,19 @@ function checkers_board_editor_t(div)
 	this.div.appendChild(this.el);
 	var myself=this;
 
-	this.error_boxes=[];
+	this.error_div=new error_div_t(this.el);
 
-	this.board=new checkers_board_t(this.el);
-	this.board.onerror=function(error){myself.append_error_m(error);};
+	this.board=new checkers_board_t(this.error_div.el);
+	this.board.onerror=function(error){myself.error_div.add(error);};
 	this.board.onclick=function(index){myself.onmouseclick_m(index);};
 	this.board.style.display="block";
 	this.board.style.marginLeft="auto";
 	this.board.style.marginRight="auto";
-	this.board.style.marginBottom="20px";
 
-	this.input_div=document.createElement("div");
-	this.el.appendChild(this.input_div);
-	this.input_div.style.marginBottom="20px";
-	this.input_div.style.height="54px";
+	this.error_div.el.appendChild(document.createElement("br"));
 
 	this.input=document.createElement("input");
-	this.input_div.appendChild(this.input);
+	this.error_div.el.appendChild(this.input);
 	this.input.className="form-control";
 	this.input.style.width="320px";
 	this.input.style.textAlign="center";
@@ -38,9 +34,6 @@ function checkers_board_editor_t(div)
 	this.input.onchange=function(){myself.draw_board_m(this.value);};
 	this.input.onkeydown=function(){myself.draw_board_m(this.value);};
 	this.input.onkeyup=function(){myself.draw_board_m(this.value);};
-
-	this.error_region=document.createElement("div");
-	this.input_div.appendChild(this.error_region);
 
 	this.button_group=document.createElement("div");
 	this.el.appendChild(this.button_group);
@@ -73,7 +66,7 @@ function checkers_board_editor_t(div)
 
 checkers_board_editor_t.prototype.reset=function()
 {
-	this.clear_errors_m();
+	this.error_div.clear();
 	this.board.reset();
 	this.input.value=this.board.get_value();
 	this.update_url_m(this.input.value);
@@ -81,7 +74,7 @@ checkers_board_editor_t.prototype.reset=function()
 
 checkers_board_editor_t.prototype.clear=function()
 {
-	this.clear_errors_m();
+	this.error_div.clear();
 	this.board.clear();
 	this.input.value=this.board.get_value();
 	this.update_url_m(this.input.value);
@@ -109,54 +102,19 @@ checkers_board_editor_t.prototype.show_url=function(show)
 		this.url.style.display="none";
 }
 
-checkers_board_editor_t.prototype.show_errors=function(show)
-{
-	if(show)
-		this.error_region.style.display="visible";
-	else
-		this.error_region.style.display="none";
-}
-
 
 
 
 
 checkers_board_editor_t.prototype.draw_board_m=function(board)
 {
-	this.clear_errors_m();
+	this.error_div.clear();
 	this.board.set_value(board);
 
 	this.update_url_m(board);
 }
 
-checkers_board_editor_t.prototype.create_error_m=function(error)
-{
-	var error_box=new error_t(this.error_region,error);
-	error_box.div.style.textAlign="center";
-	if(this.error_region.style.display=="none")
-		error_box.div.style.display="none";
-	else
-		error_box.div.style.display="block";
-	error_box.div.style.marginLeft="auto";
-	error_box.div.style.marginRight="auto";
-	return error_box;
-}
 
-checkers_board_editor_t.prototype.append_error_m=function(error)
-{
-	this.el.className="form-group has-feedback has-error";
-	this.error_boxes.push(this.create_error_m(error));
-}
-
-checkers_board_editor_t.prototype.clear_errors_m=function()
-{
-	this.el.className="form-group has-feedback";
-
-	for(var key in this.error_boxes)
-		this.error_boxes[key].destroy();
-
-	this.error_boxes=[];
-}
 
 checkers_board_editor_t.prototype.onmouseclick_m=function(index)
 {

@@ -94,6 +94,9 @@ function evaluator_t(div)
 				this.data[key].input.cols=this.data[key].cols;
 			if(this.data[key].rows)
 				this.data[key].input.rows=this.data[key].rows;
+
+			this.data[key].input.style.fontFamily="monospace";
+			this.data[key].input.spellcheck=false;
 		}
 
 		var first_checked=false;

@@ -13,6 +13,10 @@ function checkers_board_editor_t(div)
 	this.board=new checkers_board_t(this.el);
 	this.board.onerror=function(error){myself.append_error_m(error);};
 	this.board.onclick=function(index){myself.onmouseclick_m(index);};
+	this.board.style.display="block";
+	this.board.style.marginLeft="auto";
+	this.board.style.marginRight="auto";
+	this.board.style.marginBottom="20px";
 
 	this.input_div=document.createElement("div");
 	this.el.appendChild(this.input_div);
@@ -29,6 +33,8 @@ function checkers_board_editor_t(div)
 	this.input.style.marginRight="auto";
 	this.input.style.marginBottom="10px";
 	this.input.style.padding="10px";
+	this.input.style.fontFamily="monospace";
+	this.input.spellcheck=false;
 	this.input.onchange=function(){myself.draw_board_m(this.value);};
 	this.input.onkeydown=function(){myself.draw_board_m(this.value);};
 	this.input.onkeyup=function(){myself.draw_board_m(this.value);};
@@ -95,7 +101,6 @@ checkers_board_editor_t.prototype.draw_board_m=function(board)
 checkers_board_editor_t.prototype.create_error_m=function(error)
 {
 	var error_box=new error_t(this.input_div,error);
-	error_box.div.style.width="320px";
 	error_box.div.style.textAlign="center";
 	error_box.div.style.display="block";
 	error_box.div.style.marginLeft="auto";

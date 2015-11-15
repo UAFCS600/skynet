@@ -15,10 +15,6 @@ function checkers_board_t(div)
 	this.el.appendChild(this.canvas);
 	this.canvas.width=320;
 	this.canvas.height=320;
-	this.canvas.style.display="block";
-	this.canvas.style.marginLeft="auto";
-	this.canvas.style.marginRight="auto";
-	this.canvas.style.marginBottom="20px";
 	this.canvas.addEventListener('mousemove',function(event)
 	{
 		var box=myself.canvas.getBoundingClientRect();
@@ -29,6 +25,8 @@ function checkers_board_t(div)
 		var box=myself.canvas.getBoundingClientRect();
 		myself.onmouseclick_m(event.clientX-box.left,event.clientY-box.top);
 	});
+
+	this.style=this.canvas.style;
 
 	this.crown_sprite_loaded=false;
 	this.crown_sprite=new Image();
@@ -164,13 +162,16 @@ checkers_board_t.prototype.draw_piece_m=function(xx,yy,piece)
 
 checkers_board_t.prototype.onmousemove_m=function(xx,yy)
 {
-	var x_coord=Math.floor(xx/this.canvas.width*8);
-	var y_coord=Math.floor(yy/this.canvas.height*8);
+	if(this.onclick)
+	{
+		var x_coord=Math.floor(xx/this.canvas.width*8);
+		var y_coord=Math.floor(yy/this.canvas.height*8);
 
-	if((x_coord+y_coord)%2!=0)
-		this.canvas.style.cursor="pointer";
-	else
-		this.canvas.style.cursor="default";
+		if((x_coord+y_coord)%2!=0)
+			this.canvas.style.cursor="pointer";
+		else
+			this.canvas.style.cursor="default";
+	}
 }
 
 checkers_board_t.prototype.onmouseclick_m=function(xx,yy)

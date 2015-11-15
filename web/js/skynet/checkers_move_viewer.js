@@ -42,11 +42,12 @@ function checkers_move_viewer_t(div)
 	this.list_col.className="col-md-4";
 	this.list=document.createElement("textarea");
 	this.list_col.appendChild(this.list);
-	this.list.className="form-control";
+	this.list.className="form-control input-normal";
 	this.list.style.resize="none";
-	this.list.cols=32+10;
+	this.list.style.width="320px";
 	this.list.style.height="320px";
 	this.list.style.display="block";
+	this.list.style.paddingRight="0px";
 	this.list.style.marginLeft="auto";
 	this.list.style.marginRight="auto";
 	this.list.style.fontFamily="monospace";

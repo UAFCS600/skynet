@@ -13,8 +13,11 @@ function checkers_move_viewer_t(div)
 	this.boards=[];
 	this.boards_ptr=0;
 
+	this.error_region=document.createElement("div");
+	this.el.appendChild(this.error_region);
+
 	this.side_by_side=document.createElement("div");
-	this.el.appendChild(this.side_by_side);
+	this.error_region.appendChild(this.side_by_side);
 	this.side_by_side.className="row";
 	this.side_by_side.style.display="block";
 	this.side_by_side.style.marginLeft="auto";
@@ -69,10 +72,10 @@ function checkers_move_viewer_t(div)
 	this.right_margin.className="col-md-3";
 
 	this.input_div=document.createElement("div");
-	this.el.appendChild(this.input_div);
-	this.input_div.style.marginBottom="20px";
+	this.error_region.appendChild(this.input_div);
+	this.input_div.style.marginTop="-10px";
 	this.input_div.style.width="500px";
-	this.input_div.style.height="54px";
+	this.input_div.style.height="12px";
 
 	this.button_group=document.createElement("div");
 	this.el.appendChild(this.button_group);
@@ -193,13 +196,15 @@ checkers_move_viewer_t.prototype.create_error_m=function(error)
 
 checkers_move_viewer_t.prototype.append_error_m=function(error)
 {
-	this.el.className="form-group has-feedback has-error";
-	this.error_boxes.push(this.create_error_m(error));
+	this.error_region.className="form-group has-feedback has-error";
+
+	if(this.error_boxes.length==0)
+		this.error_boxes.push(this.create_error_m(error));
 }
 
 checkers_move_viewer_t.prototype.clear_errors_m=function()
 {
-	this.el.className="form-group has-feedback";
+	this.error_region.className="form-group has-feedback";
 
 	for(var key in this.error_boxes)
 		this.error_boxes[key].destroy();

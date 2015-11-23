@@ -288,7 +288,7 @@ evaluator_t.prototype.validate=function()
 
 evaluator_t.prototype.submit=function()
 {
-	var json=json=this.validate();
+	var json=this.validate();
 	var myself=this;
 
 	request("?eval=true",json,

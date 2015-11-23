@@ -21,6 +21,11 @@ json_t JSON_parse(const std::string& stringified)
 	return json;
 }
 
+std::string to_string(const json_t& json)
+{
+	return json.asString();
+}
+
 std::vector<double> to_double_array(const json_t& json)
 {
 	if(!json.isArray())

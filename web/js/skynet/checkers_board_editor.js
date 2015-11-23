@@ -1,3 +1,5 @@
+//onchange(board) - called on change with the newest board
+
 function checkers_board_editor_t(div)
 {
 	if(!div)
@@ -13,6 +15,7 @@ function checkers_board_editor_t(div)
 	this.board=new checkers_board_t(this.error_div.el);
 	this.board.onerror=function(error){myself.error_div.add(error);};
 	this.board.onclick=function(index){myself.onmouseclick_m(index);};
+	this.board.onchange=function(board){if(myself.onchange)myself.onchange(board);};
 	this.board.style.display="block";
 	this.board.style.marginLeft="auto";
 	this.board.style.marginRight="auto";
@@ -32,7 +35,6 @@ function checkers_board_editor_t(div)
 	this.input.style.fontFamily="monospace";
 	this.input.spellcheck=false;
 	this.input.onchange=function(){myself.draw_board_m(this.value);};
-	this.input.onkeydown=function(){myself.draw_board_m(this.value);};
 	this.input.onkeyup=function(){myself.draw_board_m(this.value);};
 
 	this.button_group=document.createElement("div");

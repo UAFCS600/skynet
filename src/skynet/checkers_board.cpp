@@ -140,6 +140,12 @@ bool skynet::is_valid(const skynet::checkers_board_t& board)
 
 skynet::checkers_board_list_t skynet::move_generator(const skynet::checkers_board_t& board,const skynet::checkers_player_t& player)
 {
+	if(!is_valid(board))
+		throw std::runtime_error("Invalid board \""+board+"\".");
+
+	if(player!="red"&&player!="black")
+		throw std::runtime_error("Invalid player \""+player+"\" (expected \"red\" or \"black\").");
+
 	skynet::checkers_board_list_t boards;
 
 	bool jump=false;

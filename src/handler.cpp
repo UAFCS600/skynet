@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "json.hpp"
+#include "skynet/checkers_board.hpp"
 #include "skynet/neuralnet.hpp"
 
 std::map<std::string,std::string> get_headers(const http_message& message)
@@ -83,11 +84,61 @@ void eval_handler(mg_connection* connection,int event,const std::string& post_da
 	}
 	catch(std::exception& error)
 	{
-		mg_send(connection,"{\"error\":\""+std::string(error.what())+"\"}","application/json");
+		json_t json;
+		json["error"]=error.what();
+		mg_send(connection,JSON_serialize(json),"application/json");
 	}
 	catch(...)
 	{
-		mg_send(connection,"{\"error\":\"Could not parse JSON object.\"}","application/json");
+		json_t json;
+		json["error"]="Could not parse JSON object.";
+		mg_send(connection,JSON_serialize(json),"application/json");
+	}
+}
+
+void move_generator_handler(mg_connection* connection,int event,const std::string& post_data)
+{
+	try
+	{
+		json_t json=JSON_parse(post_data);
+
+		if(!json.isObject())
+			throw std::runtime_error("Not a JSON object.");
+
+		skynet::checkers_board_t board=to_string(json["board"]);
+		skynet::checkers_player_t player=to_string(json["player"]);
+
+		int times=100000;
+		auto start=std::chrono::system_clock::now();
+		skynet::checkers_board_list_t moves;
+
+		for(auto ii=0;ii<times;++ii)
+			moves=skynet::move_generator(board,player);
+
+		auto end=std::chrono::system_clock::now();
+		auto time=std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count()/(double)times;
+
+		std::string moves_array;
+
+		for(auto move:moves)
+			moves_array+="\""+move+"\",";
+
+		if(moves_array.size()>0&&moves_array[moves_array.size()-1]==',')
+			moves_array=moves_array.substr(0,moves_array.size()-1);
+
+		mg_send(connection,"{\"moves\":["+moves_array+"],\"ns\":"+std::to_string(time)+"}","application/json");
+	}
+	catch(std::exception& error)
+	{
+		json_t json;
+		json["error"]=error.what();
+		mg_send(connection,JSON_serialize(json),"application/json");
+	}
+	catch(...)
+	{
+		json_t json;
+		json["error"]="Could not parse JSON object.";
+		mg_send(connection,JSON_serialize(json),"application/json");
 	}
 }
 
@@ -126,9 +177,12 @@ void client_handler(mg_connection* connection,int event,void* event_data)
 			std::cout<<"\tPost:  \""<<post_data<<"\""<<std::endl;
 
 		std::string is_eval=get_query(&message.query_string,"eval");
+		std::string is_move_generator=get_query(&message.query_string,"move_generator");
 
 		if(is_eval!=""&&is_eval!="false")
 			eval_handler(connection,event,post_data);
+		else if(is_move_generator!=""&&is_move_generator!="false")
+			move_generator_handler(connection,event,post_data);
 		else
 			mg_serve_http(connection,&message,*test);
 	}

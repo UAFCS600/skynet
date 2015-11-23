@@ -63,7 +63,11 @@ row_editor_t.prototype.parse_rows_m=function(str,hide_errors)
 		str=str.substring(0,str.length-1);
 
 	str=str.replace(/\n/g,"\",\"");
-	str="{\"rows\":[\""+str+"\"]}";
+
+	if(str.length>0)
+		str="\""+str+"\"";
+
+	str="{\"rows\":["+str+"]}";
 	var json=JSON.parse(str);
 
 	for(var ii=0;ii<json.rows.length;++ii)

@@ -1,3 +1,5 @@
+//onchange(board) - called on change with the newest board
+
 function checkers_board_t(div)
 {
 	if(!div)
@@ -69,8 +71,12 @@ checkers_board_t.prototype.set_value=function(board)
 {
 	try
 	{
+		old_value=this.value;
 		this.draw_board_m(board);
 		this.value=board;
+
+		if(this.value!=old_value&&this.onchange)
+			this.onchange(this.value);
 	}
 	catch(error)
 	{

@@ -51,6 +51,8 @@ function checkers_move_generator_t(div)
 	this.list_col=document.createElement("div");
 	this.side_by_side.appendChild(this.list_col);
 	this.list_col.className="col-md-4";
+	this.list_col.style.padding="0px";
+	this.list_col.style.margin="0px";
 
 	this.board_col=document.createElement("div");
 	this.side_by_side.appendChild(this.board_col);

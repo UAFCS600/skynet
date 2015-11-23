@@ -140,52 +140,163 @@ void test_neural_network_construction()
 	}
 }
 
+void test_checkers_player_to_string()
+{
+	std::cout<<"  To String"<<std::endl;
+
+	std::string red_test(std::to_string(skynet::RED));
+
+	if(red_test!="red")
+	{
+		std::cout<<"    FAIL std::to_string(skynet::RED) should yield \"red\" but got \""+red_test+"\"."<<std::endl;
+		failed=true;
+	}
+
+	std::string black_test(std::to_string(skynet::BLACK));
+
+	if(black_test!="black")
+	{
+		std::cout<<"    FAIL std::to_string(skynet::BLACK) should yield \"black\" but got \""+black_test+"\"."<<std::endl;
+		failed=true;
+	}
+}
+
+void test_checkers_player_from_string()
+{
+	std::cout<<"  From String"<<std::endl;
+
+	std::vector<std::string> players_test
+	{
+		"red",
+		"black",
+		"Red",
+		"Black",
+		"RED",
+		"BLACK",
+		"iosjdf",
+		""
+	};
+
+	std::vector<skynet::checkers_player_t> players_correct
+	{
+		skynet::RED,
+		skynet::BLACK,
+		skynet::RED,
+		skynet::BLACK,
+		skynet::RED,
+		skynet::BLACK,
+		skynet::RED,  //THROWS, BUT NEED LOOKUP
+		skynet::RED,  //THROWS, BUT NEED LOOKUP
+	};
+
+	std::vector<bool> should_fail
+	{
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		true,
+		true
+	};
+
+	for(size_t ii=0;ii<players_test.size();++ii)
+	{
+		try
+		{
+			skynet::checkers_player_t player=skynet::checkers_player_from_string(players_test[ii]);
+
+			if(player!=players_correct[ii])
+				throw std::runtime_error("Expected \""+std::to_string(players_correct[ii])+"\" but got \""+players_test[ii]+"\".");
+
+			if(should_fail[ii])
+				throw std::runtime_error("Should fail.");
+
+			#ifdef SHOW_PASSES
+			std::cout<<"    PASS"<<std::endl;
+			#endif
+		}
+		catch(std::exception& error)
+		{
+			if(!should_fail[ii])
+			{
+				std::cout<<"    FAIL Player \""+players_test[ii]+"\" error ("<<error.what()<<")."<<std::endl;
+				failed=true;
+			}
+			#ifdef SHOW_PASSES
+			else
+				std::cout<<"    PASS"<<std::endl;
+			#endif
+		}
+		catch(...)
+		{
+			if(!should_fail[ii])
+			{
+				std::cout<<"    FAIL Player \""+players_test[ii]+"\" error (unknown error)."<<std::endl;
+				failed=true;
+			}
+			#ifdef SHOW_PASSES
+			else
+				std::cout<<"    PASS"<<std::endl;
+			#endif
+		}
+	}
+}
+
+void test_checkers_player_validation()
+{
+	std::cout<<"Checkers Player"<<std::endl;
+	test_checkers_player_to_string();
+	test_checkers_player_from_string();
+}
+
 void test_checkers_is_valid(const std::string& message,const skynet::checkers_board_t& board,const bool should_fail)
 {
 	try
 	{
-		if(skynet::is_valid(board))
+		skynet::validate(board);
+
+		if(!should_fail)
 		{
-			if(!should_fail)
-			{
-				#ifdef SHOW_PASSES
-					std::cout<<"    PASS "<<message<<" (\""<<board<<"\")."<<std::endl;
-				#endif
-			}
-			else
-			{
-				throw std::runtime_error("expected true got false");
-			}
+			#ifdef SHOW_PASSES
+				std::cout<<"    PASS "<<message<<" (\""<<board<<"\")."<<std::endl;
+			#endif
 		}
 		else
 		{
-			if(should_fail)
-			{
-				#ifdef SHOW_PASSES
-					std::cout<<"    PASS "<<message<<" (\""<<board<<"\")."<<std::endl;
-				#endif
-			}
-			else
-			{
-				throw std::runtime_error("expected false got true");
-			}
+			throw std::runtime_error("expected true got false");
 		}
 	}
 	catch(std::exception& error)
 	{
-		std::cout<<"    FAIL "<<message<<" (\""<<board<<"\") error ("<<error.what()<<")."<<std::endl;
-		failed=true;
+		if(!should_fail)
+		{
+			std::cout<<"    FAIL "<<message<<" (\""<<board<<"\") error ("<<error.what()<<")."<<std::endl;
+			failed=true;
+		}
+		#ifdef SHOW_PASSES
+		else
+			std::cout<<"    PASS "<<message<<" (\""<<board<<"\")."<<std::endl;
+		#endif
 	}
 	catch(...)
 	{
-		std::cout<<"    FAIL "<<message<<" (\""<<board<<"\") error (unknown error)."<<std::endl;
-		failed=true;
+		if(!should_fail)
+		{
+			std::cout<<"    FAIL "<<message<<" (\""<<board<<"\") error (unknown error)."<<std::endl;
+			failed=true;
+		}
+		#ifdef SHOW_PASSES
+		else
+			std::cout<<"    PASS "<<message<<" (\""<<board<<"\")."<<std::endl;
+		#endif
 	}
 }
 
 void test_checkers_board_validation()
 {
-	std::cout<<"  Board Validation"<<std::endl;
+	std::cout<<"Checkers Board Validation"<<std::endl;
 	test_checkers_is_valid("Empty string","",true);
 
 	test_checkers_is_valid("Long board","bbbbbbbbbbbb________rrrrrrrrrrrr_",true);
@@ -203,11 +314,7 @@ void test_checkers_move(const std::string& message,const skynet::checkers_board_
 
 	try
 	{
-		if(!skynet::is_valid(board))
-			throw std::runtime_error("Input board is invalid");
-
-		if(player!="red"&&player!="black")
-			throw std::runtime_error("Input player is invalid");
+		skynet::validate(board);
 
 		auto out_boards=skynet::move_generator(board,player);
 		std::sort(out_boards.begin(),out_boards.end());
@@ -220,13 +327,25 @@ void test_checkers_move(const std::string& message,const skynet::checkers_board_
 		{
 			bool found=false;
 
-			if(!skynet::is_valid(expected_boards[ii]))
+			try
+			{
+				skynet::validate(board);
+			}
+			catch(...)
+			{
 				throw std::runtime_error("Expected board ["+std::to_string(ii)+"](\""+expected_boards[ii]+"\") is invalid");
+			}
 
 			for(size_t jj=0;jj<out_boards.size();++jj)
 			{
-				if(!skynet::is_valid(out_boards[jj]))
+				try
+				{
+					skynet::validate(out_boards[jj]);
+				}
+				catch(...)
+				{
 					throw std::runtime_error("Out board ["+std::to_string(jj)+"](\""+out_boards[jj]+"\") is invalid");
+				}
 
 				if(out_boards[jj]==expected_boards[ii])
 				{
@@ -312,7 +431,7 @@ void test_checkers_move_singles()
 			"________________R______________b"
 		};
 
-		test_checkers_move("Single red king left edge",board,"red",true,expected,false);
+		test_checkers_move("Single red king left edge",board,skynet::RED,true,expected,false);
 	}
 
 	{
@@ -324,7 +443,7 @@ void test_checkers_move_singles()
 			"_______________R_______________b"
 		};
 
-		test_checkers_move("Single red king right edge",board,"red",true,expected,false);
+		test_checkers_move("Single red king right edge",board,skynet::RED,true,expected,false);
 	}
 }
 
@@ -339,7 +458,7 @@ void test_checkers_crowns()
 			"______________________________Rb"
 		};
 
-		test_checkers_move("Given pre-crown red pawn state, then the red pawn is crowned",board,"red",true,expected,false);
+		test_checkers_move("Given pre-crown red pawn state, then the red pawn is crowned",board,skynet::RED,true,expected,false);
 	}
 
 	{
@@ -350,7 +469,7 @@ void test_checkers_crowns()
 			"B_____________________________R_"
 		};
 
-		test_checkers_move("Given pre-crown black pawn state, then the black pawn is crowned",board,"black",true,expected,false);
+		test_checkers_move("Given pre-crown black pawn state, then the black pawn is crowned",board,skynet::BLACK,true,expected,false);
 	}
 }
 
@@ -366,7 +485,7 @@ void test_checkers_forced_jumps()
 				"_B_________________r______b_____"
 			};
 
-			test_checkers_move("Jump must be taken by black pawn and black pawn is crowned",board,"black",true,expected,false);
+			test_checkers_move("Jump must be taken by black pawn and black pawn is crowned",board,skynet::BLACK,true,expected,false);
 		}
 
 		{
@@ -375,7 +494,7 @@ void test_checkers_forced_jumps()
 				"____________r______r______b_____"
 			};
 
-			test_checkers_move("Jump must be taken by red pawn and red pawn is crowned",board,"red",true,expected,false);
+			test_checkers_move("Jump must be taken by red pawn and red pawn is crowned",board,skynet::RED,true,expected,false);
 		}
 	}
 }
@@ -400,7 +519,7 @@ void test_checkers_opening_moves()
 
 			};
 
-			test_checkers_move("Red opening moves.",board,"red",true,expected,false);
+			test_checkers_move("Red opening moves.",board,skynet::RED,true,expected,false);
 		}
 
 		{
@@ -415,7 +534,7 @@ void test_checkers_opening_moves()
 				"rrrrrrrrrrrr_______bbbb_bbbbbbbb"
 			};
 
-			test_checkers_move("Black opening moves.",board,"black",true,expected,false);
+			test_checkers_move("Black opening moves.",board,skynet::BLACK,true,expected,false);
 		}
 	}
 }
@@ -473,8 +592,7 @@ void test_checkers_move_file(const std::string& title,const std::string& filenam
 
 			skynet::checkers_board_t board(temp);
 
-			if(!skynet::is_valid(temp))
-				throw std::runtime_error("invalid test board \""+temp+"\".");
+			skynet::validate(board);
 
 			bool should_fail=false;
 
@@ -489,10 +607,7 @@ void test_checkers_move_file(const std::string& title,const std::string& filenam
 			if(!std::getline(istr,temp))
 				break;
 
-			skynet::checkers_player_t player(temp);
-
-			if(player!="red"&&player!="black")
-				throw std::runtime_error("Invalid player value \""+temp+"\" (expected \"red\" or \"black\").");
+			skynet::checkers_player_t player=skynet::checkers_player_from_string(temp);
 
 			if(!std::getline(istr,temp))
 				break;
@@ -557,6 +672,7 @@ void test_checkers_move_generator()
 int main()
 {
 	test_neural_network_construction();
+	test_checkers_player_validation();
 	test_checkers_board_validation();
 	test_checkers_move_generator();
 

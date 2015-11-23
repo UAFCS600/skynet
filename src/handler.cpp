@@ -106,7 +106,9 @@ void move_generator_handler(mg_connection* connection,int event,const std::strin
 			throw std::runtime_error("Not a JSON object.");
 
 		skynet::checkers_board_t board=to_string(json["board"]);
-		skynet::checkers_player_t player=to_string(json["player"]);
+
+		std::string player_raw(to_string(json["player"]));
+		skynet::checkers_player_t player=skynet::checkers_player_from_string(player_raw);
 
 		int times=100000;
 		auto start=std::chrono::system_clock::now();

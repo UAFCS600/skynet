@@ -126,25 +126,19 @@ static bool find_jump(const skynet::checkers_board_t& board,const size_t positio
 	return ret;
 }
 
-bool skynet::is_valid(const skynet::checkers_board_t& board)
+void skynet::validate(const skynet::checkers_board_t& board)
 {
 	if(board.size()!=32)
-		return false;
+		throw std::runtime_error("Invalid board length (expected 32 got "+std::to_string(board.size())+").");
 
-	for(auto ii:board)
-		if(ii!='r'&&ii!='R'&&ii!='b'&&ii!='B'&&ii!='_')
-			return false;
-
-	return true;
+	for(size_t ii=0;ii<32;++ii)
+		if(board[ii]!='r'&&board[ii]!='R'&&board[ii]!='b'&&board[ii]!='B'&&board[ii]!='_')
+			throw std::runtime_error("Invalid piece at position "+std::to_string(ii)+" '"+std::to_string(board[ii])+"'.");
 }
 
 skynet::checkers_board_list_t skynet::move_generator(const skynet::checkers_board_t& board,const skynet::checkers_player_t& player)
 {
-	if(!is_valid(board))
-		throw std::runtime_error("Invalid board \""+board+"\".");
-
-	if(player!="red"&&player!="black")
-		throw std::runtime_error("Invalid player \""+player+"\" (expected \"red\" or \"black\").");
+	validate(board);
 
 	skynet::checkers_board_list_t boards;
 
@@ -152,14 +146,14 @@ skynet::checkers_board_list_t skynet::move_generator(const skynet::checkers_boar
 
 	//Find Jumps
 	for(size_t ii=0;ii<32;++ii)
-		if((is_red(board[ii])&&player=="red")||(is_blk(board[ii])&&player=="black"))
+		if((is_red(board[ii])&&player==RED)||(is_blk(board[ii])&&player==BLACK))
 			jump|=find_jump(board,ii,boards);
 
 	//Find Moves
 	for(size_t ii=0;ii<32&&!jump;++ii)
 	{
 		//Check Black pieces and Red Kings
-		if((is_red_king(board[ii])&&player=="red")||(is_blk(board[ii])&&player=="black"))
+		if((is_red_king(board[ii])&&player==RED)||(is_blk(board[ii])&&player==BLACK))
 		{
 			for(size_t jj=0;jj<2;++jj)
 			{
@@ -179,7 +173,7 @@ skynet::checkers_board_list_t skynet::move_generator(const skynet::checkers_boar
 		}
 
 		//Check Black Kings and Red pieces
-		if((is_red(board[ii])&&player=="red")||(is_blk_king(board[ii])&&player=="black"))
+		if((is_red(board[ii])&&player==RED)||(is_blk_king(board[ii])&&player==BLACK))
 		{
 			for(size_t jj=2;jj<4;++jj)
 			{
@@ -200,4 +194,27 @@ skynet::checkers_board_list_t skynet::move_generator(const skynet::checkers_boar
 	}
 
 	return boards;
+}
+
+skynet::checkers_player_t skynet::checkers_player_from_string(const std::string& str)
+{
+	std::string copy=str;
+
+	for(auto& ii:copy)
+		ii=std::tolower(ii);
+
+	if(copy=="red")
+		return skynet::RED;
+	if(copy=="black")
+		return skynet::BLACK;
+
+	throw std::runtime_error("Invalid player value \""+str+"\" (expected \"red\" or \"black\").");
+}
+
+std::string std::to_string(skynet::checkers_player_t player)
+{
+	if(player==skynet::RED)
+		return "red";
+
+	return "black";
 }

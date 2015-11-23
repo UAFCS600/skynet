@@ -26,12 +26,19 @@ namespace skynet
 	typedef std::vector<neuralnet_t> neuralnet_list_t;
 
 	//Checkers Board Stuff
-	typedef std::string checkers_player_t;
+	enum checkers_player_t
+	{
+		RED,
+		BLACK
+	};
+
+	checkers_player_t checkers_player_from_string(const std::string& str);
+
 	typedef std::string checkers_status_t;
 	typedef std::string checkers_board_t;
 	typedef std::vector<checkers_board_t> checkers_board_list_t;
-	bool is_valid(const checkers_board_t& board);
-	checkers_board_list_t move_generator(const checkers_board_t& board,const checkers_player_t& player);
+	void validate(const checkers_board_t& board); //Throws on bad board
+	checkers_board_list_t move_generator(const checkers_board_t& board,const checkers_player_t& player); //Throws on bad board
 
 	//Alpha Beta
 	class alpha_beta_t
@@ -62,6 +69,11 @@ namespace skynet
 
 	//Evolution
 	neuralnet_list_t evolve(const ranking_list_t& ranking);
+}
+
+namespace std
+{
+	std::string to_string(skynet::checkers_player_t player);
 }
 
 #endif

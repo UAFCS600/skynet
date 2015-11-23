@@ -21,6 +21,8 @@ function checkers_multi_viewer_t(div)
 	this.board_col=document.createElement("div");
 	this.side_by_side.appendChild(this.board_col);
 	this.board_col.className="col-md-4";
+	this.board_col.style.padding="0px";
+	this.board_col.style.margin="0px";
 	this.board_editor=new checkers_board_editor_t(this.board_col);
 	this.board_editor.input.readOnly=true;
 	this.board_editor.show_buttons(false);
@@ -34,7 +36,7 @@ function checkers_multi_viewer_t(div)
 
 	this.list_col=document.createElement("div");
 	this.side_by_side.appendChild(this.list_col);
-	this.list_col.className="col-md-5";
+	this.list_col.className="col-md-4";
 
 	this.list=new row_editor_t(this.list_col);
 	this.list.validator=function(row){myself.board.validate_board(row);};

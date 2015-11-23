@@ -21,6 +21,8 @@ function checkers_move_generator_t(div)
 	this.board_col_new=document.createElement("div");
 	this.side_by_side.appendChild(this.board_col_new);
 	this.board_col_new.className="col-md-4";
+	this.board_col_new.style.padding="0px";
+	this.board_col_new.style.margin="0px";
 	this.board_editor_new=new checkers_board_editor_t(this.board_col_new);
 	this.board_editor_new.onchange=function(board){myself.get_moves_m(board);};
 	this.board_editor_new.show_buttons(false);
@@ -52,6 +54,8 @@ function checkers_move_generator_t(div)
 
 	this.board_col=document.createElement("div");
 	this.side_by_side.appendChild(this.board_col);
+	this.board_col.style.padding="0px";
+	this.board_col.style.margin="0px";
 	this.board_col.className="col-md-4";
 	this.board_editor=new checkers_board_editor_t(this.board_col);
 	this.board_editor.input.readOnly=true;

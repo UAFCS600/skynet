@@ -154,8 +154,6 @@ checkers_move_generator_t.prototype.update_boards_m=function()
 	if(!this.boards)
 		this.boards=[];
 
-	console.log(this.boards);
-
 	if(this.boards.length>0)
 		this.board_editor.set_value(this.boards[this.boards_ptr]);
 	else

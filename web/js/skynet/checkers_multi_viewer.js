@@ -18,10 +18,6 @@ function checkers_multi_viewer_t(div)
 	this.side_by_side.style.marginLeft="auto";
 	this.side_by_side.style.marginRight="auto";
 
-	this.left_margin=document.createElement("div");
-	this.side_by_side.appendChild(this.left_margin);
-	this.left_margin.className="col-md-2";
-
 	this.board_col=document.createElement("div");
 	this.side_by_side.appendChild(this.board_col);
 	this.board_col.className="col-md-4";
@@ -67,10 +63,6 @@ function checkers_multi_viewer_t(div)
 	this.next_button=make_button("Next",function(){myself.next_move();});
 	this.button_group.appendChild(this.next_button);
 	this.next_button.style.marginLeft="5px";
-
-	this.right_margin=document.createElement("div");
-	this.side_by_side.appendChild(this.right_margin);
-	this.right_margin.className="col-md-1";
 
 	this.board.reset();
 	this.update_boards_m();

@@ -8,12 +8,34 @@
 #include "json.hpp"
 #include "skynet/neuralnet.hpp"
 
-std::string get_query(const mg_connection* connection,const std::string& var)
+std::map<std::string,std::string> get_headers(const http_message& message)
+{
+	std::map<std::string,std::string> headers;
+
+	for(int ii=0;ii<MG_MAX_HTTP_HEADERS;++ii)
+	{
+		std::string key(message.header_names[ii].p,message.header_names[ii].len);
+		std::string value(message.header_values[ii].p,message.header_values[ii].len);
+
+		if(key=="")
+			break;
+
+		headers[key]=value;
+	}
+
+	return headers;
+}
+
+std::string get_query(const mg_str* query_string,const std::string& var)
 {
 	std::string temp;
-	temp.resize(32767);
-	int size=mg_get_var(connection,var.c_str(),(char*)temp.data(),temp.size());
-	temp.resize(std::max(0,size));
+	temp.resize(100);
+	int size=mg_get_http_var(query_string,var.c_str(),(char*)temp.c_str(),temp.size());
+
+	if(size<0)
+		size=0;
+
+	temp.resize(size);
 	return temp;
 }
 
@@ -28,7 +50,7 @@ void mg_send_status(mg_connection* connection,const std::string& status)
 	mg_printf(connection,"HTTP/1.1 %s\r\nContent-Length: 0\r\n\r\n\r\n\r\n",status.c_str());
 }
 
-int eval_handler(mg_connection* connection,mg_event event,const std::string& post_data)
+void eval_handler(mg_connection* connection,int event,const std::string& post_data)
 {
 	try
 	{
@@ -67,35 +89,33 @@ int eval_handler(mg_connection* connection,mg_event event,const std::string& pos
 	{
 		mg_send(connection,"{\"error\":\"Could not parse JSON object.\"}","application/json");
 	}
-
-	return MG_TRUE;
 }
 
-int client_handler(mg_connection* connection,mg_event event)
+void client_handler(mg_connection* connection,int event,void* event_data)
 {
-	if(event==MG_AUTH)
-		return MG_TRUE;
-
-	if(event==MG_REQUEST)
+	if(event==MG_EV_HTTP_REQUEST)
 	{
-		std::string client(connection->remote_ip);
-		for(int ii=0;ii<connection->num_headers&&client=="127.0.0.1";++ii)
-			if(std::string(connection->http_headers[ii].name)=="X-Forwarded-For")
-				client=connection->http_headers[ii].value;
+		mg_serve_http_opts* test=(mg_serve_http_opts*)(connection->mgr->user_data);
+		http_message message=*(http_message*)event_data;
 
-		std::string method=(connection->request_method);
-		std::string request(connection->uri);
-		std::string post_data;
+		char client_raw[200];
+		mg_sock_to_str(connection->sock,client_raw,200,MG_SOCK_STRINGIFY_IP);
+		std::string client(client_raw);
 
-		if(method=="POST")
-			post_data=std::string(connection->content,connection->content_len);
+		auto headers=get_headers(message);
 
-		std::string query;
-		if(connection->query_string!=nullptr)
-			query=connection->query_string;
+		if(client=="127.0.0.1")
+			for(auto header:headers)
+				if(header.first=="X-Forwarded-For")
+					client=header.second;
 
-		std::cout<<client;
-		if(client==std::string(connection->remote_ip))
+		std::string method(message.method.p,message.method.len);
+		std::string request(message.uri.p,message.uri.len);
+		std::string query(message.query_string.p,message.query_string.len);
+		std::string post_data(message.body.p,message.body.len);
+
+		std::cout<<client<<std::flush;
+		if(client==std::string(client_raw))
 			std::cout<<" NOLOOKUP";
 		else
 			std::cout<<" LOOKUP  ";
@@ -105,11 +125,11 @@ int client_handler(mg_connection* connection,mg_event event)
 		if(method=="POST")
 			std::cout<<"\tPost:  \""<<post_data<<"\""<<std::endl;
 
-		std::string is_eval=get_query(connection,"eval");
+		std::string is_eval=get_query(&message.query_string,"eval");
 
 		if(is_eval!=""&&is_eval!="false")
-			return eval_handler(connection,event,post_data);
+			eval_handler(connection,event,post_data);
+		else
+			mg_serve_http(connection,&message,*test);
 	}
-
-	return MG_FALSE;
 }

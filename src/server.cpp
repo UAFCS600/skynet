@@ -1,4 +1,6 @@
+#define NS_ENABLE_SSL
 #include <iostream>
+#include <memory>
 #include <mongoose/mongoose.h>
 #include <stdexcept>
 #include <string>
@@ -7,43 +9,40 @@
 
 int main(int argc,char* argv[])
 {
+	std::unique_ptr<mg_serve_http_opts> server_options(new mg_serve_http_opts);
+	server_options->document_root="web";
+	server_options->enable_directory_listing="no";
+	server_options->ssi_pattern="**.html$";
+	std::string port="8080";
+
 	try
 	{
-		std::string ip="0.0.0.0";
-		std::string port="8080";
-		std::string web_root="web";
+		mg_mgr manager;
+		mg_mgr_init(&manager,server_options.get());
 
-		mg_server* server=mg_create_server(nullptr,client_handler);
+		mg_connection* server=mg_bind(&manager,port.c_str(),client_handler);
 
-		if(server==nullptr)
-		{
-			std::cout<<"Server failed to start (Out of ram? Out of disk space?)."<<std::endl;
-			return 0;
-		}
+		if(!server)
+			throw std::runtime_error("Failed ot open port "+port+
+				" (Is something running on this port? Do you have permissions?).");
 
-		std::string address=ip+":"+port;
+		mg_set_protocol_http_websocket(server);
 
-		if(mg_set_option(server,"listening_port",address.c_str())!=0)
-		{
-			std::cout<<"Failed to open port "<<mg_get_option(server,"listening_port")<<
-				" (Is something running on this port? Do you have permissions?)."<<std::endl;
-			return 0;
-		}
+		std::cout<<"Starting web server on port "<<port<<std::endl;
 
-		mg_set_option(server,"document_root",web_root.c_str());
-		mg_set_option(server,"ssi_pattern","**.html$");
+		while(true)
+			mg_mgr_poll(&manager,1000);
 
-		std::cout<<"Server started on "<<mg_get_option(server,"listening_port")<<" with web root \""<<
-			web_root<<"\"."<<std::endl;
-
-		while(mg_poll_server(server,1000))
-		{}
-
-		mg_destroy_server(&server);
+		mg_mgr_free(&manager);
 	}
-	catch(std::exception& exception)
+	catch(std::exception& error)
 	{
-		std::cout<<exception.what()<<std::endl;
+		std::cout<<error.what()<<std::endl;
+		return 1;
+	}
+	catch(...)
+	{
+		std::cout<<"Unknown error occurred."<<std::endl;
 		return 1;
 	}
 

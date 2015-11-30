@@ -211,10 +211,23 @@ skynet::checkers_player_t skynet::checkers_player_from_string(const std::string&
 	throw std::runtime_error("Invalid player value \""+str+"\" (expected \"red\" or \"black\").");
 }
 
-std::string std::to_string(skynet::checkers_player_t player)
+std::string std::to_string(const skynet::checkers_player_t& player)
 {
 	if(player==skynet::RED)
 		return "red";
 
 	return "black";
+}
+
+std::string std::to_string(const skynet::checkers_board_list_t& boards)
+{
+	std::string str;
+
+	for(auto board:boards)
+		str+="\""+board+"\",";
+
+	if(str.size()>0&&str[str.size()-1]==',')
+		str=str.substr(0,str.size()-1);
+
+	return "["+str+"]";
 }

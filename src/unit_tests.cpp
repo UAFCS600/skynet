@@ -251,6 +251,29 @@ void test_checkers_player_validation()
 	test_checkers_player_from_string();
 }
 
+void test_checkers_board_list_to_string()
+{
+	std::cout<<"  To String"<<std::endl;
+
+	skynet::checkers_board_list_t boards{"rrrrrrrr_rrrr_______bbbbbbbbbbbb","rrrrrrrr_rrr_r______bbbbbbbbbbbb"};
+	std::string stringify("{\"rrrrrrrr_rrrr_______bbbbbbbbbbbb\",\"rrrrrrrr_rrr_r______bbbbbbbbbbbb\"}");
+
+	std::string expected("[\"rrrrrrrr_rrrr_______bbbbbbbbbbbb\",\"rrrrrrrr_rrr_r______bbbbbbbbbbbb\"]");
+	std::string got(std::to_string(boards));
+
+	if(expected!=got)
+	{
+		std::cout<<"    FAIL std::to_string("<<stringify<<") should yield \""+expected+"\" but got \""+got+"\"."<<std::endl;
+		failed=true;
+	}
+}
+
+void test_checkers_board_list_validation()
+{
+	std::cout<<"Checkers Board List"<<std::endl;
+	test_checkers_board_list_to_string();
+}
+
 void test_checkers_is_valid(const std::string& message,const skynet::checkers_board_t& board,const bool should_fail)
 {
 	try
@@ -674,6 +697,7 @@ int main()
 	test_neural_network_construction();
 	test_checkers_player_validation();
 	test_checkers_board_validation();
+	test_checkers_board_list_validation();
 	test_checkers_move_generator();
 
 	if(failed)

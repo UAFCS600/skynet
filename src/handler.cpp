@@ -120,15 +120,7 @@ void move_generator_handler(mg_connection* connection,int event,const std::strin
 		auto end=std::chrono::system_clock::now();
 		auto time=std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count()/(double)times;
 
-		std::string moves_array;
-
-		for(auto move:moves)
-			moves_array+="\""+move+"\",";
-
-		if(moves_array.size()>0&&moves_array[moves_array.size()-1]==',')
-			moves_array=moves_array.substr(0,moves_array.size()-1);
-
-		mg_send(connection,"{\"moves\":["+moves_array+"],\"ns\":"+std::to_string(time)+"}","application/json");
+		mg_send(connection,"{\"moves\":"+std::to_string(moves)+",\"ns\":"+std::to_string(time)+"}","application/json");
 	}
 	catch(std::exception& error)
 	{

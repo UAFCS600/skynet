@@ -6,12 +6,12 @@
 #include <utility>
 
 #include "json.hpp"
-#include "skynet/checkers_board.hpp"
+#include "skynet/checkers.hpp"
 #include "skynet/neuralnet.hpp"
 
-std::map<std::string,std::string> get_headers(const http_message& message)
+http_header_t get_header(const http_message& message)
 {
-	std::map<std::string,std::string> headers;
+	http_header_t header;
 
 	for(int ii=0;ii<MG_MAX_HTTP_HEADERS;++ii)
 	{
@@ -21,10 +21,10 @@ std::map<std::string,std::string> get_headers(const http_message& message)
 		if(key=="")
 			break;
 
-		headers[key]=value;
+		header[key]=value;
 	}
 
-	return headers;
+	return header;
 }
 
 std::string get_query(const mg_str* query_string,const std::string& var)
@@ -163,12 +163,12 @@ void client_handler(mg_connection* connection,int event,void* event_data)
 		mg_sock_to_str(connection->sock,client_raw,200,MG_SOCK_STRINGIFY_IP);
 		std::string client(client_raw);
 
-		auto headers=get_headers(message);
+		http_header_t header=get_header(message);
 
 		if(client=="127.0.0.1")
-			for(auto header:headers)
-				if(header.first=="X-Forwarded-For")
-					client=header.second;
+			for(auto pair:header)
+				if(pair.first=="X-Forwarded-For")
+					client=pair.second;
 
 		std::string method(message.method.p,message.method.len);
 		std::string request(message.uri.p,message.uri.len);

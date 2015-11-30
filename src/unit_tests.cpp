@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "skynet/checkers_board.hpp"
+#include "skynet/checkers.hpp"
 #include "skynet/neuralnet.hpp"
 
 //Uncomment line below to see passing tests.

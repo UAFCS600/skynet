@@ -7,7 +7,7 @@ BIN=build/bin/
 
 JSON_SRC=$(INC)/jsoncpp/json_reader.cpp $(INC)/jsoncpp/json_value.cpp $(INC)/jsoncpp/json_writer.cpp
 MONGOOSE_SRC=$(INC)/mongoose/mongoose.c
-SKYNET_SRC=$(SRC)/skynet/checkers_board.cpp $(SRC)/skynet/neuralnet.cpp
+SKYNET_SRC=$(SRC)/skynet/checkers.cpp $(SRC)/skynet/neuralnet.cpp
 
 ifeq ($(OS),Windows_NT)
 	LIB+=-lWs2_32

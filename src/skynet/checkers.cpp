@@ -1,4 +1,4 @@
-#include "checkers_board.hpp"
+#include "checkers.hpp"
 
 #include <cctype>
 #include <sstream>

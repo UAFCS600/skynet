@@ -1,5 +1,5 @@
-#ifndef CHECKERS_BOARD_HPP
-#define CHECKERS_BOARD_HPP
+#ifndef CHECKERS_HPP
+#define CHECKERS_HPP
 
 #include <string>
 #include <vector>

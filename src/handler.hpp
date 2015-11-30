@@ -5,7 +5,9 @@
 #include <string>
 #include <mongoose/mongoose.h>
 
-std::map<std::string,std::string> get_headers(const http_message& message);
+typedef std::map<std::string,std::string> http_header_t;
+
+http_header_t get_header(const http_message& message);
 std::string get_query(const mg_connection* connection,const std::string& var);
 
 void mg_send(mg_connection* connection,const std::string& data,const std::string& mime);

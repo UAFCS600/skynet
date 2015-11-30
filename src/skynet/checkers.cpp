@@ -211,12 +211,43 @@ skynet::checkers_player_t skynet::checkers_player_from_string(const std::string&
 	throw std::runtime_error("Invalid player value \""+str+"\" (expected \"red\" or \"black\").");
 }
 
+skynet::checkers_status_t skynet::checkers_status_from_string(const std::string& str)
+{
+	std::string copy=str;
+
+	for(auto& ii:copy)
+		ii=std::tolower(ii);
+
+	if(copy=="red_turn")
+		return skynet::RED_TURN;
+	if(copy=="black_turn")
+		return skynet::BLACK_TURN;
+	if(copy=="red_won")
+		return skynet::RED_WON;
+	if(copy=="black_won")
+		return skynet::BLACK_WON;
+
+	throw std::runtime_error("Invalid status value \""+str+"\" (expected \"red_turn\", \"black_turn\", \"red_won\", or \"black_won\").");
+}
+
 std::string std::to_string(const skynet::checkers_player_t& player)
 {
 	if(player==skynet::RED)
 		return "red";
 
 	return "black";
+}
+
+std::string std::to_string(const skynet::checkers_status_t& status)
+{
+	if(status==skynet::RED_TURN)
+		return "red_turn";
+	if(status==skynet::BLACK_TURN)
+		return "black_turn";
+	if(status==skynet::RED_WON)
+		return "red_won";
+
+	return "black_won";
 }
 
 std::string std::to_string(const skynet::checkers_board_list_t& boards)

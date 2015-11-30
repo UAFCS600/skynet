@@ -251,6 +251,151 @@ void test_checkers_player_validation()
 	test_checkers_player_from_string();
 }
 
+void test_checkers_status_to_string()
+{
+	std::cout<<"  To String"<<std::endl;
+
+	std::string red_turn_test(std::to_string(skynet::RED_TURN));
+
+	if(red_turn_test!="red_turn")
+	{
+		std::cout<<"    FAIL std::to_string(skynet::RED_TURN) should yield \"red_turn\" but got \""+red_turn_test+"\"."<<std::endl;
+		failed=true;
+	}
+
+	std::string black_turn_test(std::to_string(skynet::BLACK_TURN));
+
+	if(black_turn_test!="black_turn")
+	{
+		std::cout<<"    FAIL std::to_string(skynet::BLACK_TURN) should yield \"black_turn\" but got \""+black_turn_test+"\"."<<std::endl;
+		failed=true;
+	}
+
+	std::string red_won_test(std::to_string(skynet::RED_WON));
+
+	if(red_won_test!="red_won")
+	{
+		std::cout<<"    FAIL std::to_string(skynet::RED_WON) should yield \"red_won\" but got \""+red_won_test+"\"."<<std::endl;
+		failed=true;
+	}
+
+	std::string black_won_test(std::to_string(skynet::BLACK_WON));
+
+	if(black_won_test!="black_won")
+	{
+		std::cout<<"    FAIL std::to_string(skynet::BLACK_WON) should yield \"black_won\" but got \""+black_won_test+"\"."<<std::endl;
+		failed=true;
+	}
+}
+
+void test_checkers_status_from_string()
+{
+	std::cout<<"  From String"<<std::endl;
+
+	std::vector<std::string> status_test
+	{
+		"red_turn",
+		"black_turn",
+		"Red_turn",
+		"Black_turn",
+		"RED_TURN",
+		"BLACK_TURN",
+		"red_won",
+		"black_won",
+		"Red_won",
+		"Black_won",
+		"RED_WON",
+		"BLACK_WON",
+		"iosjdf",
+		""
+	};
+
+	std::vector<skynet::checkers_status_t> status_correct
+	{
+		skynet::RED_TURN,
+		skynet::BLACK_TURN,
+		skynet::RED_TURN,
+		skynet::BLACK_TURN,
+		skynet::RED_TURN,
+		skynet::BLACK_TURN,
+		skynet::RED_WON,
+		skynet::BLACK_WON,
+		skynet::RED_WON,
+		skynet::BLACK_WON,
+		skynet::RED_WON,
+		skynet::BLACK_WON,
+		skynet::RED_TURN,  //THROWS, BUT NEED LOOKUP
+		skynet::RED_TURN,  //THROWS, BUT NEED LOOKUP
+	};
+
+	std::vector<bool> should_fail
+	{
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		false,
+		true,
+		true
+	};
+
+	for(size_t ii=0;ii<status_test.size();++ii)
+	{
+		try
+		{
+			skynet::checkers_status_t status=skynet::checkers_status_from_string(status_test[ii]);
+
+			if(status!=status_correct[ii])
+				throw std::runtime_error("Expected \""+std::to_string(status_correct[ii])+"\" but got \""+status_test[ii]+"\".");
+
+			if(should_fail[ii])
+				throw std::runtime_error("Should fail.");
+
+			#ifdef SHOW_PASSES
+			std::cout<<"    PASS"<<std::endl;
+			#endif
+		}
+		catch(std::exception& error)
+		{
+			if(!should_fail[ii])
+			{
+				std::cout<<"    FAIL Status \""+status_test[ii]+"\" error ("<<error.what()<<")."<<std::endl;
+				failed=true;
+			}
+			#ifdef SHOW_PASSES
+			else
+				std::cout<<"    PASS"<<std::endl;
+			#endif
+		}
+		catch(...)
+		{
+			if(!should_fail[ii])
+			{
+				std::cout<<"    FAIL Status \""+status_test[ii]+"\" error (unknown error)."<<std::endl;
+				failed=true;
+			}
+			#ifdef SHOW_PASSES
+			else
+				std::cout<<"    PASS"<<std::endl;
+			#endif
+		}
+	}
+}
+
+void test_checkers_status_validation()
+{
+	std::cout<<"Checkers Status"<<std::endl;
+	test_checkers_status_to_string();
+	test_checkers_status_from_string();
+}
+
 void test_checkers_board_list_to_string()
 {
 	std::cout<<"  To String"<<std::endl;
@@ -696,6 +841,7 @@ int main()
 {
 	test_neural_network_construction();
 	test_checkers_player_validation();
+	test_checkers_status_validation();
 	test_checkers_board_validation();
 	test_checkers_board_list_validation();
 	test_checkers_move_generator();

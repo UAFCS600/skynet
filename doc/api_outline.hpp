@@ -85,6 +85,7 @@ namespace skynet
 namespace std
 {
 	std::string to_string(const skynet::checkers_player_t& player);
+	std::string to_string(const skynet::checkers_status_t& status);
 	std::string to_string(const skynet::checkers_board_list_t& boards);
 }
 

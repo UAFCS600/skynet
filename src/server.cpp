@@ -5,7 +5,10 @@
 #include <stdexcept>
 #include <string>
 
+#include "game_manager.hpp"
 #include "handler.hpp"
+
+game_manager_t global_game_manager;
 
 int main(int argc,char* argv[])
 {

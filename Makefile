@@ -15,7 +15,7 @@ endif
 
 all: server unit_tests
 
-server: $(SRC)/server.cpp $(SRC)/handler.cpp $(SRC)/json.cpp $(JSON_SRC) $(MONGOOSE_SRC) $(SKYNET_SRC)
+server: $(SRC)/server.cpp $(SRC)/game_manager.cpp $(SRC)/handler.cpp $(SRC)/json.cpp $(JSON_SRC) $(MONGOOSE_SRC) $(SKYNET_SRC)
 	$(CXX) $(CFLAGS) $(LIB) $^ -o $@
 
 unit_tests: $(SRC)/unit_tests.cpp $(SKYNET_SRC)

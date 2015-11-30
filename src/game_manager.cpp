@@ -14,6 +14,22 @@ game_list_t game_manager_t::list() const
 	return games_m;
 }
 
+void game_manager_t::cleanup_old_games()
+{
+	std::vector<std::string> games_to_delete;
+
+	uint64_t time=get_time();
+	uint64_t one_min=60000;
+	uint64_t ten_mins=one_min*10;
+
+	for(auto ii:games_m)
+		if(time-ii.second.modify_time>=ten_mins)
+			games_to_delete.push_back(ii.first);
+
+	for(auto name:games_to_delete)
+		delete_game(name);
+}
+
 void game_manager_t::create_game(const std::string& name)
 {
 	if(name.size()==0||isspace(name[0])!=0||isspace(name[name.size()-1])!=0)

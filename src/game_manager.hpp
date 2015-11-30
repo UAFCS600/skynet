@@ -20,6 +20,7 @@ class game_manager_t
 {
 	public:
 		game_list_t list() const;
+		void cleanup_old_games();
 		void create_game(const std::string& name);
 		void delete_game(const std::string& name);
 		game_info_t info_game(const std::string& name);

@@ -34,7 +34,10 @@ int main(int argc,char* argv[])
 		std::cout<<"Starting web server on port "<<port<<std::endl;
 
 		while(true)
+		{
 			mg_mgr_poll(&manager,1000);
+			global_game_manager.cleanup_old_games();
+		}
 
 		mg_mgr_free(&manager);
 	}

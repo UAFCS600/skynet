@@ -64,6 +64,22 @@ void eval_handler(mg_connection* connection,int event,const std::string& post_da
 		auto layers=to_size_array(json["layers"]);
 		auto weights=to_double_array(json["weights"]);
 		size_t sigmoid_index=json["sigmoid_index"].asUInt();
+		double a=1;
+		double b=1;
+		double c=0;
+
+		if(json["a"].isDouble())
+			a=json["a"].asDouble();
+		else
+			throw std::runtime_error("Constant \"a\" is not a float.");
+		if(json["b"].isDouble())
+			b=json["b"].asDouble();
+		else
+			throw std::runtime_error("Constant \"b\" is not a float.");
+		if(json["c"].isDouble())
+			c=json["c"].asDouble();
+		else
+			throw std::runtime_error("Constant \"c\" is not a float.");
 
 		skynet::neuralnet_t neuralnet(layers,weights);
 
@@ -75,7 +91,7 @@ void eval_handler(mg_connection* connection,int event,const std::string& post_da
 		double output=0;
 
 		for(auto ii=0;ii<times;++ii)
-			output=neuralnet.evaluate(inputs,sigmoid_index);
+			output=neuralnet.evaluate(inputs,sigmoid_index,a,b,c);
 
 		auto end=std::chrono::system_clock::now();
 		auto time=std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count()/(double)times;

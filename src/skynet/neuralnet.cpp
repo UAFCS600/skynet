@@ -4,16 +4,14 @@
 #include <stdexcept>
 #include <string>
 
-double sigmoid(double x,size_t index)
+double sigmoid(double x,size_t index,const double a=1,const double b=1,const double c=0)
 {
 	switch(index)
 	{
 		case 0:
 			return x;
 		case 1:
-			return 1.0/(1.0+std::exp(-x));
-		case 2:
-			return 2.0/(1.0+std::exp(-x/2.0))-1.0;
+			return a/(1.0+std::exp(-x/b))+c;
 		default:
 			throw std::runtime_error("Invalid sigmoid index(expected value 0<=index<=2).");
 	};
@@ -33,8 +31,12 @@ skynet::neuralnet_t::neuralnet_t(const std::vector<size_t>& layers,const std::ve
 	set_node_weights_m(weights);
 }
 
-double skynet::neuralnet_t::evaluate(const std::vector<double>& inputs,const size_t sigmoid_index)
+double skynet::neuralnet_t::evaluate(const std::vector<double>& inputs,
+	const size_t sigmoid_index,const double a,const double b,const double c)
 {
+	if(b==0)
+		throw std::runtime_error("Division by 0.");
+
 	for(size_t ii=0;ii<node_layers_m[0].size();++ii)
 		node_layers_m[0][ii].value=inputs[ii];
 
@@ -47,7 +49,7 @@ double skynet::neuralnet_t::evaluate(const std::vector<double>& inputs,const siz
 			for(size_t kk=0;kk<node_layers_m[ii-1].size();++kk)
 				node_layers_m[ii][jj].value+=node_layers_m[ii-1][kk].value*node_layers_m[ii-1][kk].weights[jj];
 
-			node_layers_m[ii][jj].value=sigmoid(node_layers_m[ii][jj].value,sigmoid_index);
+			node_layers_m[ii][jj].value=sigmoid(node_layers_m[ii][jj].value,sigmoid_index,a,b,c);
 		}
 	}
 

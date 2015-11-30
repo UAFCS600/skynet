@@ -1,6 +1,5 @@
 //$$y=x$$
-//$$y=\frac{1}{1+e^{-x}}$$
-//$$y=\frac{2}{1+e^{-x/2}}-1$$
+//$$y=\frac{a}{1+e^{-x/b}}+c$$
 
 function evaluator_t(div)
 {
@@ -51,9 +50,19 @@ function evaluator_t(div)
 			text:"Sigmoid",
 			radiogroup:
 			[
-				"<img src='/images/0.png'/>",
-				"<img src='/images/1.png'/>",
-				"<img src='/images/2.png'/>"
+				{
+					innerHTML:"<img src='/images/0.png'/>",
+					fields:{}
+				},
+				{
+					innerHTML:"<img src='/images/1.png'/>",
+					fields:
+					{
+						a:{input:null,value:1,zero_ok:true},
+						b:{input:null,value:1,zero_ok:false},
+						c:{input:null,value:0,zero_ok:true}
+					}
+				}
 			],
 			radios:[]
 		},
@@ -126,10 +135,53 @@ function evaluator_t(div)
 					radio.checked=true;
 				}
 
+				var option=this.data[key].radiogroup[key2];
+
 				var label=document.createElement("div");
 				label.style.display="inline";
-				label.innerHTML=this.data[key].radiogroup[key2];
+				label.innerHTML=option.innerHTML;
 				radio_div.appendChild(label);
+
+				var field_div=document.createElement("div");
+				field_div.style.float="right";
+				field_div.style.width="320px";
+				field_div.style.marginTop="30px";
+				label.appendChild(field_div);
+
+				var input_group=document.createElement("div");
+				input_group.className="input-group";
+				field_div.appendChild(input_group);
+
+				var first=true;
+
+				for(key3 in option.fields)
+				{
+					var field=option.fields[key3];
+
+					var field_label=document.createElement("span");
+					field_label.className="input-group-addon nohighlight";
+					field_label.innerHTML=key3;
+					field_label.style.cursor="default";
+					field_label.style.height="32px";
+					if(!first)
+						field_label.style.borderLeft="0px";
+					field_label.style.borderRight="0px";
+					input_group.appendChild(field_label);
+
+					field.input=document.createElement("input");
+					field.input.className="form-control";
+					field.input.type="text";
+					field.input.value=field.value;
+					field.input.disabled=true;
+					field.input.style.height="32px";
+					field.input.style.paddingRight="5px";
+					field.input.onchange=function(){myself.validate()};
+					field.input.onkeyup=function(){myself.validate()};
+					input_group.appendChild(field.input);
+
+					if(first)
+						first=false;
+				}
 			}
 		}
 
@@ -144,6 +196,28 @@ function evaluator_t(div)
 				this.data[key].button.style.width=this.data[key].width+"px";
 		}
 	}
+
+	//Hard-coded hack to make the input fields disable...
+	this.data.sigmoid.radios[0].onchange=function()
+	{
+		if(this.checked)
+		{
+			myself.data.sigmoid.radiogroup[1].fields.a.input.disabled=true;
+			myself.data.sigmoid.radiogroup[1].fields.b.input.disabled=true;
+			myself.data.sigmoid.radiogroup[1].fields.c.input.disabled=true;
+			myself.validate();
+		}
+	};
+	this.data.sigmoid.radios[1].onchange=function()
+	{
+		if(this.checked)
+		{
+			myself.data.sigmoid.radiogroup[1].fields.a.input.disabled=false;
+			myself.data.sigmoid.radiogroup[1].fields.b.input.disabled=false;
+			myself.data.sigmoid.radiogroup[1].fields.c.input.disabled=false;
+			myself.validate();
+		}
+	};
 }
 
 evaluator_t.prototype.validate=function()
@@ -164,7 +238,10 @@ evaluator_t.prototype.validate=function()
 		layers:null,
 		weights:null,
 		inputs:null,
-		sigmoid_index:null
+		sigmoid_index:null,
+		a:1,
+		b:1,
+		c:0
 	};
 
 	try
@@ -277,6 +354,32 @@ evaluator_t.prototype.validate=function()
 			throw error;
 		}
 
+		try
+		{
+			if(this.data.sigmoid.radios[1].checked)
+			{
+				var fields=this.data.sigmoid.radiogroup[1].fields;
+
+				for(var key in fields)
+				{
+					if(!is_float(fields[key].input.value)&&!is_int(fields[key].input.value))
+						throw "Constant \""+key+"\" is not a float.";
+					if(!fields[key].zero_ok&&parseFloat(fields[key].input.value)==0)
+						throw "Division by zero for constant \""+key+"\".";
+				}
+
+				json.a=parseFloat(fields.a.input.value);
+				json.b=parseFloat(fields.b.input.value);
+				json.c=parseFloat(fields.c.input.value);
+			}
+		}
+		catch(error)
+		{
+			this.data.sigmoid.div.className="form-group has-feedback has-error";
+			this.error_boxes.push(new error_t(this.data.sigmoid.div,error));
+			throw error;
+		}
+
 		this.data.submit.button.disabled=false;
 	}
 	catch(error)
@@ -306,7 +409,7 @@ evaluator_t.prototype.submit=function()
 				modal.get_content().appendChild(document.createElement("br"));
 				modal.get_content().appendChild(document.createTextNode("Time: "+json.ns+"ns"));
 				modal.get_content().appendChild(document.createElement("br"));
-				var boards_per_second = Math.ceil(1e9/json.ns);
+				var boards_per_second=Math.ceil(1e9/json.ns);
 				modal.get_content().appendChild(document.createTextNode("Board Evaluations Per Second: "+boards_per_second.toExponential()));
 				modal.show();
 			}

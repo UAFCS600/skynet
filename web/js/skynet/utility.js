@@ -10,6 +10,16 @@ function to_unsigned_int(str)
 	return parseInt(str);
 }
 
+function is_float(str)
+{
+	return (str.length>0&&!isNaN(str)&&str.indexOf('.')!=-1);
+}
+
+function is_int(str)
+{
+	return (str.length>0&&!isNaN(str));
+}
+
 function make_button(text,onclick)
 {
 	var button=document.createElement("input");

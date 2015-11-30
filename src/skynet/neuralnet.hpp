@@ -16,7 +16,8 @@ namespace skynet
 
 		public:
 			neuralnet_t(const std::vector<size_t>& layers,const std::vector<double>& weights);
-			double evaluate(const std::vector<double>& inputs,const size_t sigmoid_index);
+			double evaluate(const std::vector<double>& inputs,const size_t sigmoid_index,
+				const double a=1,const double b=1,const double c=0);
 
 		private:
 			void create_node_layers_m();

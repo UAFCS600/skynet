@@ -9,6 +9,11 @@ static uint64_t get_time()
 		std::chrono::milliseconds(1);
 }
 
+game_list_t game_manager_t::list() const
+{
+	return games_m;
+}
+
 void game_manager_t::create_game(const std::string& name)
 {
 	if(name.size()==0||isspace(name[0])!=0||isspace(name[name.size()-1])!=0)
@@ -35,9 +40,55 @@ game_info_t game_manager_t::info_game(const std::string& name)
 	return games_m[name];
 }
 
-game_list_t game_manager_t::list() const
+void game_manager_t::play_game(const std::string& name,const skynet::checkers_board_t& board)
 {
-	return games_m;
+	if(games_m.count(name)==0)
+		throw std::runtime_error("Game \""+name+"\" does not exist.");
+
+	if(games_m[name].status==skynet::RED_WON||games_m[name].status==skynet::BLACK_WON)
+		throw std::runtime_error("Game \""+name+"\" is over.");
+
+	games_m[name].modify_time=get_time();
+
+	skynet::checkers_player_t player=skynet::RED;
+
+	if(games_m[name].status==skynet::BLACK_TURN)
+		player=skynet::BLACK;
+
+	skynet::checkers_board_list_t moves=
+		skynet::move_generator(games_m[name].moves.back(),player);
+
+	bool found=false;
+
+	for(auto move:moves)
+	{
+		if(board==move)
+		{
+			found=true;
+			break;
+		}
+	}
+
+	if(!found)
+	{
+		std::string winner="red";
+		games_m[name].status=skynet::RED_WON;
+
+		if(player==skynet::RED)
+		{
+			winner="black";
+			games_m[name].status=skynet::BLACK_WON;
+		}
+
+		throw std::runtime_error("Invalid move \""+board+"\", "+winner+" wins.");
+	}
+
+	games_m[name].moves.push_back(board);
+
+	if(games_m[name].status==skynet::RED_TURN)
+		games_m[name].status=skynet::BLACK_TURN;
+	else
+		games_m[name].status=skynet::RED_TURN;
 }
 
 std::string std::to_string(const game_info_t& info)

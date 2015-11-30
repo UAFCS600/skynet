@@ -18,6 +18,7 @@ void move_generator_handler(mg_connection* connection,int event,const std::strin
 void list_game_handler(mg_connection* connection,int event,const std::string& post_data);
 void create_game_handler(mg_connection* connection,int event,const std::string& post_data);
 void info_game_handler(mg_connection* connection,int event,const std::string& post_data);
+void play_game_handler(mg_connection* connection,int event,const std::string& post_data);
 void client_handler(mg_connection* connection,int event,void* event_data);
 
 #endif

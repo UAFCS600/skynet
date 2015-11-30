@@ -124,9 +124,9 @@ void move_generator_handler(mg_connection* connection,int event,const std::strin
 		if(!json.isObject())
 			throw std::runtime_error("Not a JSON object.");
 
-		skynet::checkers_board_t board=to_string(json["board"]);
+		skynet::checkers_board_t board=json["board"].asString();
 
-		std::string player_raw(to_string(json["player"]));
+		std::string player_raw(json["player"].asString());
 		skynet::checkers_player_t player=skynet::checkers_player_from_string(player_raw);
 
 		int times=100000;
@@ -232,6 +232,35 @@ void info_game_handler(mg_connection* connection,int event,const std::string& po
 	}
 }
 
+void play_game_handler(mg_connection* connection,int event,const std::string& post_data)
+{
+	try
+	{
+		json_t json=JSON_parse(post_data);
+
+		if(!json.isObject())
+			throw std::runtime_error("Not a JSON object.");
+
+		std::string name=json["name"].asString();
+		std::string board=json["board"].asString();
+
+		global_game_manager.play_game(name,board);
+		mg_send(connection,"{}","application/json");
+	}
+	catch(std::exception& error)
+	{
+		json_t json;
+		json["error"]=error.what();
+		mg_send(connection,JSON_serialize(json),"application/json");
+	}
+	catch(...)
+	{
+		json_t json;
+		json["error"]="Could not parse JSON object.";
+		mg_send(connection,JSON_serialize(json),"application/json");
+	}
+}
+
 void client_handler(mg_connection* connection,int event,void* event_data)
 {
 	if(event==MG_EV_HTTP_REQUEST)
@@ -271,6 +300,7 @@ void client_handler(mg_connection* connection,int event,void* event_data)
 		std::string is_list_game=get_query(&message.query_string,"list_game");
 		std::string is_create_game=get_query(&message.query_string,"create_game");
 		std::string is_info_game=get_query(&message.query_string,"info_game");
+		std::string is_play_game=get_query(&message.query_string,"play_game");
 
 		if(is_eval!=""&&is_eval!="false")
 			eval_handler(connection,event,post_data);
@@ -282,6 +312,8 @@ void client_handler(mg_connection* connection,int event,void* event_data)
 			create_game_handler(connection,event,post_data);
 		else if(is_info_game!=""&&is_info_game!="false")
 			info_game_handler(connection,event,post_data);
+		else if(is_play_game!=""&&is_play_game!="false")
+			play_game_handler(connection,event,post_data);
 		else
 			mg_serve_http(connection,&message,*test);
 	}

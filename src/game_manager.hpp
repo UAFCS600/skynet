@@ -19,10 +19,11 @@ typedef std::map<std::string,game_info_t> game_list_t;
 class game_manager_t
 {
 	public:
+		game_list_t list() const;
 		void create_game(const std::string& name);
 		void delete_game(const std::string& name);
 		game_info_t info_game(const std::string& name);
-		game_list_t list() const;
+		void play_game(const std::string& name,const skynet::checkers_board_t& board);
 
 	private:
 		game_list_t games_m;

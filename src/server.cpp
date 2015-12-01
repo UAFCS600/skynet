@@ -8,7 +8,13 @@
 #include "game_manager.hpp"
 #include "handler.hpp"
 
-game_manager_t global_game_manager;
+skynet::checkers_board_list_t opening_moves{};
+size_t max_game_moves=100;
+size_t game_ttl_mins=10;
+size_t game_timeout_secs=30;
+
+game_manager_t global_game_manager(opening_moves,max_game_moves,
+	game_ttl_mins,game_timeout_secs);
 
 int main(int argc,char* argv[])
 {

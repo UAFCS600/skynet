@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <stdexcept>
+#include <random>
 
 static uint64_t get_time()
 {
@@ -9,8 +10,20 @@ static uint64_t get_time()
 		std::chrono::milliseconds(1);
 }
 
-game_manager_t::game_manager_t(const size_t max_game_moves,const size_t game_ttl_mins,const size_t game_timeout_secs,const size_t max_name_size):
-		max_game_moves_m(max_game_moves),game_ttl_mins_m(game_ttl_mins),game_timeout_secs_m(game_timeout_secs),max_name_size_m(max_name_size)
+static size_t random_number(const size_t start,const size_t range)
+{
+	static std::random_device rd;
+	static std::mt19937 mt(rd());
+	static std::uniform_real_distribution<double> dist(start,range);
+	return dist(mt);
+}
+
+game_manager_t::game_manager_t(const skynet::checkers_board_list_t& opening_moves,
+	const size_t max_game_moves,const size_t game_ttl_mins,const size_t game_timeout_secs,
+	const size_t max_name_size):
+	opening_moves_m(opening_moves),
+	max_game_moves_m(max_game_moves),game_ttl_mins_m(game_ttl_mins),
+	game_timeout_secs_m(game_timeout_secs),max_name_size_m(max_name_size)
 {}
 
 game_list_t game_manager_t::list() const
@@ -65,7 +78,13 @@ void game_manager_t::create_game(const std::string& name)
 		throw std::runtime_error("Game \""+name+"\" already exists.");
 
 	uint64_t time=get_time();
-	game_info_t game{skynet::RED_TURN,{"rrrrrrrrrrrr________bbbbbbbbbbbb"},time,time};
+
+	skynet::checkers_board_t starting_board("rrrrrrrrrrrr________bbbbbbbbbbbb");
+
+	if(opening_moves_m.size()>0)
+		starting_board=opening_moves_m[random_number(0,opening_moves_m.size())];
+
+	game_info_t game{skynet::RED_TURN,{starting_board},time,time};
 	games_m[name]=game;
 }
 

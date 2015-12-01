@@ -142,7 +142,13 @@ checkers_games_t.prototype.query=function(command,args,success,fail)
 	);
 }
 
-checkers_games_t.prototype.make_list_item_m=function(data_cols,title)
+
+
+
+
+
+
+checkers_games_t.prototype.make_list_item_m=function(data_cols,title,onclick)
 {
 	var item=this.ui.list.obj.create();
 	var table=document.createElement("table");
@@ -151,7 +157,7 @@ checkers_games_t.prototype.make_list_item_m=function(data_cols,title)
 	var row=table.insertRow();
 	var cols=[];
 	item.appendChild(table);
-	item.onclick=function(){console.log(game.name);};
+	item.onclick=onclick;
 
 	for(var ii=0;ii<3;++ii)
 	{
@@ -176,12 +182,17 @@ checkers_games_t.prototype.make_list_item_m=function(data_cols,title)
 
 checkers_games_t.prototype.make_game_list_item_m=function(game)
 {
+
 	this.make_list_item_m
-	([
-		game.name,
-		this.state_pretty_str_m(game.info.status),
-		game.info.boards.length-1
-	]);
+	(
+		[
+			game.name,
+			this.state_pretty_str_m(game.info.status),
+			game.info.boards.length-1
+		],
+		false,
+		function(){console.log(game.name);}
+	);
 }
 
 checkers_games_t.prototype.state_pretty_str_m=function(status)

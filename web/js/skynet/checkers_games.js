@@ -146,8 +146,9 @@ checkers_games_t.prototype.make_list_item_m=function(game)
 	cols[0].width="50%";
 	cols[1].width="25%";
 	cols[2].width="25%";
+	cols[2].style.textAlign="right";
 
 	cols[0].innerHTML=game.name;
 	cols[1].innerHTML=game.info.status;
-	cols[2].innerHTML=game.info.boards.length+" move(s)";
+	cols[2].innerHTML=(game.info.boards.length-1)+" move(s)";
 }

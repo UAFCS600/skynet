@@ -104,6 +104,21 @@ checkers_board_editor_t.prototype.show_url=function(show)
 		this.url.style.display="none";
 }
 
+checkers_board_editor_t.prototype.set_disabled=function(disabled)
+{
+	if(disabled)
+	{
+		this.board.onclick=null;
+		this.input.disabled=true;
+	}
+	else
+	{
+		var myself=this;
+		this.board.onclick=function(index){myself.onmouseclick_m(index);};
+		this.input.disabled=false;
+	}
+}
+
 
 
 

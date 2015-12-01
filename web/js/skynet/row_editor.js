@@ -30,6 +30,7 @@ function row_editor_t(div)
 	this.list.style.overflowY="scroll";
 	this.list.spellcheck=false;
 	this.list.onchange=function(){myself.onchange_m();};
+	this.list.onkeyup=function(){myself.onchange_m();};
 };
 
 row_editor_t.prototype.set_value=function(str)

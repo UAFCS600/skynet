@@ -14,9 +14,6 @@ function checkers_multi_viewer_t(div)
 	this.side_by_side=document.createElement("div");
 	this.el.appendChild(this.side_by_side);
 	this.side_by_side.className="row";
-	this.side_by_side.style.display="block";
-	this.side_by_side.style.marginLeft="auto";
-	this.side_by_side.style.marginRight="auto";
 
 	this.left_margin=document.createElement("div");
 	this.side_by_side.appendChild(this.left_margin);
@@ -28,12 +25,11 @@ function checkers_multi_viewer_t(div)
 	this.board_col.style.padding="0px";
 	this.board_col.style.margin="0px";
 	this.board_editor=new checkers_board_editor_t(this.board_col);
-	this.board_editor.input.readOnly=true;
 	this.board_editor.show_buttons(false);
 	this.board_editor.show_url(false);
 	this.board_editor.error_div.show(false);
+	this.board_editor.set_disabled(true);
 	this.board=this.board_editor.board;
-	this.board.onclick=null;
 	this.board.style.display="block";
 	this.board.style.marginLeft="auto";
 	this.board.style.marginRight="auto";
@@ -51,6 +47,7 @@ function checkers_multi_viewer_t(div)
 	this.button_group=document.createElement("div");
 	this.list_col.appendChild(this.button_group);
 	this.button_group.className="text-center";
+	this.button_group.style.marginBottom="32px";
 
 	this.prev_button=make_button("Prev",function(){myself.prev_move();});
 	this.button_group.appendChild(this.prev_button);
@@ -78,22 +75,12 @@ function checkers_multi_viewer_t(div)
 
 	this.board.reset();
 	this.update_boards_m();
-
-	this.list.set_value
-	(
-		"rrrrrrrrrr_r___r__b_bb_bbbbbbbbb\n"+
-		"rrrrrrrrrr_r________bbrbbbbbbbbb\n"+
-		"rrrrrrrrrr_r______b_bb_bb_bbbbbb\n"+
-		"rrrrrrr_rrrr______b_bb_bb_bbbbbb\n"+
-		"rrrrrrr_rrrr__b_____bb_bb_bbbbbb\n"+
-		"rrrrrrr_rr_r_____r__bb_bb_bbbbbb\n"+
-		"rrrrrrr_rr_r__b_____b__bb_bbbbbb\n"+
-		"rrrrrrr_r__r______r_b__bb_bbbbbb\n"+
-		"rrrrrrr_r__r__b_____b___b_bbbbbb\n"+
-		"rrrrrr__rr_r__b_____b___b_bbbbbb\n"+
-		"rrrrrr__rr_r__b_____b__bb__bbbbb"
-	);
 };
+
+checkers_multi_viewer_t.prototype.set_list=function(value)
+{
+	this.list.set_value(value);
+}
 
 checkers_multi_viewer_t.prototype.prev_move=function()
 {
@@ -109,7 +96,28 @@ checkers_multi_viewer_t.prototype.next_move=function()
 	this.update_disables_m();
 }
 
+checkers_multi_viewer_t.prototype.get_side_by_side=function()
+{
+	return this.side_by_side;
+}
 
+checkers_multi_viewer_t.prototype.set_centered=function(centered)
+{
+	if(centered)
+	{
+		this.left_margin.className="col-md-2";
+		this.left_margin.style.display="visible";
+		this.right_margin.className="col-md-2";
+		this.right_margin.style.display="visible";
+	}
+	else
+	{
+		this.left_margin.className="";
+		this.left_margin.style.display="hidden";
+		this.right_margin.className="";
+		this.right_margin.style.display="hidden";
+	}
+}
 
 
 
@@ -125,6 +133,8 @@ checkers_multi_viewer_t.prototype.update_boards_m=function()
 
 	if(this.boards.length>0)
 		this.board_editor.set_value(this.boards[this.boards_ptr]);
+	else
+		this.board_editor.set_value("________________________________");
 
 	this.update_disables_m();
 }

@@ -1,4 +1,4 @@
-function checkers_games_t(div)
+function checkers_game_list_t(div)
 {
 	if(!div)
 		return null;
@@ -48,7 +48,7 @@ function checkers_games_t(div)
 	setInterval(function(){myself.get_list();},1000);
 }
 
-checkers_games_t.prototype.get_list=function()
+checkers_game_list_t.prototype.get_list=function()
 {
 	var myself=this;
 
@@ -86,17 +86,17 @@ checkers_games_t.prototype.get_list=function()
 	);
 }
 
-checkers_games_t.prototype.create_game=function(name)
+checkers_game_list_t.prototype.create_game=function(name)
 {
 	var myself=this;
 	this.query("create_game",{name:name},function(){myself.ui.input.value="";});
 }
 
-checkers_games_t.prototype.info_game=function(name)
+checkers_game_list_t.prototype.info_game=function(name)
 {
 }
 
-checkers_games_t.prototype.query=function(command,args,success,fail)
+checkers_game_list_t.prototype.query=function(command,args,success,fail)
 {
 	var myself=this;
 	var full_command="?"+command+"=true";
@@ -146,7 +146,7 @@ checkers_games_t.prototype.query=function(command,args,success,fail)
 
 
 
-checkers_games_t.prototype.make_list_item_m=function(data_cols,title,onclick)
+checkers_game_list_t.prototype.make_list_item_m=function(data_cols,title,onclick,href)
 {
 	var item=this.ui.list.obj.create();
 	var table=document.createElement("table");
@@ -156,6 +156,7 @@ checkers_games_t.prototype.make_list_item_m=function(data_cols,title,onclick)
 	var cols=[];
 	item.appendChild(table);
 	item.onclick=onclick;
+	item.href=href;
 
 	for(var ii=0;ii<3;++ii)
 	{
@@ -178,7 +179,7 @@ checkers_games_t.prototype.make_list_item_m=function(data_cols,title,onclick)
 	}
 }
 
-checkers_games_t.prototype.make_game_list_item_m=function(game)
+checkers_game_list_t.prototype.make_game_list_item_m=function(game)
 {
 
 	this.make_list_item_m
@@ -189,11 +190,12 @@ checkers_games_t.prototype.make_game_list_item_m=function(game)
 			game.info.boards.length-1
 		],
 		false,
-		function(){console.log(game.name);}
+		null,
+		"play/?name="+game.name
 	);
 }
 
-checkers_games_t.prototype.state_pretty_str_m=function(status)
+checkers_game_list_t.prototype.state_pretty_str_m=function(status)
 {
 	if(status=="red_turn")
 		return "Red Turn";

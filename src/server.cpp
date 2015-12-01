@@ -36,6 +36,7 @@ int main(int argc,char* argv[])
 		while(true)
 		{
 			mg_mgr_poll(&manager,1000);
+			global_game_manager.timeout_games();
 			global_game_manager.cleanup_old_games();
 		}
 

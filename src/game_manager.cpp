@@ -9,13 +9,29 @@ static uint64_t get_time()
 		std::chrono::milliseconds(1);
 }
 
-game_manager_t::game_manager_t(const size_t max_game_moves,const size_t game_ttl_mins):
-	max_game_moves_m(max_game_moves),game_ttl_mins_m(game_ttl_mins)
+game_manager_t::game_manager_t(const size_t max_game_moves,const size_t game_ttl_mins,const size_t game_timeout_secs):
+		max_game_moves_m(max_game_moves),game_ttl_mins_m(game_ttl_mins),game_timeout_secs_m(game_timeout_secs)
 {}
 
 game_list_t game_manager_t::list() const
 {
 	return games_m;
+}
+
+void game_manager_t::timeout_games()
+{
+	std::vector<std::string> games_to_timeout;
+
+	uint64_t time=get_time();
+	uint64_t one_sec=1000;
+
+	for(auto ii:games_m)
+		if(ii.second.status!=skynet::RED_WON&&ii.second.status!=skynet::BLACK_WON&&
+			time-ii.second.modify_time>=one_sec*game_timeout_secs_m)
+				games_to_timeout.push_back(ii.first);
+
+	for(auto name:games_to_timeout)
+		timeout_game(name);
 }
 
 void game_manager_t::cleanup_old_games()
@@ -44,6 +60,18 @@ void game_manager_t::create_game(const std::string& name)
 	game_info_t game{skynet::RED_TURN,{"rrrrrrrrrrrr________bbbbbbbbbbbb"},time,time};
 	games_m[name]=game;
 }
+
+void game_manager_t::timeout_game(const std::string& name)
+{
+	if(games_m.count(name)>0)
+	{
+		if(games_m[name].status==skynet::RED_TURN)
+			games_m[name].status=skynet::BLACK_WON;
+		else
+			games_m[name].status=skynet::RED_WON;
+	}
+}
+
 
 void game_manager_t::delete_game(const std::string& name)
 {

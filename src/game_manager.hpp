@@ -19,10 +19,13 @@ typedef std::map<std::string,game_info_t> game_list_t;
 class game_manager_t
 {
 	public:
-		game_manager_t(const size_t max_game_moves=100,const size_t game_ttl_mins=10);
+		game_manager_t(const size_t max_game_moves=100,const size_t game_ttl_mins=10,
+			const size_t game_timeout_secs=30);
 		game_list_t list() const;
+		void timeout_games();
 		void cleanup_old_games();
 		void create_game(const std::string& name);
+		void timeout_game(const std::string& name);
 		void delete_game(const std::string& name);
 		game_info_t info_game(const std::string& name);
 		void play_game(const std::string& name,const skynet::checkers_board_t& board);
@@ -30,6 +33,7 @@ class game_manager_t
 	private:
 		size_t max_game_moves_m;
 		size_t game_ttl_mins_m;
+		size_t game_timeout_secs_m;
 		game_list_t games_m;
 };
 

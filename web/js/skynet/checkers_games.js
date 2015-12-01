@@ -63,7 +63,7 @@ checkers_games_t.prototype.get_list=function()
 			myself.ui.list.obj.clear();
 
 			for(key in json)
-				myself.make_list_item_m(key);
+				myself.make_list_item_m({name:key,info:json[key]});
 		},
 		function(error_title,error_message)
 		{
@@ -125,9 +125,9 @@ checkers_games_t.prototype.query=function(command,args,success,fail)
 	);
 }
 
-checkers_games_t.prototype.make_list_item_m=function(name)
+checkers_games_t.prototype.make_list_item_m=function(game)
 {
 	var item=this.ui.list.obj.create();
-	item.innerHTML=name;
-	item.onclick=function(){console.log(name);};
+	item.innerHTML=game.name+" "+game.info.status;
+	item.onclick=function(){console.log(game.name);};
 }

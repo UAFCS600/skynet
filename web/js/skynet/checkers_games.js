@@ -6,17 +6,14 @@ function checkers_games_t(div)
 	this.div=div;
 	this.el=document.createElement("div");
 	this.div.appendChild(this.el);
+
 	var myself=this;
 
 	this.ui={};
 
 	this.ui.column=document.createElement("div");
 	this.el.appendChild(this.ui.column);
-	this.ui.column.style.width="360px";
-	this.ui.column.style.textAlign="center";
-	this.ui.column.style.display="block";
-	this.ui.column.style.marginLeft="auto";
-	this.ui.column.style.marginRight="auto";
+	this.ui.column.className="col-md-6 col-md-offset-3";
 
 	this.ui.group=document.createElement("div");
 	this.ui.column.appendChild(this.ui.group);
@@ -168,9 +165,9 @@ checkers_games_t.prototype.make_list_item_m=function(data_cols,title,onclick)
 		cols[ii].innerHTML=data_cols[ii];
 	}
 
-	cols[0].width="45%";
+	cols[0].width="55%";
 	cols[1].width="30%";
-	cols[2].width="25%";
+	cols[2].width="15%";
 	cols[2].style.textAlign="right";
 
 	if(title)

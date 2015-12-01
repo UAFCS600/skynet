@@ -47,6 +47,7 @@ function checkers_games_t(div)
 
 	this.ui.list.obj=new list_group_t(this.ui.list.div);
 
+	this.get_list();
 	setInterval(function(){myself.get_list();},1000);
 }
 

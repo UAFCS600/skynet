@@ -62,8 +62,24 @@ checkers_games_t.prototype.get_list=function()
 		{
 			myself.ui.list.obj.clear();
 
+			myself.make_list_item_m(["Name","Status","Moves"]);
+
+			var sorted_array=[];
+
 			for(key in json)
-				myself.make_list_item_m({name:key,info:json[key]});
+				sorted_array.push({name:key,info:json[key]});
+
+			sorted_array.sort(function(lhs,rhs)
+			{
+				if(lhs.name.toLowerCase()<rhs.name.toLowerCase())
+					return -1;
+				if(lhs.name.toLowerCase()>rhs.name.toLowerCase())
+					return 1;
+				return 0;
+			});
+
+			for(key in sorted_array)
+				myself.make_game_list_item_m(sorted_array[key]);
 		},
 		function(error_title,error_message)
 		{
@@ -125,7 +141,7 @@ checkers_games_t.prototype.query=function(command,args,success,fail)
 	);
 }
 
-checkers_games_t.prototype.make_list_item_m=function(game)
+checkers_games_t.prototype.make_list_item_m=function(data_cols)
 {
 	var item=this.ui.list.obj.create();
 	var table=document.createElement("table");
@@ -141,14 +157,35 @@ checkers_games_t.prototype.make_list_item_m=function(game)
 		var col=row.insertCell();
 		col.style.textAlign="left";
 		cols.push(col);
+		cols[ii].innerHTML=data_cols[ii];
 	}
 
-	cols[0].width="50%";
-	cols[1].width="25%";
+	cols[0].width="45%";
+	cols[1].width="30%";
 	cols[2].width="25%";
 	cols[2].style.textAlign="right";
+}
 
-	cols[0].innerHTML=game.name;
-	cols[1].innerHTML=game.info.status;
-	cols[2].innerHTML=(game.info.boards.length-1)+" move(s)";
+checkers_games_t.prototype.make_game_list_item_m=function(game)
+{
+	this.make_list_item_m
+	([
+		game.name,
+		this.state_pretty_str_m(game.info.status),
+		game.info.boards.length-1
+	]);
+}
+
+checkers_games_t.prototype.state_pretty_str_m=function(status)
+{
+	if(status=="red_turn")
+		return "Red Turn";
+	if(status=="black_turn")
+		return "Black Turn";
+	if(status=="red_won")
+		return "Red Won";
+	if(status=="black_won")
+		return "Black Won";
+
+	return status;
 }

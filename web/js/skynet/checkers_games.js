@@ -62,7 +62,7 @@ checkers_games_t.prototype.get_list=function()
 		{
 			myself.ui.list.obj.clear();
 
-			myself.make_list_item_m(["Name","Status","Moves"]);
+			myself.make_list_item_m(["Name","Status","Moves"],true);
 
 			var sorted_array=[];
 
@@ -141,7 +141,7 @@ checkers_games_t.prototype.query=function(command,args,success,fail)
 	);
 }
 
-checkers_games_t.prototype.make_list_item_m=function(data_cols)
+checkers_games_t.prototype.make_list_item_m=function(data_cols,title)
 {
 	var item=this.ui.list.obj.create();
 	var table=document.createElement("table");
@@ -164,6 +164,13 @@ checkers_games_t.prototype.make_list_item_m=function(data_cols)
 	cols[1].width="30%";
 	cols[2].width="25%";
 	cols[2].style.textAlign="right";
+
+	if(title)
+	{
+		item.readonly=true;
+		item.className+=" active";
+		item.style.cursor="default";
+	}
 }
 
 checkers_games_t.prototype.make_game_list_item_m=function(game)

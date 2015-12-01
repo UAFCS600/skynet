@@ -67,8 +67,8 @@ void game_manager_t::play_game(const std::string& name,const skynet::checkers_bo
 	if(games_m[name].status==skynet::RED_WON||games_m[name].status==skynet::BLACK_WON)
 		throw std::runtime_error("Game \""+name+"\" is over.");
 
-	if(games_m[name].moves.size()>=max_game_moves_m)
-		throw std::runtime_error("Game \""+name+"\" has reached the max number moves ("+std::to_string(max_game_moves_m)+").");
+	if(games_m[name].boards.size()>max_game_moves_m)
+		throw std::runtime_error("Game \""+name+"\" has reached the max number moves (max is "+std::to_string(max_game_moves_m)+").");
 
 	games_m[name].modify_time=get_time();
 
@@ -78,7 +78,7 @@ void game_manager_t::play_game(const std::string& name,const skynet::checkers_bo
 		player=skynet::BLACK;
 
 	skynet::checkers_board_list_t moves=
-		skynet::move_generator(games_m[name].moves.back(),player);
+		skynet::move_generator(games_m[name].boards.back(),player);
 
 	bool found=false;
 
@@ -105,7 +105,7 @@ void game_manager_t::play_game(const std::string& name,const skynet::checkers_bo
 		throw std::runtime_error("Invalid move \""+board+"\", "+winner+" wins.");
 	}
 
-	games_m[name].moves.push_back(board);
+	games_m[name].boards.push_back(board);
 
 	if(games_m[name].status==skynet::RED_TURN)
 		games_m[name].status=skynet::BLACK_TURN;
@@ -117,7 +117,7 @@ std::string std::to_string(const game_info_t& info)
 {
 	std::string json;
 	json+="\"status\":\""+std::to_string(info.status)+"\",";
-	json+="\"moves\":"+std::to_string(info.moves)+",";
+	json+="\"boards\":"+std::to_string(info.boards)+",";
 	json+="\"create_time\":"+std::to_string(info.create_time)+",";
 	json+="\"modify_time\":"+std::to_string(info.modify_time);
 	return "{"+json+"}";

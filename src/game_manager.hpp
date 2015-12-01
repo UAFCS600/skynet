@@ -9,7 +9,7 @@
 struct game_info_t
 {
 	skynet::checkers_status_t status;
-	skynet::checkers_board_list_t moves;
+	skynet::checkers_board_list_t boards;
 	uint64_t create_time;
 	uint64_t modify_time;
 };

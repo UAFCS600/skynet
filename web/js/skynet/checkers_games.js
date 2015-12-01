@@ -74,15 +74,7 @@ checkers_games_t.prototype.get_list=function()
 
 checkers_games_t.prototype.create_game=function(name)
 {
-	this.query
-	(
-		"create_game",
-		{name:name},
-		function()
-		{
-			console.log("Made game \""+name+"\.");
-		}
-	);
+	this.query("create_game",{name:name});
 }
 
 checkers_games_t.prototype.info_game=function(name)

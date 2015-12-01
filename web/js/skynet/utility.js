@@ -30,3 +30,15 @@ function make_button(text,onclick)
 	button.onclick=onclick;
 	return button;
 }
+
+function make_input(text,placeholder,onchange)
+{
+	var input=document.createElement("input");
+	input.className="form-control";
+	input.type="text";
+	input.value=text;
+	input.placeholder=placeholder;
+	input.onchange=onchange;
+	input.onkeyup=onchange;
+	return input;
+}

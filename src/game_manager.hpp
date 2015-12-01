@@ -19,6 +19,7 @@ typedef std::map<std::string,game_info_t> game_list_t;
 class game_manager_t
 {
 	public:
+		game_manager_t(const size_t max_game_moves=100,const size_t game_ttl_mins=10);
 		game_list_t list() const;
 		void cleanup_old_games();
 		void create_game(const std::string& name);
@@ -27,6 +28,8 @@ class game_manager_t
 		void play_game(const std::string& name,const skynet::checkers_board_t& board);
 
 	private:
+		size_t max_game_moves_m;
+		size_t game_ttl_mins_m;
 		game_list_t games_m;
 };
 

@@ -9,6 +9,10 @@ static uint64_t get_time()
 		std::chrono::milliseconds(1);
 }
 
+game_manager_t::game_manager_t(const size_t max_game_moves,const size_t game_ttl_mins):
+	max_game_moves_m(max_game_moves),game_ttl_mins_m(game_ttl_mins)
+{}
+
 game_list_t game_manager_t::list() const
 {
 	return games_m;
@@ -20,10 +24,9 @@ void game_manager_t::cleanup_old_games()
 
 	uint64_t time=get_time();
 	uint64_t one_min=60000;
-	uint64_t ten_mins=one_min*10;
 
 	for(auto ii:games_m)
-		if(time-ii.second.modify_time>=ten_mins)
+		if(time-ii.second.modify_time>=one_min*game_ttl_mins_m)
 			games_to_delete.push_back(ii.first);
 
 	for(auto name:games_to_delete)
@@ -63,6 +66,9 @@ void game_manager_t::play_game(const std::string& name,const skynet::checkers_bo
 
 	if(games_m[name].status==skynet::RED_WON||games_m[name].status==skynet::BLACK_WON)
 		throw std::runtime_error("Game \""+name+"\" is over.");
+
+	if(games_m[name].moves.size()>=max_game_moves_m)
+		throw std::runtime_error("Game \""+name+"\" has reached the max number moves ("+std::to_string(max_game_moves_m)+").");
 
 	games_m[name].modify_time=get_time();
 

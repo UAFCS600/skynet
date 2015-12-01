@@ -8,23 +8,10 @@ function checkers_games_t(div)
 	this.div.appendChild(this.el);
 	var myself=this;
 
-	setInterval(function(){myself.get_list();},1000);
-
-	/*<div class="col-lg-6">
-    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for...">
-      <span class="input-group-btn">
-        <button class="btn btn-secondary" type="button">Go!</button>
-      </span>
-    </div>
-  </div>*/
-
-
 	this.ui={};
 
 	this.ui.column=document.createElement("div");
 	this.el.appendChild(this.ui.column);
-	this.ui.column.className="col-sm-4";
 	this.ui.column.style.width="320px";
 	this.ui.column.style.textAlign="center";
 	this.ui.column.style.display="block";
@@ -34,6 +21,7 @@ function checkers_games_t(div)
 	this.ui.group=document.createElement("div");
 	this.ui.column.appendChild(this.ui.group);
 	this.ui.group.className="input-group";
+	this.ui.group.style.marginBottom="32px";
 
 	this.ui.input=make_input("","Game Name");
 	this.ui.group.appendChild(this.ui.input);
@@ -51,19 +39,31 @@ function checkers_games_t(div)
 		}
 	);
 	this.ui.button_group.appendChild(this.ui.button);
+
+	this.ui.list={};
+
+	this.ui.list.div=document.createElement("div");
+	this.ui.column.appendChild(this.ui.list.div);
+
+	this.ui.list.obj=new list_group_t(this.ui.list.div);
+
+	setInterval(function(){myself.get_list();},1000);
 }
 
 checkers_games_t.prototype.get_list=function()
 {
+	var myself=this;
+
 	this.query
 	(
 		"list_game",
 		{},
 		function(json)
 		{
-			console.log("Games:");
+			myself.ui.list.obj.clear();
+
 			for(key in json)
-				console.log("  "+key);
+				myself.make_list_item_m(key);
 		},
 		function(error_title,error_message)
 		{
@@ -131,4 +131,11 @@ checkers_games_t.prototype.query=function(command,args,success,fail)
 			}
 		}
 	);
+}
+
+checkers_games_t.prototype.make_list_item_m=function(name)
+{
+	var item=this.ui.list.obj.create();
+	item.innerHTML=name;
+	item.onclick=function(){console.log(name);};
 }

@@ -52,7 +52,7 @@ checkers_game_list_t.prototype.get_list=function()
 {
 	var myself=this;
 
-	this.query
+	checkers_query
 	(
 		"list_games",
 		null,
@@ -89,55 +89,7 @@ checkers_game_list_t.prototype.get_list=function()
 checkers_game_list_t.prototype.create_game=function(name)
 {
 	var myself=this;
-	this.query("create_game",{name:name},function(){myself.ui.input.value="";});
-}
-
-checkers_game_list_t.prototype.info_game=function(name)
-{
-}
-
-checkers_game_list_t.prototype.query=function(command,args,success,fail)
-{
-	var myself=this;
-	var full_command="?"+command+"=true";
-
-	request
-	(
-		full_command,
-		args,
-		function(json)
-		{
-			if(json.error)
-			{
-				if(!fail)
-				{
-					var modal=new modal_ok_t(myself.el,"Server Error",json.error);
-					modal.show();
-				}
-				else
-				{
-					fail("Server Error",json.error);
-				}
-			}
-			else
-			{
-				if(success)
-					success(json);
-			}
-		},
-		function(error)
-		{
-			if(!fail)
-			{
-				var modal=new modal_ok_t(myself.el,"Send Error",error);
-				modal.show();
-			}
-			else
-			{
-				fail("Send Error",error);
-			}
-		}
-	);
+	checkers_query("create_game",{name:name},function(){myself.ui.input.value="";});
 }
 
 
@@ -191,7 +143,7 @@ checkers_game_list_t.prototype.make_game_list_item_m=function(game)
 		],
 		false,
 		null,
-		"play/?name="+game.name
+		"view/?name="+game.name
 	);
 }
 

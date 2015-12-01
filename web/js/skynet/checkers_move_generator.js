@@ -38,6 +38,7 @@ function checkers_move_generator_t(div)
 
 	this.multi_viewer=new checkers_multi_viewer_t(this.el);
 	this.multi_viewer.get_side_by_side().appendChild(this.board_col_new);
+	this.multi_viewer.set_disabled(true);
 	this.multi_viewer.set_centered(false);
 	this.get_moves_m(this.board_new.get_value());
 };

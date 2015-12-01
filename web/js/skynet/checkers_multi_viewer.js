@@ -10,6 +10,7 @@ function checkers_multi_viewer_t(div)
 
 	this.boards=[];
 	this.boards_ptr=0;
+	this.reset_pointer=true;
 
 	this.side_by_side=document.createElement("div");
 	this.el.appendChild(this.side_by_side);
@@ -77,9 +78,29 @@ function checkers_multi_viewer_t(div)
 	this.update_boards_m();
 };
 
+checkers_multi_viewer_t.prototype.set_disabled=function(disabled)
+{
+	this.list.set_disabled(disabled);
+}
+
 checkers_multi_viewer_t.prototype.set_list=function(value)
 {
 	this.list.set_value(value);
+}
+
+checkers_multi_viewer_t.prototype.set_pointer=function(pointer)
+{
+	if(pointer>=this.boards.length)
+		pointer=this.boards.length-1;
+	if(pointer<0)
+		pointer=0;
+
+	this.boards_ptr=pointer;
+}
+
+checkers_multi_viewer_t.prototype.get_pointer=function()
+{
+	return this.boards_ptr;
 }
 
 checkers_multi_viewer_t.prototype.prev_move=function()
@@ -126,7 +147,9 @@ checkers_multi_viewer_t.prototype.set_centered=function(centered)
 checkers_multi_viewer_t.prototype.update_boards_m=function()
 {
 	this.list.error_div.clear();
-	this.boards_ptr=0;
+
+	if(this.reset_pointer)
+		this.boards_ptr=0;
 
 	if(!this.boards)
 		this.boards=[];

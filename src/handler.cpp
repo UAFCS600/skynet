@@ -155,15 +155,10 @@ void move_generator_handler(mg_connection* connection,int event,const std::strin
 	}
 }
 
-void list_game_handler(mg_connection* connection,int event,const std::string& post_data)
+void list_games_handler(mg_connection* connection,int event,const std::string& post_data)
 {
 	try
 	{
-		json_t json=JSON_parse(post_data);
-
-		if(!json.isObject())
-			throw std::runtime_error("Not a JSON object.");
-
 		mg_send(connection,std::to_string(global_game_manager.list()),"application/json");
 	}
 	catch(std::exception& error)
@@ -297,7 +292,7 @@ void client_handler(mg_connection* connection,int event,void* event_data)
 
 		std::string is_eval=get_query(&message.query_string,"eval");
 		std::string is_move_generator=get_query(&message.query_string,"move_generator");
-		std::string is_list_game=get_query(&message.query_string,"list_game");
+		std::string is_list_games=get_query(&message.query_string,"list_games");
 		std::string is_create_game=get_query(&message.query_string,"create_game");
 		std::string is_info_game=get_query(&message.query_string,"info_game");
 		std::string is_play_game=get_query(&message.query_string,"play_game");
@@ -306,8 +301,8 @@ void client_handler(mg_connection* connection,int event,void* event_data)
 			eval_handler(connection,event,post_data);
 		else if(is_move_generator!=""&&is_move_generator!="false")
 			move_generator_handler(connection,event,post_data);
-		else if(is_list_game!=""&&is_list_game!="false")
-			list_game_handler(connection,event,post_data);
+		else if(is_list_games!=""&&is_list_games!="false")
+			list_games_handler(connection,event,post_data);
 		else if(is_create_game!=""&&is_create_game!="false")
 			create_game_handler(connection,event,post_data);
 		else if(is_info_game!=""&&is_info_game!="false")

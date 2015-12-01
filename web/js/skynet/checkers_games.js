@@ -54,8 +54,8 @@ checkers_games_t.prototype.get_list=function()
 
 	this.query
 	(
-		"list_game",
-		{},
+		"list_games",
+		null,
 		function(json)
 		{
 			myself.ui.list.obj.clear();

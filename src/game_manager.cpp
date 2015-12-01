@@ -20,33 +20,39 @@ game_list_t game_manager_t::list() const
 
 void game_manager_t::timeout_games()
 {
-	std::vector<std::string> games_to_timeout;
+	if(game_timeout_secs_m>0)
+	{
+		std::vector<std::string> games_to_timeout;
 
-	uint64_t time=get_time();
-	uint64_t one_sec=1000;
+		uint64_t time=get_time();
+		uint64_t one_sec=1000;
 
-	for(auto ii:games_m)
-		if(ii.second.status!=skynet::RED_WON&&ii.second.status!=skynet::BLACK_WON&&
-			time-ii.second.modify_time>=one_sec*game_timeout_secs_m)
-				games_to_timeout.push_back(ii.first);
+		for(auto ii:games_m)
+			if(ii.second.status!=skynet::RED_WON&&ii.second.status!=skynet::BLACK_WON&&
+				time-ii.second.modify_time>=one_sec*game_timeout_secs_m)
+					games_to_timeout.push_back(ii.first);
 
-	for(auto name:games_to_timeout)
-		timeout_game(name);
+		for(auto name:games_to_timeout)
+			timeout_game(name);
+	}
 }
 
 void game_manager_t::cleanup_old_games()
 {
-	std::vector<std::string> games_to_delete;
+	if(game_ttl_mins_m>0)
+	{
+		std::vector<std::string> games_to_delete;
 
-	uint64_t time=get_time();
-	uint64_t one_min=60000;
+		uint64_t time=get_time();
+		uint64_t one_min=60000;
 
-	for(auto ii:games_m)
-		if(time-ii.second.modify_time>=one_min*game_ttl_mins_m)
-			games_to_delete.push_back(ii.first);
+		for(auto ii:games_m)
+			if(time-ii.second.modify_time>=one_min*game_ttl_mins_m)
+				games_to_delete.push_back(ii.first);
 
-	for(auto name:games_to_delete)
-		delete_game(name);
+		for(auto name:games_to_delete)
+			delete_game(name);
+	}
 }
 
 void game_manager_t::create_game(const std::string& name)

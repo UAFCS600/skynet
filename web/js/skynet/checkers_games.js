@@ -91,7 +91,8 @@ checkers_games_t.prototype.get_list=function()
 
 checkers_games_t.prototype.create_game=function(name)
 {
-	this.query("create_game",{name:name});
+	var myself=this;
+	this.query("create_game",{name:name},function(){myself.ui.input.value="";});
 }
 
 checkers_games_t.prototype.info_game=function(name)

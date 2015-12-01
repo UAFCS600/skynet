@@ -12,7 +12,7 @@ function checkers_games_t(div)
 
 	this.ui.column=document.createElement("div");
 	this.el.appendChild(this.ui.column);
-	this.ui.column.style.width="320px";
+	this.ui.column.style.width="360px";
 	this.ui.column.style.textAlign="center";
 	this.ui.column.style.display="block";
 	this.ui.column.style.marginLeft="auto";
@@ -128,6 +128,26 @@ checkers_games_t.prototype.query=function(command,args,success,fail)
 checkers_games_t.prototype.make_list_item_m=function(game)
 {
 	var item=this.ui.list.obj.create();
-	item.innerHTML=game.name+" "+game.info.status;
+	var table=document.createElement("table");
+	//table.border="1";
+	table.style.width="100%";
+	var row=table.insertRow();
+	var cols=[];
+	item.appendChild(table);
 	item.onclick=function(){console.log(game.name);};
+
+	for(var ii=0;ii<3;++ii)
+	{
+		var col=row.insertCell();
+		col.style.textAlign="left";
+		cols.push(col);
+	}
+
+	cols[0].width="50%";
+	cols[1].width="25%";
+	cols[2].width="25%";
+
+	cols[0].innerHTML=game.name;
+	cols[1].innerHTML=game.info.status;
+	cols[2].innerHTML=game.info.boards.length+" move(s)";
 }

@@ -9,8 +9,8 @@ static uint64_t get_time()
 		std::chrono::milliseconds(1);
 }
 
-game_manager_t::game_manager_t(const size_t max_game_moves,const size_t game_ttl_mins,const size_t game_timeout_secs):
-		max_game_moves_m(max_game_moves),game_ttl_mins_m(game_ttl_mins),game_timeout_secs_m(game_timeout_secs)
+game_manager_t::game_manager_t(const size_t max_game_moves,const size_t game_ttl_mins,const size_t game_timeout_secs,const size_t max_name_size):
+		max_game_moves_m(max_game_moves),game_ttl_mins_m(game_ttl_mins),game_timeout_secs_m(game_timeout_secs),max_name_size_m(max_name_size)
 {}
 
 game_list_t game_manager_t::list() const
@@ -51,6 +51,8 @@ void game_manager_t::cleanup_old_games()
 
 void game_manager_t::create_game(const std::string& name)
 {
+	if(name.size()>max_name_size_m)
+		throw std::runtime_error("Invalid game name \""+name+"\" (name cannot be greater than "+std::to_string(max_name_size_m)+").");
 	if(name.size()==0||isspace(name[0])!=0||isspace(name[name.size()-1])!=0)
 		throw std::runtime_error("Invalid game name \""+name+"\" (cannot start or end with whitespace).");
 	if(games_m.count(name)>0)

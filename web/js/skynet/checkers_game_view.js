@@ -13,6 +13,7 @@ function checkers_game_view_t(div)
 	this.status.center=document.createElement("center");
 	this.el.appendChild(this.status.center);
 
+	this.status.text="";
 	this.status.header=document.createElement("h3");
 	this.status.center.appendChild(this.status.header);
 	this.status.header.style.marginBottom="24px";
@@ -50,7 +51,6 @@ function checkers_game_view_t(div)
 	this.follow.checkbox.style.marginRight="5px";
 	this.follow.checkbox.style.padding="0px";
 	this.follow.checkbox.style.float="right";
-	this.follow.checkbox.checked=true;
 	this.follow.checkbox.onchange=function(){myself.update_disables_m();};
 
 	this.follow.label=document.createElement("label");
@@ -72,7 +72,8 @@ function checkers_game_view_t(div)
 	this.update_disables_m();
 
 	this.get_info();
-	this.interval=setInterval(function(){myself.get_info();},1000);
+	this.download_interval=setInterval(function(){myself.get_info();},1000);
+	this.redraw_interval=null;
 }
 
 checkers_game_view_t.prototype.get_info=function()
@@ -97,23 +98,38 @@ checkers_game_view_t.prototype.get_info=function()
 
 				if(json.status=="red_won"||json.status=="black_won")
 				{
-					clearInterval(myself.interval);
-					myself.interval=null;
-					myself.follow.checkbox.checked=false;
-					myself.follow.checkbox.disabled=true;
-					myself.update_disables_m();
+					clearInterval(myself.download_interval);
+					myself.download_interval=null;
 				}
-
-				if(myself.follow.checkbox.checked)
-					myself.viewer.set_pointer(myself.viewer.get_boards().length-1);
-				else
-					myself.viewer.set_pointer(myself.viewer.get_pointer());
 			},
 			function(error_title,error_message)
 			{
+				myself.set_header_m(error_title+":  "+error_message);
 				console.log(error_title+":  "+error_message);
 			}
 		);
+	}
+}
+
+checkers_game_view_t.prototype.redraw=function()
+{
+	if(this.follow.checkbox.checked)
+	{
+		this.viewer.set_pointer(this.viewer.get_pointer());
+
+		if(this.viewer.get_pointer()+1<this.viewer.get_boards().length)
+		{
+			this.viewer.set_pointer(this.viewer.get_pointer()+1);
+		}
+		else if(this.status.text=="red_won"||this.status.text=="black_won")
+		{
+			this.follow.checkbox.checked=false;
+			this.update_disables_m();
+		}
+	}
+	else
+	{
+		this.viewer.set_pointer(this.viewer.get_pointer());
 	}
 }
 
@@ -121,17 +137,24 @@ checkers_game_view_t.prototype.get_info=function()
 
 
 
-
-
 checkers_game_view_t.prototype.set_header_m=function(status)
 {
+	this.status.text=status;
 	this.status.header.innerHTML=this.name+" - "+checkers_state_to_str(status);
 }
 
 checkers_game_view_t.prototype.update_disables_m=function()
 {
+	var myself=this;
 	this.viewer.set_buttons_disabled(this.follow.checkbox.checked);
 
-	if(this.follow.checkbox.checked)
-		this.viewer.set_pointer(this.viewer.get_boards().length-1);
+	if(this.follow.checkbox.checked&&!this.redraw_interval)
+	{
+		this.redraw_interval=setInterval(function(){myself.redraw();},1000);
+	}
+	else
+	{
+		clearInterval(this.redraw_interval);
+		this.redraw_interval=null;
+	}
 }

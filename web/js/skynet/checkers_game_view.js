@@ -72,7 +72,7 @@ function checkers_game_view_t(div)
 	this.update_disables_m();
 
 	this.get_info();
-	setInterval(function(){myself.get_info();},1000);
+	this.interval=setInterval(function(){myself.get_info();},1000);
 }
 
 checkers_game_view_t.prototype.get_info=function()
@@ -94,6 +94,16 @@ checkers_game_view_t.prototype.get_info=function()
 
 				myself.viewer.set_list(str);
 				myself.set_header_m(json.status);
+
+				if(json.status=="red_turn"||json.status=="black_turn"||
+					json.status=="red_won"||json.status=="black_won")
+				{
+					clearInterval(myself.interval);
+					myself.interval=null;
+					myself.follow.checkbox.checked=false;
+					myself.follow.checkbox.disabled=true;
+					myself.update_disables_m();
+				}
 
 				if(myself.follow.checkbox.checked)
 					myself.viewer.set_pointer(myself.viewer.get_boards().length-1);

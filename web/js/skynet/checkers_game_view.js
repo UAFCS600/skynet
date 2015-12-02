@@ -95,8 +95,7 @@ checkers_game_view_t.prototype.get_info=function()
 				myself.viewer.set_list(str);
 				myself.set_header_m(json.status);
 
-				if(json.status=="red_turn"||json.status=="black_turn"||
-					json.status=="red_won"||json.status=="black_won")
+				if(json.status=="red_won"||json.status=="black_won")
 				{
 					clearInterval(myself.interval);
 					myself.interval=null;

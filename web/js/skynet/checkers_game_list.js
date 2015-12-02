@@ -54,6 +54,7 @@ checkers_game_list_t.prototype.get_list=function()
 
 	checkers_query
 	(
+		this.el,
 		"list_games",
 		null,
 		function(json)
@@ -89,7 +90,17 @@ checkers_game_list_t.prototype.get_list=function()
 checkers_game_list_t.prototype.create_game=function(name)
 {
 	var myself=this;
-	checkers_query("create_game",{name:name},function(){myself.ui.input.value="";});
+
+	checkers_query
+	(
+		this.el,
+		"create_game",
+		{name:name},
+		function()
+		{
+			myself.ui.input.value="";
+		}
+	);
 }
 
 

@@ -1,4 +1,4 @@
-function checkers_query(command,args,success,fail)
+function checkers_query(el,command,args,success,fail)
 {
 	var myself=this;
 	var full_command="?"+command+"=true";
@@ -13,7 +13,7 @@ function checkers_query(command,args,success,fail)
 			{
 				if(!fail)
 				{
-					var modal=new modal_ok_t(myself.el,"Server Error",json.error);
+					var modal=new modal_ok_t(el,"Server Error",json.error);
 					modal.show();
 				}
 				else
@@ -31,7 +31,7 @@ function checkers_query(command,args,success,fail)
 		{
 			if(!fail)
 			{
-				var modal=new modal_ok_t(myself.el,"Send Error",error);
+				var modal=new modal_ok_t(el,"Send Error",error);
 				modal.show();
 			}
 			else

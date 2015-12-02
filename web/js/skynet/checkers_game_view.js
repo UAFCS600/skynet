@@ -84,6 +84,7 @@ checkers_game_view_t.prototype.get_info=function()
 
 		checkers_query
 		(
+			this.el,
 			"info_game",
 			{name:this.name},
 			function(json)

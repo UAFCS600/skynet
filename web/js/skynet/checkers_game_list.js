@@ -22,6 +22,12 @@ function checkers_game_list_t(div)
 
 	this.ui.input=make_input("","Game Name");
 	this.ui.group.appendChild(this.ui.input);
+	this.ui.input.onkeyup=function(event)
+	{
+		if(event.keyCode==13)
+			myself.ui.button.click();
+		return false;
+	};
 
 	this.ui.button_group=document.createElement("div");
 	this.ui.group.appendChild(this.ui.button_group);
@@ -36,6 +42,12 @@ function checkers_game_list_t(div)
 		}
 	);
 	this.ui.button_group.appendChild(this.ui.button);
+	this.ui.button.onkeyup=function(event)
+	{
+		if(event.keyCode==13)
+			this.click();
+		return false;
+	};
 
 	this.ui.list={};
 

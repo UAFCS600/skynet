@@ -27,6 +27,7 @@ function modal_ok_t(div,title,message)
 modal_ok_t.prototype.show=function()
 {
 	this.modal.show();
+	this.button.focus();
 }
 
 modal_ok_t.prototype.hide=function()

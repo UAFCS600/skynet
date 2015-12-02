@@ -5,10 +5,6 @@
  * Windows/OSX/Linux compatible virtual memory management
 */
 
-#if defined(_WIN32) && ! defined(__CYGWIN__)
-
-#else
-
 //! Byte swap unsigned int
 unsigned long swap_uint32(unsigned long val )
 {
@@ -42,5 +38,4 @@ bool _BitScanForward(int * Index, unsigned long Mask)
 	return _BitScanReverse(Index, Mask);
 }
 
-#endif
 

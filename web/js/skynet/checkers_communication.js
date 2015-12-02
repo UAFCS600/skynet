@@ -41,3 +41,17 @@ function checkers_query(command,args,success,fail)
 		}
 	);
 }
+
+function checkers_state_to_str(status)
+{
+	if(status=="red_turn")
+		return "Red's Turn";
+	if(status=="black_turn")
+		return "Black's Turn";
+	if(status=="red_won")
+		return "Red Won";
+	if(status=="black_won")
+		return "Black Won";
+
+	return status;
+}

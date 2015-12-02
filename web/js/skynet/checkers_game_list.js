@@ -138,25 +138,11 @@ checkers_game_list_t.prototype.make_game_list_item_m=function(game)
 	(
 		[
 			game.name,
-			this.state_pretty_str_m(game.info.status),
+			checkers_state_to_str(game.info.status),
 			game.info.boards.length-1
 		],
 		false,
 		null,
 		"view/?name="+game.name
 	);
-}
-
-checkers_game_list_t.prototype.state_pretty_str_m=function(status)
-{
-	if(status=="red_turn")
-		return "Red Turn";
-	if(status=="black_turn")
-		return "Black Turn";
-	if(status=="red_won")
-		return "Red Won";
-	if(status=="black_won")
-		return "Black Won";
-
-	return status;
 }

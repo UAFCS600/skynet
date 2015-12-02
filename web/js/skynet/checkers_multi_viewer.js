@@ -11,6 +11,7 @@ function checkers_multi_viewer_t(div)
 	this.boards=[];
 	this.boards_ptr=0;
 	this.reset_pointer=true;
+	this.disable_buttons=false;
 
 	this.side_by_side=document.createElement("div");
 	this.el.appendChild(this.side_by_side);
@@ -83,9 +84,20 @@ checkers_multi_viewer_t.prototype.set_disabled=function(disabled)
 	this.list.set_disabled(disabled);
 }
 
+checkers_multi_viewer_t.prototype.set_buttons_disabled=function(disabled)
+{
+	this.disable_buttons=disabled;
+	this.update_disables_m();
+}
+
 checkers_multi_viewer_t.prototype.set_list=function(value)
 {
 	this.list.set_value(value);
+}
+
+checkers_multi_viewer_t.prototype.get_button_group=function()
+{
+	return this.button_group;
 }
 
 checkers_multi_viewer_t.prototype.set_pointer=function(pointer)
@@ -96,11 +108,17 @@ checkers_multi_viewer_t.prototype.set_pointer=function(pointer)
 		pointer=0;
 
 	this.boards_ptr=pointer;
+	this.update_boards_m();
 }
 
 checkers_multi_viewer_t.prototype.get_pointer=function()
 {
 	return this.boards_ptr;
+}
+
+checkers_multi_viewer_t.prototype.get_boards=function()
+{
+	return this.boards;
 }
 
 checkers_multi_viewer_t.prototype.prev_move=function()
@@ -164,8 +182,8 @@ checkers_multi_viewer_t.prototype.update_boards_m=function()
 
 checkers_multi_viewer_t.prototype.update_disables_m=function()
 {
-	this.next_button.disabled=(this.boards_ptr+1>=this.boards.length);
-	this.prev_button.disabled=(this.boards_ptr-1<0||this.boards.length<=1);
+	this.next_button.disabled=this.disable_buttons||(this.boards_ptr+1>=this.boards.length);
+	this.prev_button.disabled=this.disable_buttons||(this.boards_ptr-1<0||this.boards.length<=1);
 
 	if(this.boards.length>0)
 		this.index_indicator.value=""+(this.boards_ptr+1)+"";

@@ -16,7 +16,7 @@ unsigned long swap_uint32(unsigned long val )
     return (val << 16) | (val >> 16);
 }
 
-bool _BitScanReverse(unsigned long * Index, unsigned long Mask)
+bool _BitScanReverse(int * Index, unsigned long Mask)
 {
 	if(Mask == 0) return false;
 	
@@ -36,7 +36,7 @@ bool _BitScanReverse(unsigned long * Index, unsigned long Mask)
     return true;
 }
 
-bool _BitScanForward(unsigned long * Index, unsigned long Mask)
+bool _BitScanForward(int * Index, unsigned long Mask)
 {
 	Mask = swap_uint32(Mask);
 	return _BitScanReverse(Index, Mask);

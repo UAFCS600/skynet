@@ -1,8 +1,5 @@
 // dblookup.h
-// all you need.
-
-// include 
-#include "switches.h"
+// all you need
 
 
 // choose which db you want to use
@@ -46,11 +43,12 @@
 #define MINCACHESIZE 65536
 
 //int initdblookup(char str[256]);
-int db_init(int suggestedMB, char str[256]);
-int db_exit(void);
-int dblookup(POSITION *p,int cl);
+
+//int db_init(int suggestedMB, char str[256]);
+//int db_exit(void);
+//int dblookup(POSITION *p,int cl);
 int revert(int32 n);
-int db_getcachesize(void);
-void db_infostring(char *str);
-int LSB(int32 x);
-int MSB(int32 x);
+//int db_getcachesize(void);
+//void db_infostring(char *str);
+//int LSB(int32 x);
+//int MSB(int32 x);

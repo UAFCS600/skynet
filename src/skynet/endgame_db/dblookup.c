@@ -152,12 +152,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <ctype.h>
+#include <inttypes.h>
+#include <string.h>
+
+#if defined(_WIN32) && ! defined(__CYGWIN__)
 #include <windows.h>
 #include <winbase.h>
-#include <assert.h>
+#else
+#include "bit_lookup.h"
+#endif
+
+#include "virtual_addr.h"
 
 
-typedef __int64 int64;
+typedef uint64_t int64;
 #define int32 unsigned int
 
 
@@ -781,7 +791,7 @@ int LSB(int32 x)
 
 	int returnvalue;
 
-	if(_BitScanForward(&returnvalue,x))
+	if(_BitScanForward((int*)&returnvalue,x))
 		return returnvalue;
 	else
 		return -1;
@@ -810,9 +820,9 @@ int MSB(int32 x)
 	// LSB can maybe be implemented more efficiently on other CPU's which have a 
 	// this operation.
 	//-----------------------------------------------------------------------------------------------------
-int returnvalue;
+	int returnvalue;
 
-	if(_BitScanReverse(&returnvalue,x))
+	if(_BitScanReverse((int*)&returnvalue,x))
 		return returnvalue;
 	else
 		return -1;
@@ -885,14 +895,21 @@ int db_exit(void)
 	// clean up dblookup module, free all memory
 	int i;
 
-	i = VirtualFree(cachebaseaddress,cachesize*1024,MEM_DECOMMIT);
-	i = VirtualFree(cachebaseaddress,0,MEM_RELEASE);
-	
-	i = VirtualFree(blockpointer,maxblocknum*sizeof(int),MEM_DECOMMIT);		
-	i = VirtualFree(blockpointer,0,MEM_RELEASE);
-	
-	i = VirtualFree(blockinfo,cachesize*sizeof(struct bi),MEM_DECOMMIT);
-	i = VirtualFree(blockinfo,0,MEM_RELEASE);
+	DecommitMemory(cachebaseaddress, cachesize*1024);
+  	FreeAddressSpace(cachebaseaddress, cachesize*1024);
+	//i = VirtualFree(cachebaseaddress,cachesize*1024,MEM_DECOMMIT);
+	//i = VirtualFree(cachebaseaddress,0,MEM_RELEASE);
+ 	
+ 	DecommitMemory(blockpointer, maxblocknum*sizeof(int));
+ 	FreeAddressSpace(blockpointer, maxblocknum*sizeof(int));
+ 	//i = VirtualFree(blockpointer,maxblocknum*sizeof(int),MEM_DECOMMIT);		
+ 	//i = VirtualFree(blockpointer,0,MEM_RELEASE);
+ 	
+ 	DecommitMemory(blockinfo, cachesize*sizeof(struct bi));
+ 	FreeAddressSpace(blockinfo, cachesize*sizeof(struct bi));
+ 	//i = VirtualFree(blockinfo,cachesize*sizeof(struct bi),MEM_DECOMMIT);
+ 	//i = VirtualFree(blockinfo,0,MEM_RELEASE);
+
 	
 	for(i=0;i<50;i++)
 		{
@@ -1102,7 +1119,9 @@ int db_init(int suggestedMB, char out[256])
 		// reduce number of buffers by 20'000
 		// because then the suggested size in MB will be about 
 		// the total dblookup ram usage.
-		cachesize = max(cachesize, MINCACHESIZE);
+		cachesize = (cachesize > MINCACHESIZE) ? cachesize : MINCACHESIZE;
+		//cachesize = max(cachesize, MINCACHESIZE);
+
 		}
 
 	// parse index files
@@ -1185,14 +1204,16 @@ int db_init(int suggestedMB, char out[256])
 	
 	// allocate memory for the cache
 	memsize = cachesize*1024;
-	cachebaseaddress = VirtualAlloc(0,memsize,MEM_RESERVE|MEM_COMMIT|MEM_TOP_DOWN,PAGE_READWRITE);
-	//cachebaseaddress = VirtualAlloc(0,CACHESIZE*1024,MEM_RESERVE,PAGE_READWRITE);
+	cachebaseaddress = (unsigned char*) AllocateAddressSpace(memsize);
+	cachebaseaddress = (unsigned char*) CommitMemory(cachebaseaddress, memsize);
+	//cachebaseaddress = VirtualAlloc(0,memsize,MEM_RESERVE|MEM_COMMIT|MEM_TOP_DOWN,PAGE_READWRITE);
+
 	
 	if(cachebaseaddress == NULL && memsize!=0)
 		{	
 		sprintf(str,"\ncould not allocate DB cache (%i KB)",(cachesize));
 		//logtofile(str);
-		error = GetLastError();
+		//error = GetLastError();
 		sprintf(str,"\nerror code %i",error);
 		//logtofile(str);
 		exit(0);
@@ -1203,12 +1224,15 @@ int db_init(int suggestedMB, char out[256])
 	// allocate memory for blockpointers
 	// statement below was sizeof(int) which returned 4 even on the 64-bit version of windows?!
 	memsize = maxblocknum*sizeof(blockpointer);
-	blockpointer = VirtualAlloc(0,memsize,MEM_RESERVE|MEM_COMMIT|MEM_TOP_DOWN, PAGE_READWRITE);
+	blockpointer = (unsigned char**) AllocateAddressSpace(memsize);
+	blockpointer = (unsigned char**) CommitMemory(blockpointer, memsize);
+	//blockpointer = VirtualAlloc(0,memsize,MEM_RESERVE|MEM_COMMIT|MEM_TOP_DOWN, PAGE_READWRITE);
+
 	if(blockpointer == NULL && memsize != 0 )
 		{	
 		sprintf(str,"\ncould not allocate blockpointer array (%i blocks)",maxblocknum);
 		//logtofile(str);
-		error = GetLastError();
+		//error = GetLastError();
 		sprintf(str,"\nerror code %i",error);
 		//logtofile(str);
 		exit(0);
@@ -1221,12 +1245,14 @@ int db_init(int suggestedMB, char out[256])
 	
 	// allocate memory for doubly linked list LRU
 	memsize = cachesize*sizeof(struct bi);
-	blockinfo = VirtualAlloc(0,memsize, MEM_RESERVE|MEM_COMMIT|MEM_TOP_DOWN, PAGE_READWRITE);
+	blockinfo = (bi*) AllocateAddressSpace(memsize);
+	blockinfo = (bi*) CommitMemory(blockinfo, memsize);
+	//blockinfo = VirtualAlloc(0,memsize, MEM_RESERVE|MEM_COMMIT|MEM_TOP_DOWN, PAGE_READWRITE);
 	if(blockinfo == NULL && memsize!=0)
 		{	
 		sprintf(str,"\ncould not allocate LRU list (%i KB)",(cachesize)*sizeof(struct bi)/1024);
 		//logtofile(str);
-		error = GetLastError();
+		//error = GetLastError();
 		sprintf(str,"\nerror code %i",error);
 		//logtofile(str);
 		exit(0);
@@ -1514,7 +1540,7 @@ static int parseindexfile(char idxfilename[256],int blockoffset,int fpcount)
 
 			// We stopped reading numbers. 
 			dbpointer->numberofblocks = num;
-			dbpointer->idx = malloc(num * sizeof(int));
+			dbpointer->idx = (int*)malloc(num * sizeof(int));
 			bytesallocated += num*sizeof(int);
 			if (dbpointer->idx == NULL) {
 				printf("malloc error for idx array!\n");

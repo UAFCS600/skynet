@@ -1024,7 +1024,7 @@ int db_init(int suggestedMB, char out[256])
 	// detect largest present database and put the number of pieces in variable pieces:
 	for(n=2;n<SPLITSIZE;n++)
 		{
-		sprintf(dbname,"db\\db%i.idx",n);
+		sprintf(dbname,"db/db%i.idx",n);
 		fp = fopen(dbname,"rb");
 		if(fp)
 			{
@@ -1053,7 +1053,7 @@ int db_init(int suggestedMB, char out[256])
 					wm=nw-wk;
 					if(bm+bk==wm+wk && wk>bk)
 						continue;
-					sprintf(dbname,"db\\db%i_%i%i%i%i.cpr",bm+bk+wm+wk,bm,bk,wm,wk);
+					sprintf(dbname,"db/db%i_%i%i%i%i.cpr",bm+bk+wm+wk,bm,bk,wm,wk);
 					//printf("\nattempting to open %s",dbname);
 					fp = fopen(dbname,"rb");
 					if(fp)
@@ -1131,7 +1131,7 @@ int db_init(int suggestedMB, char out[256])
 		{
 		if(n>=8)
 			continue;
-		sprintf(dbname,"db\\db%i.idx",n);
+		sprintf(dbname,"db/db%i.idx",n);
 		sprintf(out,"parsing %s",dbname);
 		fp = fopen(dbname,"rb");
 		// another new change 
@@ -1173,7 +1173,7 @@ int db_init(int suggestedMB, char out[256])
 					if(bm+bk==wm+wk && wk>bk)
 						continue;
 					// ok, found a valid db, now do the do: 
-					sprintf(dbname,"db\\db%i_%i%i%i%i.idx",bm+bk+wm+wk,bm,bk,wm,wk);
+					sprintf(dbname,"db/db%i_%i%i%i%i.idx",bm+bk+wm+wk,bm,bk,wm,wk);
 					sprintf(out,"parsing %s",dbname);
 					fp = fopen(dbname,"rb");
 					if(fp != NULL)
@@ -1289,7 +1289,7 @@ int db_init(int suggestedMB, char out[256])
 	fpcount=0;
 	for(n=2;n<SPLITSIZE;n++)
 		{
-		sprintf(dbname, "db\\db%i.cpr",n);
+		sprintf(dbname, "db/db%i.cpr",n);
 		dbfp[fpcount] = fopen(dbname,"rb");
 		sprintf(dbnames[fpcount],"%s",dbname);
 		if(dbfp[fpcount]==NULL)
@@ -1318,7 +1318,7 @@ int db_init(int suggestedMB, char out[256])
 					wm=nw-wk;
 					if(bm+bk==wm+wk && wk>bk)
 						continue;
-					sprintf(dbname,"db\\db%i_%i%i%i%i.cpr",bm+bk+wm+wk,bm,bk,wm,wk);
+					sprintf(dbname,"db/db%i_%i%i%i%i.cpr",bm+bk+wm+wk,bm,bk,wm,wk);
 					dbfp[fpcount] = fopen(dbname, "rb");
 					sprintf(dbnames[fpcount],"%s",dbname);
 					if(dbfp[fpcount]==NULL)
@@ -1353,7 +1353,7 @@ static int preload(char out[256])
 
 	for(n=2;n<SPLITSIZE;n++)
 		{
-		sprintf(dbname, "db\\db%i.cpr",n);
+		sprintf(dbname, "db/db%i.cpr",n);
 		fp = fopen(dbname,"rb");
 		if(fp==NULL)
 			break;
@@ -1412,7 +1412,7 @@ static int preload(char out[256])
 					wm=nw-wk;
 					if(bm+bk==wm+wk && wk>bk)
 						continue;
-					sprintf(dbname,"db\\db%i_%i%i%i%i.cpr",bm+bk+wm+wk,bm,bk,wm,wk);
+					sprintf(dbname,"db/db%i_%i%i%i%i.cpr",bm+bk+wm+wk,bm,bk,wm,wk);
 					printf("\npreloading %i%i%i%i db",bm,bk,wm,wk);
 					fp = fopen(dbname,"rb");
 					if(fp==NULL)

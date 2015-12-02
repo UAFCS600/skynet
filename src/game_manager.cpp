@@ -42,7 +42,7 @@ void game_manager_t::timeout_games()
 
 		for(auto ii:games_m)
 			if(ii.second.status!=skynet::RED_WON&&ii.second.status!=skynet::BLACK_WON&&
-				time-ii.second.modify_time>=one_sec*game_timeout_secs_m)
+				ii.second.create_time!=ii.second.modify_time&&time-ii.second.modify_time>=one_sec*game_timeout_secs_m)
 					games_to_timeout.push_back(ii.first);
 
 		for(auto name:games_to_timeout)

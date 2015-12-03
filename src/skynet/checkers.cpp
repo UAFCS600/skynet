@@ -59,7 +59,7 @@ static bool find_jump(const skynet::checkers_board_t& board,const size_t positio
 	bool ret=false;
 	bool start=true;
 	bool found=false;
-	size_t rsp=0;
+	int rsp=0;
 	const size_t stack_size=20;
 	size_t stack[stack_size][2];
 	skynet::checkers_board_t board_stack[stack_size];

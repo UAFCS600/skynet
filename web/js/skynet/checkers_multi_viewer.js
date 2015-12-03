@@ -51,6 +51,10 @@ function checkers_multi_viewer_t(div)
 	this.button_group.className="text-center";
 	this.button_group.style.marginBottom="32px";
 
+	this.first_button=make_button("First",function(){myself.first_move();});
+	this.button_group.appendChild(this.first_button);
+	this.first_button.style.marginRight="5px";
+
 	this.prev_button=make_button("Prev",function(){myself.prev_move();});
 	this.button_group.appendChild(this.prev_button);
 	this.prev_button.style.marginRight="5px";
@@ -70,6 +74,10 @@ function checkers_multi_viewer_t(div)
 	this.next_button=make_button("Next",function(){myself.next_move();});
 	this.button_group.appendChild(this.next_button);
 	this.next_button.style.marginLeft="5px";
+
+	this.last_button=make_button("Last",function(){myself.last_move();});
+	this.button_group.appendChild(this.last_button);
+	this.last_button.style.marginLeft="5px";
 
 	this.right_margin=document.createElement("div");
 	this.side_by_side.appendChild(this.right_margin);
@@ -135,6 +143,24 @@ checkers_multi_viewer_t.prototype.next_move=function()
 	this.update_disables_m();
 }
 
+checkers_multi_viewer_t.prototype.first_move=function()
+{
+	this.boards_ptr=0;
+	this.board_editor.set_value(this.boards[this.boards_ptr]);
+	this.update_disables_m();
+}
+
+checkers_multi_viewer_t.prototype.last_move=function()
+{
+	this.boards_ptr=this.boards.length-1;
+
+	if(this.boards_ptr<0)
+		this.boards_ptr=0;
+
+	this.board_editor.set_value(this.boards[this.boards_ptr]);
+	this.update_disables_m();
+}
+
 checkers_multi_viewer_t.prototype.get_side_by_side=function()
 {
 	return this.side_by_side;
@@ -184,6 +210,9 @@ checkers_multi_viewer_t.prototype.update_disables_m=function()
 {
 	this.next_button.disabled=this.disable_buttons||(this.boards_ptr+1>=this.boards.length);
 	this.prev_button.disabled=this.disable_buttons||(this.boards_ptr-1<0||this.boards.length<=1);
+
+	this.last_button.disabled=this.next_button.disabled;
+	this.first_button.disabled=this.prev_button.disabled;
 
 	if(this.boards.length>0)
 		this.index_indicator.value=""+(this.boards_ptr+1)+"";

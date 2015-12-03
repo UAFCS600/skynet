@@ -44,12 +44,10 @@ function checkers_game_view_t(div)
 	this.follow.checkbox=document.createElement("input");
 	this.follow.cols[0].appendChild(this.follow.checkbox);
 	this.follow.checkbox.type="checkbox";
-	this.follow.checkbox.className="form-control";
 	this.follow.checkbox.style.width="24px";
 	this.follow.checkbox.style.height="24px";
 	this.follow.checkbox.style.margin="0px";
-	this.follow.checkbox.style.marginRight="5px";
-	this.follow.checkbox.style.padding="0px";
+	this.follow.checkbox.style.paddingRight="5px";
 	this.follow.checkbox.style.float="right";
 	this.follow.checkbox.onchange=function(){myself.update_disables_m();};
 

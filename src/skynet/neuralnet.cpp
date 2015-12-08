@@ -4,6 +4,27 @@
 #include <stdexcept>
 #include <string>
 
+/**
+*	The default sigmoid function
+*	Returns a double
+*	
+*	Computes a sigmoid in the form 
+*	y=a/(1+exp(-x/b))+c
+* 	or 
+*	y=x
+*
+*	Arguments: 
+*		double x  - x in the sigmoid. No range restrictions. 
+*		size_t t  - which sigmoid to use 
+*					0 is linear
+*					1 is the standard sigmoid 
+*		double a  - default value of 1
+* 		double b  - default value of 1
+*		double c  - default value of 0
+*	
+*
+*/
+
 double sigmoid(double x,size_t index,const double a=1,const double b=1,const double c=0)
 {
 	switch(index)
@@ -17,6 +38,17 @@ double sigmoid(double x,size_t index,const double a=1,const double b=1,const dou
 	};
 }
 
+
+
+/**
+*
+*	Two parameter constructor for a neural network type
+*	Takes a vector of size_t which tell the size of each layer
+*	the number of layers is deduced from the length of that vector
+*
+*	Another vector of doubles for the weights. 
+*
+*/
 skynet::neuralnet_t::neuralnet_t(const std::vector<size_t>& layers,const std::vector<double>& weights):
 	layers_m(layers)
 {
@@ -31,6 +63,17 @@ skynet::neuralnet_t::neuralnet_t(const std::vector<size_t>& layers,const std::ve
 	set_node_weights_m(weights);
 }
 
+
+/**
+*
+*	The evaluate member function
+*	returns a double which is the evaluated value for the neural network
+*	it also takes a size_t for which type of sigmoid to use (detailed in the sigmoid function)
+*	then doubles a,b, and c for the sigmoid (parameters again discussed in the sigmoid function)
+*
+*	evaluates the neural network
+*
+*/
 double skynet::neuralnet_t::evaluate(const std::vector<double>& inputs,
 	const size_t sigmoid_index,const double a,const double b,const double c)
 {
@@ -56,6 +99,16 @@ double skynet::neuralnet_t::evaluate(const std::vector<double>& inputs,
 	return node_layers_m[node_layers_m.size()-1][0].value;
 }
 
+
+/**
+*	Create Layer Member Function
+*
+*	Returns nothing. 
+*	Takes no parameters
+*
+*	Adds a layer of nodes onto the neural network
+*
+*/
 void skynet::neuralnet_t::create_node_layers_m()
 {
 	node_layers_m.clear();
@@ -86,6 +139,16 @@ void skynet::neuralnet_t::create_node_layers_m()
 	}
 }
 
+
+/**
+*
+*	Set node weights function
+*	Sets the weights for a given node
+*	
+*	returns nothing and takes a vector of doubles for the weights
+*	
+*
+*/
 void skynet::neuralnet_t::set_node_weights_m(const std::vector<double>& weights)
 {
 	std::vector<double*> real_weights;

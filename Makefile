@@ -1,7 +1,7 @@
 SRC=src
 INC=include
 CXX=g++
-CFLAGS=-O -std=c++11 -Wall -Wno-unused-result -I$(INC)
+CFLAGS=-O -std=c++11 -Wall -Wno-unused-result -Wno-deprecated-register -I$(INC)
 LIB=
 BIN=build/bin/
 

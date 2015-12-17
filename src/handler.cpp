@@ -260,24 +260,31 @@ void client_handler(mg_connection* connection,int event,void* event_data)
 {
 	if(event==MG_EV_HTTP_REQUEST)
 	{
-		mg_serve_http_opts* test=(mg_serve_http_opts*)(connection->mgr->user_data);
-		http_message message=*(http_message*)event_data;
+		mg_serve_http_opts* options=(mg_serve_http_opts*)(connection->mgr->user_data);
+
+		if(options==nullptr)
+			throw std::runtime_error("HTTP options was null.");
+
+		http_message* message=(http_message*)event_data;
+
+		if(message==nullptr)
+			throw std::runtime_error("HTTP message was null.");
 
 		char client_raw[200];
 		mg_sock_to_str(connection->sock,client_raw,200,MG_SOCK_STRINGIFY_IP);
 		std::string client(client_raw);
 
-		http_header_t header=get_header(message);
+		http_header_t header=get_header(*message);
 
 		if(client=="127.0.0.1")
 			for(auto pair:header)
 				if(pair.first=="X-Forwarded-For")
 					client=pair.second;
 
-		std::string method(message.method.p,message.method.len);
-		std::string request(message.uri.p,message.uri.len);
-		std::string query(message.query_string.p,message.query_string.len);
-		std::string post_data(message.body.p,message.body.len);
+		std::string method(message->method.p,message->method.len);
+		std::string request(message->uri.p,message->uri.len);
+		std::string query(message->query_string.p,message->query_string.len);
+		std::string post_data(message->body.p,message->body.len);
 
 		std::cout<<client<<std::flush;
 		if(client==std::string(client_raw))
@@ -290,12 +297,12 @@ void client_handler(mg_connection* connection,int event,void* event_data)
 		if(method=="POST")
 			std::cout<<"\tPost:  \""<<post_data<<"\""<<std::endl;
 
-		std::string is_eval=get_query(&message.query_string,"eval");
-		std::string is_move_generator=get_query(&message.query_string,"move_generator");
-		std::string is_list_games=get_query(&message.query_string,"list_games");
-		std::string is_create_game=get_query(&message.query_string,"create_game");
-		std::string is_info_game=get_query(&message.query_string,"info_game");
-		std::string is_play_game=get_query(&message.query_string,"play_game");
+		std::string is_eval=get_query(&message->query_string,"eval");
+		std::string is_move_generator=get_query(&message->query_string,"move_generator");
+		std::string is_list_games=get_query(&message->query_string,"list_games");
+		std::string is_create_game=get_query(&message->query_string,"create_game");
+		std::string is_info_game=get_query(&message->query_string,"info_game");
+		std::string is_play_game=get_query(&message->query_string,"play_game");
 
 		if(is_eval!=""&&is_eval!="false")
 			eval_handler(connection,event,post_data);
@@ -310,6 +317,6 @@ void client_handler(mg_connection* connection,int event,void* event_data)
 		else if(is_play_game!=""&&is_play_game!="false")
 			play_game_handler(connection,event,post_data);
 		else
-			mg_serve_http(connection,&message,*test);
+			mg_serve_http(connection,message,*options);
 	}
 }

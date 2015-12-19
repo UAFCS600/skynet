@@ -70,7 +70,7 @@ namespace std
 	std::string to_string(const skynet::checkers_status_t& status);
 
 	/**Checkers board list to string function.
-	\param player		List of checkers boards to convert.
+	\param boards		List of checkers boards to convert.
 	\return 			JSON formatted array of checkers boards.
 	*/
 	std::string to_string(const skynet::checkers_board_list_t& boards);

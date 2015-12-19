@@ -2,3 +2,5 @@ server
 server.exe
 unit_tests
 unit_tests.exe
+doc/html
+doc/latex

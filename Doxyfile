@@ -1,7 +1,7 @@
 DOXYFILE_ENCODING = UTF-8
 PROJECT_NAME = "Skynet"
 PROJECT_BRIEF = "An interface to verify the correctness of the CS405/605 AI programs."
-OUTPUT_DIRECTORY = "web"
+OUTPUT_DIRECTORY = "doc"
 CREATE_SUBDIRS = NO
 OUTPUT_LANGUAGE = English
 GENERATE_HTML = YES

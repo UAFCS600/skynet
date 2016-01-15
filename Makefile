@@ -1,13 +1,12 @@
 SRC=src
 INC=include
 CXX=g++
-CFLAGS=-O -std=c++11 -Wall -Wno-unused-result -Wno-deprecated-register -I$(INC)
+CFLAGS=-O -std=c++11 -Wall -Wno-unused-result -Wno-deprecated-register -I$(INC) -I$(SRC)
 LIB=
-BIN=build/bin/
 
 JSON_SRC=$(INC)/jsoncpp/json_reader.cpp $(INC)/jsoncpp/json_value.cpp $(INC)/jsoncpp/json_writer.cpp
 MONGOOSE_SRC=$(INC)/mongoose/mongoose.c
-SKYNET_SRC=$(SRC)/skynet/checkers.cpp $(SRC)/skynet/neuralnet.cpp
+SKYNET_SRC=$(SRC)/skynet/checkers.cpp $(SRC)/skynet/neuralnet.cpp $(SRC)/skynet/wget.cpp
 
 ifeq ($(OS),Windows_NT)
 	LIB+=-lWs2_32
@@ -18,7 +17,7 @@ all: server unit_tests
 server: $(SRC)/server.cpp $(SRC)/game_manager.cpp $(SRC)/handler.cpp $(SRC)/json.cpp $(JSON_SRC) $(MONGOOSE_SRC) $(SKYNET_SRC)
 	$(CXX) $(CFLAGS) $(LIB) $^ -o $@
 
-unit_tests: $(SRC)/unit_tests.cpp $(SKYNET_SRC)
+unit_tests: $(SRC)/unit_tests.cpp $(JSON_SRC) $(MONGOOSE_SRC) $(SKYNET_SRC)
 	$(CXX) $(CFLAGS) $(LIB) $^ -o $@
 
 clean:

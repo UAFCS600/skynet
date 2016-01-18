@@ -1,8 +1,15 @@
+#include <ctime>
 #include <iostream>
 #include <skynet/checkers.hpp>
 #include <skynet/wget.hpp>
 #include <stdexcept>
 #include <string>
+
+void print_time(const uint64_t milliseconds)
+{
+	time_t time=milliseconds/1000;
+	std::cout<<std::asctime(std::localtime(&time))<<std::flush;
+}
 
 void print_game(const std::string& game_name,const skynet::game_info_t& game_info)
 {
@@ -13,9 +20,10 @@ void print_game(const std::string& game_name,const skynet::game_info_t& game_inf
 	for(auto board:game_info.boards)
 		std::cout<<"    "<<board<<std::endl;
 
-	std::cout<<"  Created  "<<game_info.create_time<<std::endl;
-	std::cout<<"  Modified "<<game_info.modify_time<<std::endl;
-	std::cout<<std::endl;
+	std::cout<<"  Created  "<<std::flush;
+	print_time(game_info.create_time);
+	std::cout<<"  Modified "<<std::flush;
+	print_time(game_info.modify_time);
 }
 
 int main()

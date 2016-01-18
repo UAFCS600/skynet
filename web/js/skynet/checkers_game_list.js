@@ -133,6 +133,9 @@ checkers_game_list_t.prototype.make_list_item_m=function(data_cols,title,onclick
 	item.onclick=onclick;
 	item.href=href;
 
+	if(title)
+		item.href="javascript:;";
+
 	for(var ii=0;ii<3;++ii)
 	{
 		var col=row.insertCell();

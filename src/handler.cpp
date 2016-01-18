@@ -210,7 +210,7 @@ void info_game_handler(mg_connection* connection,int event,const std::string& po
 		if(!json.isObject())
 			throw std::runtime_error("Not a JSON object.");
 
-		game_info_t info=global_game_manager.info_game(json["name"].asString());
+		skynet::game_info_t info=global_game_manager.info_game(json["name"].asString());
 		mg_send(connection,std::to_string(info),"application/json");
 	}
 	catch(std::exception& error)

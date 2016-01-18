@@ -1,5 +1,5 @@
-SRC=src
-INC=include
+SRC=../../src
+INC=../../include
 CXX=g++
 CFLAGS=-O -std=c++11 -Wall -Wno-unused-result -Wno-deprecated-register -I$(INC) -I$(SRC)
 LIB=
@@ -12,13 +12,10 @@ ifeq ($(OS),Windows_NT)
 	LIB+=-lWs2_32
 endif
 
-all: server unit_tests
+all: info_game
 
-server: $(SRC)/server.cpp $(SRC)/game_manager.cpp $(SRC)/handler.cpp $(JSON_SRC) $(MONGOOSE_SRC) $(SKYNET_SRC)
-	$(CXX) $(CFLAGS) $(LIB) $^ -o $@
-
-unit_tests: $(SRC)/unit_tests.cpp $(JSON_SRC) $(MONGOOSE_SRC) $(SKYNET_SRC)
+info_game: main.cpp $(JSON_SRC) $(MONGOOSE_SRC) $(SKYNET_SRC)
 	$(CXX) $(CFLAGS) $(LIB) $^ -o $@
 
 clean:
-	-rm -rf server server.exe unit_tests unit_tests.exe
+	-rm -rf info_game info_game.exe

@@ -26,7 +26,7 @@ game_manager_t::game_manager_t(const skynet::checkers_board_list_t& opening_move
 	game_timeout_secs_m(game_timeout_secs),max_name_size_m(max_name_size)
 {}
 
-game_list_t game_manager_t::list() const
+skynet::game_list_t game_manager_t::list() const
 {
 	return games_m;
 }
@@ -84,7 +84,7 @@ void game_manager_t::create_game(const std::string& name)
 	if(opening_moves_m.size()>0)
 		starting_board=opening_moves_m[random_number(0,opening_moves_m.size())];
 
-	game_info_t game{skynet::RED_TURN,{starting_board},time,time};
+	skynet::game_info_t game{skynet::RED_TURN,{starting_board},time,time};
 	games_m[name]=game;
 }
 
@@ -106,7 +106,7 @@ void game_manager_t::delete_game(const std::string& name)
 		games_m.erase(name);
 }
 
-game_info_t game_manager_t::info_game(const std::string& name)
+skynet::game_info_t game_manager_t::info_game(const std::string& name)
 {
 	if(games_m.count(name)==0)
 		throw std::runtime_error("Game \""+name+"\" does not exist.");
@@ -166,27 +166,4 @@ void game_manager_t::play_game(const std::string& name,const skynet::checkers_bo
 		games_m[name].status=skynet::BLACK_TURN;
 	else
 		games_m[name].status=skynet::RED_TURN;
-}
-
-std::string std::to_string(const game_info_t& info)
-{
-	std::string json;
-	json+="\"status\":\""+std::to_string(info.status)+"\",";
-	json+="\"boards\":"+std::to_string(info.boards)+",";
-	json+="\"create_time\":"+std::to_string(info.create_time)+",";
-	json+="\"modify_time\":"+std::to_string(info.modify_time);
-	return "{"+json+"}";
-}
-
-std::string std::to_string(const game_list_t& list)
-{
-	std::string json;
-
-	for(auto ii:list)
-		json+="\""+ii.first+"\":"+std::to_string(ii.second)+",";
-
-	if(json.size()>0&&json[json.size()-1]==',')
-		json.erase(json.size()-1,1);
-
-	return "{"+json+"}";
 }

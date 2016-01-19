@@ -7,7 +7,7 @@ int main()
 	try
 	{
 		skynet::checkers_board_t start_board("rrrrrrrrrrrr________bbbbbbbbbbbb");
-		std::cout<<"Moves for board "<<start_board<<":"<<std::endl;
+		std::cout<<"Generating red moves for board "<<start_board<<":"<<std::endl;
 
 		for(auto board:skynet::move_generator(start_board,skynet::RED))
 			std::cout<<"  "<<board<<std::endl;

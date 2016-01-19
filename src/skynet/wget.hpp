@@ -1,8 +1,6 @@
 #ifndef WGET_HPP
 #define WGET_HPP
 
-//Check for network errors!
-
 #include "checkers.hpp"
 #include <cstdint>
 #include <map>
@@ -21,8 +19,6 @@ namespace skynet
 
 	typedef std::map<std::string,skynet::game_info_t> game_list_t;
 
-	//skynet::game_list_t network_evaluation(const std::string& server);
-	//move_gen
 	skynet::game_list_t list_games(const std::string& server);
 	skynet::game_info_t info_game(const std::string& server,
 		const std::string& game_name);

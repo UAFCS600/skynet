@@ -4,6 +4,7 @@
 #define NEURALNET_HPP
 
 #include <cstdlib>
+#include <functional>
 #include <vector>
 
 namespace skynet
@@ -24,8 +25,15 @@ namespace skynet
 
 
 			/**
+			\param inputs				Layer 0 input values to perform evalation on.
+			\param sigmoid		 		Function that takes a double and returns a double.
+			*/
+			double evaluate(const std::vector<double>& inputs,
+				std::function<double(const double)> sigmoid);
+
+			/**
 			*Will throw std::runtime_error on sigmoid index or invalid constants.
-			\param inputs 				Layer 0 input values to perform evalation on.
+			\param inputs				Layer 0 input values to perform evalation on.
 			\param sigmoid_index 		A value of 0 indicates use y=x and 1 indicates use y=a/(1+e^(-x/b))+c;
 			\param a					Index 1 constant.
 			\param b					Index 1 constant (cannot be 0).

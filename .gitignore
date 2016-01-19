@@ -2,10 +2,14 @@ server
 server.exe
 unit_tests
 unit_tests.exe
+examples/evaluation/evaluation
+examples/evaluation/evaluation.exe
 examples/info_game/info_game
 examples/info_game/info_game.exe
 examples/list_games/list_games
 examples/list_games/list_games.exe
+examples/move_generator/move_generator
+examples/move_generator/move_generator.exe
 examples/play_game/play_game
 examples/play_game/play_game.exe
 doc/html

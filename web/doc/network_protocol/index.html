@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!--#include virtual="/sources.html"-->
+		<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+	</head>
+	<body>
+		<!--#include virtual="/navbar.html"-->
+		<title>Skynet - Network Protocol</title>
+		<div class="container">
+			<center><h1>Protocol</h1></center>
+			<h3>Introduction</h3>
+			<div class="well">
+				The Skynet network protocol uses HTTP POST requests. Each request returns a JSON object. There are 3 main types of requests:
+				<ul>
+					<li style="font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;">
+						list_games
+					</li>
+					<li style="font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;">
+						info_game
+					</li>
+					<li style="font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;">
+						play_game
+					</li>
+				</ul>
+				These can be executed from the command line (using a tool like curl or wget) or by using the C++ libraries provided with Skynet.<br>
+				<br>
+				Checkers boards are represented using strings of 32 values. Each value represents a piece on a playable space.<br>
+				<br>
+				Pieces:<br>
+				<ul>
+					<li>'r' - Red Pawn</li>
+					<li>'R' - Red King</li>
+					<li>'b' - Black Pawn</li>
+					<li>'B' - Black King</li>
+					<li>'_' - Empty Space</li>
+				</ul>
+				Boards are represented as follows:<br>
+				<img src="/images/checkers_example.png"/><br>
+				<br>
+				All time values used through the project are the number of seconds since the Unix epoch.<br>
+			</div>
+			<h3>Command Line Examples</h3>
+			<div class="well">
+				List all games:<br>
+				<ul>
+					<li style="font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;">
+						curl http://skynet.cs.uaf.edu/?list_games=true
+					</li>
+					<li style="font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;">
+						wget -qO- http://skynet.cs.uaf.edu/?list_games=true
+					</li>
+				</ul>
+				Example output:<br>
+				<pre class="prettyprint">{
+	"test":
+	{
+		"status":"red_won",
+		"boards":
+		[
+			"rrrrrrrrrrrr________bbbbbbbbbbbb",
+			"rrrrrrrrr_rr_r______bbbbbbbbbbbb"
+		],
+		"create_time":1453327216734,
+		"modify_time":1453327244959
+	},
+	"test2":
+	{
+		"status":"red_turn",
+		"boards":
+		[
+			"rrrrrrrrrrrr________bbbbbbbbbbbb"
+		],
+		"create_time":1453327221466,
+		"modify_time":1453327221466
+	}
+}</pre>
+				Get info on a game named "test":<br>
+				<ul>
+					<li style="font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;">
+						curl http://skynet.cs.uaf.edu/?info_game=true -d '{"name":"test"}'
+					</li>
+					<li style="font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;">
+						wget -qO- http://skynet.cs.uaf.edu/?info_game=true --post-data='{"name":"test"}'
+					</li>
+				</ul>
+				Example output:<br>
+				<pre class="prettyprint">{
+	"status":"black_turn",
+	"boards":
+	[
+		"rrrrrrrrrrrr________bbbbbbbbbbbb",
+		"rrrrrrrrr_rr_r______bbbbbbbbbbbb"
+	],
+	"create_time":1453327216734,
+	"modify_time":1453327244959
+}</pre>
+				Make a move on game "test2":<br>
+				<ul>
+					<li style="font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;">
+						curl http://skynet.cs.uaf.edu/?play_game=true -d '{"name":"test2","board":"rrrrrrrrr_rr_r______bbbbbbbbbbbb"}'
+					</li>
+					<li style="font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;">
+						wget -qO- http://skynet.cs.uaf.edu/?play_game=true --post-data='{"name":"test2","board":"rrrrrrrrr_rr_r______bbbbbbbbbbbb"}'
+					</li>
+				</ul>
+				Example output (note the empty object, this is a good thing!):<br>
+				<pre class="prettyprint">{}</pre>
+				<br>
+				In cases of errors, an object is still returned. The object will have one member named "error".<br>
+				<br>
+				For example, if we try to make the same move on game test2 (which isn't a legal move for black):<br>
+				<pre class="prettyprint">{
+	"error":"Invalid move \"rrrrrrrrr_rr_r______bbbbbbbbbbbb\", red wins."
+}</pre>
+			</div>
+			<h3>C++ Examples</h3>
+			<div class="well">
+				The Skynet C++ libaries have built in functions for these operations.<br>
+				<br>
+				List games and their status:
+				<pre class="prettyprint">auto games=skynet::checkers::list_games("skynet.cs.uaf.edu"); //throws on error
+for(auto game:games)
+	std::cout&lt;&lt;games.first&lt;&lt;" "&lt;&lt;std::to_string(games.second)&lt;&lt;std::endl;</pre>
+				Output:
+				<pre class="prettyprint">test red_won
+test2 red_turn</pre>
+				The variable games above is a std::map&lt;std::string,game_info_t&gt;, with the key being the name of the game and the value being the game_info_t object (source code is in checkers_client.hpp):
+				<pre class="prettyprint">struct game_info_t
+{
+	skynet::checkers::status_t status;
+	skynet::checkers::board_list_t boards;
+	uint64_t create_time;
+	uint64_t modify_time;
+};</pre>
+				Get info on a game named "test":
+				<pre class="prettyprint">auto game=skynet::checkers::info_game("skynet.cs.uaf.edu","test"); //throws on error
+std::cout&lt;&lt;"test "&lt;&lt;std::to_string(games.status)&lt;&lt;std::endl;</pre>
+				Output:
+				<pre class="prettyprint">test red_won</pre>
+				Make a move on game "test2":
+				<pre class="prettyprint">skynet::checkers::play_game("skynet.cs.uaf.edu","test2","rrrrrrrrr_rr_r______bbbbbbbbbbbb"); //throws on error</pre>
+			</div>
+		</div>
+	</body>
+</html>

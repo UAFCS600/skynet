@@ -8,7 +8,7 @@
 #include "game_manager.hpp"
 #include "handler.hpp"
 
-skynet::checkers_board_list_t opening_moves{};
+skynet::checkers::board_list_t opening_moves{};
 size_t max_game_moves=100;
 size_t game_ttl_mins=10;
 size_t game_timeout_secs=30;

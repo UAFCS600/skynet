@@ -6,9 +6,9 @@
 #include <utility>
 
 #include "game_manager.hpp"
-#include "json.hpp"
-#include "skynet/checkers.hpp"
-#include "skynet/neuralnet.hpp"
+#include <json/json.hpp>
+#include <skynet/checkers.hpp>
+#include <skynet/neuralnet.hpp>
 
 extern game_manager_t global_game_manager;
 
@@ -124,17 +124,17 @@ void move_generator_handler(mg_connection* connection,int event,const std::strin
 		if(!json.isObject())
 			throw std::runtime_error("Not a JSON object.");
 
-		skynet::checkers_board_t board=json["board"].asString();
+		skynet::checkers::board_t board=json["board"].asString();
 
 		std::string player_raw(json["player"].asString());
-		skynet::checkers_player_t player=skynet::checkers_player_from_string(player_raw);
+		skynet::checkers::player_t player=skynet::checkers::player_from_string(player_raw);
 
 		int times=100000;
 		auto start=std::chrono::system_clock::now();
-		skynet::checkers_board_list_t moves;
+		skynet::checkers::board_list_t moves;
 
 		for(auto ii=0;ii<times;++ii)
-			moves=skynet::move_generator(board,player);
+			moves=skynet::checkers::move_generator(board,player);
 
 		auto end=std::chrono::system_clock::now();
 		auto time=std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count()/(double)times;
@@ -210,7 +210,7 @@ void info_game_handler(mg_connection* connection,int event,const std::string& po
 		if(!json.isObject())
 			throw std::runtime_error("Not a JSON object.");
 
-		skynet::game_info_t info=global_game_manager.info_game(json["name"].asString());
+		skynet::checkers::game_info_t info=global_game_manager.info_game(json["name"].asString());
 		mg_send(connection,std::to_string(info),"application/json");
 	}
 	catch(std::exception& error)

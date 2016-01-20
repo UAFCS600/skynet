@@ -1,7 +1,6 @@
 #include "checkers.hpp"
 
 #include <cctype>
-#include <sstream>
 #include <stdexcept>
 
 static const char look_move[32][4]={{-1,-1,5,4},  {-1,-1,6,5},  {-1,-1,7,6},  {-1,-1,-1,7}, {-1,0,8,-1},  {0,1,9,8},    {1,2,10,9},   {2,3,11,10},
@@ -54,7 +53,7 @@ static bool not_same_color(const char piece1,const char piece2)
 	return ((is_red(piece1)&&is_blk(piece2))||(is_blk(piece1)&&is_red(piece2)));
 }
 
-static bool find_jump(const skynet::checkers_board_t& board,const size_t position,std::vector<skynet::checkers_board_t>& boards)
+static bool find_jump(const skynet::checkers::board_t& board,const size_t position,std::vector<skynet::checkers::board_t>& boards)
 {
 	bool ret=false;
 	bool start=true;
@@ -62,7 +61,7 @@ static bool find_jump(const skynet::checkers_board_t& board,const size_t positio
 	int rsp=0;
 	const size_t stack_size=20;
 	size_t stack[stack_size][2];
-	skynet::checkers_board_t board_stack[stack_size];
+	skynet::checkers::board_t board_stack[stack_size];
 	board_stack[0]=board;
 	stack[0][0]=position;
 	stack[0][1]=0;
@@ -126,7 +125,7 @@ static bool find_jump(const skynet::checkers_board_t& board,const size_t positio
 	return ret;
 }
 
-void skynet::validate(const skynet::checkers_board_t& board)
+void skynet::checkers::validate(const skynet::checkers::board_t& board)
 {
 	if(board.size()!=32)
 		throw std::runtime_error("Invalid board length (expected 32 got "+std::to_string(board.size())+").");
@@ -136,11 +135,11 @@ void skynet::validate(const skynet::checkers_board_t& board)
 			throw std::runtime_error("Invalid piece at position "+std::to_string(ii)+" '"+std::to_string(board[ii])+"'.");
 }
 
-skynet::checkers_board_list_t skynet::move_generator(const skynet::checkers_board_t& board,const skynet::checkers_player_t& player)
+skynet::checkers::board_list_t skynet::checkers::move_generator(const skynet::checkers::board_t& board,const skynet::checkers::player_t& player)
 {
 	validate(board);
 
-	skynet::checkers_board_list_t boards;
+	skynet::checkers::board_list_t boards;
 
 	bool jump=false;
 
@@ -159,7 +158,7 @@ skynet::checkers_board_list_t skynet::move_generator(const skynet::checkers_boar
 			{
 				if(look_move[ii][jj]>-1&&is_empty(board[look_move[ii][jj]]))
 				{
-					skynet::checkers_board_t b(board);
+					skynet::checkers::board_t b(board);
 					b[ii]='_';
 
 					if(look_move[ii][jj]<4&&is_blk(board[ii]))
@@ -179,7 +178,7 @@ skynet::checkers_board_list_t skynet::move_generator(const skynet::checkers_boar
 			{
 				if(look_move[ii][jj]>-1&&is_empty(board[look_move[ii][jj]]))
 				{
-					skynet::checkers_board_t b(board);
+					skynet::checkers::board_t b(board);
 					b[ii]='_';
 
 					if(look_move[ii][jj]>27&&is_red(board[ii]))
@@ -196,7 +195,7 @@ skynet::checkers_board_list_t skynet::move_generator(const skynet::checkers_boar
 	return boards;
 }
 
-skynet::checkers_player_t skynet::checkers_player_from_string(const std::string& str)
+skynet::checkers::player_t skynet::checkers::player_from_string(const std::string& str)
 {
 	std::string copy=str;
 
@@ -204,14 +203,14 @@ skynet::checkers_player_t skynet::checkers_player_from_string(const std::string&
 		ii=std::tolower(ii);
 
 	if(copy=="red")
-		return skynet::RED;
+		return skynet::checkers::RED;
 	if(copy=="black")
-		return skynet::BLACK;
+		return skynet::checkers::BLACK;
 
 	throw std::runtime_error("Invalid player value \""+str+"\" (expected \"red\" or \"black\").");
 }
 
-skynet::checkers_status_t skynet::checkers_status_from_string(const std::string& str)
+skynet::checkers::status_t skynet::checkers::status_from_string(const std::string& str)
 {
 	std::string copy=str;
 
@@ -219,38 +218,38 @@ skynet::checkers_status_t skynet::checkers_status_from_string(const std::string&
 		ii=std::tolower(ii);
 
 	if(copy=="red_turn")
-		return skynet::RED_TURN;
+		return skynet::checkers::RED_TURN;
 	if(copy=="black_turn")
-		return skynet::BLACK_TURN;
+		return skynet::checkers::BLACK_TURN;
 	if(copy=="red_won")
-		return skynet::RED_WON;
+		return skynet::checkers::RED_WON;
 	if(copy=="black_won")
-		return skynet::BLACK_WON;
+		return skynet::checkers::BLACK_WON;
 
 	throw std::runtime_error("Invalid status value \""+str+"\" (expected \"red_turn\", \"black_turn\", \"red_won\", or \"black_won\").");
 }
 
-std::string std::to_string(const skynet::checkers_player_t& player)
+std::string std::to_string(const skynet::checkers::player_t& player)
 {
-	if(player==skynet::RED)
+	if(player==skynet::checkers::RED)
 		return "red";
 
 	return "black";
 }
 
-std::string std::to_string(const skynet::checkers_status_t& status)
+std::string std::to_string(const skynet::checkers::status_t& status)
 {
-	if(status==skynet::RED_TURN)
+	if(status==skynet::checkers::RED_TURN)
 		return "red_turn";
-	if(status==skynet::BLACK_TURN)
+	if(status==skynet::checkers::BLACK_TURN)
 		return "black_turn";
-	if(status==skynet::RED_WON)
+	if(status==skynet::checkers::RED_WON)
 		return "red_won";
 
 	return "black_won";
 }
 
-std::string std::to_string(const skynet::checkers_board_list_t& boards)
+std::string std::to_string(const skynet::checkers::board_list_t& boards)
 {
 	std::string str;
 

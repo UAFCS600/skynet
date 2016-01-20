@@ -1,8 +1,7 @@
-#include "wget.hpp"
+#include "checkers_client.hpp"
 
-#include "../json.hpp"
+#include <json/json.hpp>
 #include <mongoose/mongoose.h>
-#include <stdexcept>
 
 struct wget_t
 {
@@ -64,18 +63,18 @@ static inline std::string wget(const std::string& address,const std::string& pos
 
 	return responder.data;
 }
-#include <iostream>
-static inline skynet::game_info_t json_to_game_info(const json_t& json)
+
+static inline skynet::checkers::game_info_t json_to_game_info(const json_t& json)
 {
 	if(!json.isObject())
 		throw std::runtime_error("Game info is not a JSON object.");
 
-	skynet::game_info_t game;
-	game.status=skynet::checkers_status_from_string(json["status"].asString());
+	skynet::checkers::game_info_t game;
+	game.status=skynet::checkers::status_from_string(json["status"].asString());
 
 	for(auto board:json["boards"])
 	{
-		skynet::validate(board.asString());
+		skynet::checkers::validate(board.asString());
 		game.boards.push_back(board.asString());
 	}
 
@@ -85,7 +84,7 @@ static inline skynet::game_info_t json_to_game_info(const json_t& json)
 	return game;
 }
 
-skynet::game_list_t skynet::list_games(const std::string& server)
+skynet::checkers::game_list_t skynet::checkers::list_games(const std::string& server)
 {
 	std::string data=wget(server+"/?list_games=true","");
 
@@ -97,7 +96,7 @@ skynet::game_list_t skynet::list_games(const std::string& server)
 	if(json.isMember("error"))
 		throw std::runtime_error(json["error"].asString());
 
-	skynet::game_list_t games;
+	skynet::checkers::game_list_t games;
 
 	for(Json::ValueIterator key=json.begin();key!=json.end();++key)
 		games[key.key().asString()]=json_to_game_info(*key);
@@ -105,7 +104,7 @@ skynet::game_list_t skynet::list_games(const std::string& server)
 	return games;
 }
 
-skynet::game_info_t skynet::info_game(const std::string& server,
+skynet::checkers::game_info_t skynet::checkers::info_game(const std::string& server,
 	const std::string& game_name)
 {
 	std::string data=wget(server+"/?info_game=true",
@@ -122,8 +121,8 @@ skynet::game_info_t skynet::info_game(const std::string& server,
 	return json_to_game_info(json);
 }
 
-void skynet::play_game(const std::string& server,
-		const std::string& game_name,const skynet::checkers_board_t& board)
+void skynet::checkers::play_game(const std::string& server,
+		const std::string& game_name,const skynet::checkers::board_t& board)
 {
 	std::string data=wget(server+"/?play_game=true",
 		"{\"name\":\""+game_name+"\",\"board\":\""+board+"\"}");
@@ -137,7 +136,7 @@ void skynet::play_game(const std::string& server,
 		throw std::runtime_error(json["error"].asString());
 }
 
-std::string std::to_string(const skynet::game_info_t& info)
+std::string std::to_string(const skynet::checkers::game_info_t& info)
 {
 	std::string json;
 	json+="\"status\":\""+std::to_string(info.status)+"\",";
@@ -147,7 +146,7 @@ std::string std::to_string(const skynet::game_info_t& info)
 	return "{"+json+"}";
 }
 
-std::string std::to_string(const skynet::game_list_t& list)
+std::string std::to_string(const skynet::checkers::game_list_t& list)
 {
 	std::string json;
 

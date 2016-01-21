@@ -9,6 +9,15 @@
 		<title>Skynet - Getting Started</title>
 		<div class="container">
 			<center><h1>Getting Started</h1></center>
+			<h3>Prerequisites</h3>
+			<div class="well">
+				You will need a computer with a C++ compiler with C++11 support or better (such as g++ or clang++ or vc++).<br>
+				Makefiles are already includes with the project, so if you are running a Unix environment or have Cygwin/GitBash, you're all set.<br>
+				<br>
+				Note, if you are using the lab machines in CHAP 103, none of this will work. GitBash is linking to G++ 4.6 which does not fully support C++11.<br>
+				Cygwin is using an unpatched version of MinGW 4.9 which does not compile std::to_string.<br>
+				This is as of 01/20/2016.
+			</div>
 			<h3>Download and Build</h3>
 			<div class="well">
 				<pre class="prettyprint">git clone https://github.com/uafcs600/skynet.git

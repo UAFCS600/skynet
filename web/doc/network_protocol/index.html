@@ -135,7 +135,7 @@ test2 red_turn</pre>
 };</pre>
 				Get info on a game named "test":
 				<pre class="prettyprint">auto game=skynet::checkers::info_game("skynet.cs.uaf.edu","test"); //throws on error
-std::cout&lt;&lt;"test "&lt;&lt;std::to_string(games.status)&lt;&lt;std::endl;</pre>
+std::cout&lt;&lt;"test "&lt;&lt;std::to_string(game.status)&lt;&lt;std::endl;</pre>
 				Output:
 				<pre class="prettyprint">test red_won</pre>
 				Make a move on game "test2":

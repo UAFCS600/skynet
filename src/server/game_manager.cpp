@@ -144,6 +144,8 @@ void game_manager_t::play_game(const std::string& name,const skynet::checkers::b
 		}
 	}
 
+	games_m[name].boards.push_back(board);
+
 	if(!found)
 	{
 		std::string winner="red";
@@ -157,8 +159,6 @@ void game_manager_t::play_game(const std::string& name,const skynet::checkers::b
 
 		throw std::runtime_error("Invalid move \""+board+"\", "+winner+" wins.");
 	}
-
-	games_m[name].boards.push_back(board);
 
 	if(games_m[name].status==skynet::checkers::RED_TURN)
 		games_m[name].status=skynet::checkers::BLACK_TURN;

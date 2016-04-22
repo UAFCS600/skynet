@@ -10,7 +10,7 @@ function checkers_game_view_t(div)
 	var myself=this;
 
 	this.default_speed=1000;
-	this.max_divisor=4;
+	this.max_divisor=16;
 
 	this.status={};
 	this.status.center=document.createElement("center");
@@ -67,12 +67,12 @@ function checkers_game_view_t(div)
 	this.follow.speed.className="form-control";
 	this.follow.speed.style.width="96px";
 	this.follow.speed.style.marginLeft="10px";
-	var speeds=["1x","2x","3x","4x"];
+	var speeds=[1,2,4,8,16];
 	for(var ii=0;ii<speeds.length;++ii)
 	{
 		var option=document.createElement("option");
-		option.text=speeds[ii]+" Speed";
-		option.speed=ii+1;
+		option.text=speeds[ii]+"x Speed";
+		option.speed=speeds[ii];
 		this.follow.speed.add(option);
 	}
 	this.follow.speed.disabled=true;

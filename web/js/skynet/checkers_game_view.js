@@ -9,6 +9,9 @@ function checkers_game_view_t(div)
 
 	var myself=this;
 
+	this.default_speed=1000;
+	this.max_divisor=4;
+
 	this.status={};
 	this.status.center=document.createElement("center");
 	this.el.appendChild(this.status.center);
@@ -32,14 +35,17 @@ function checkers_game_view_t(div)
 	this.follow.row=this.follow.table.insertRow();
 
 	this.follow.cols=[];
-	for(var ii=0;ii<2;++ii)
+	for(var ii=0;ii<3;++ii)
 	{
 		var col=this.follow.row.insertCell();
-		col.style.width="50%";
 		this.follow.cols.push(col);
 	}
 	this.follow.cols[0].style.textAlign="right";
 	this.follow.cols[1].style.textAlign="left";
+	this.follow.cols[2].style.textAlign="left";
+	this.follow.cols[0].style.width="45%";
+	this.follow.cols[1].style.width="24px";
+	this.follow.cols[2].style.width="55%";
 
 	this.follow.checkbox=document.createElement("input");
 	this.follow.cols[0].appendChild(this.follow.checkbox);
@@ -56,6 +62,22 @@ function checkers_game_view_t(div)
 	this.follow.label.innerHTML="Follow";
 	this.follow.label.className="";
 
+	this.follow.speed=document.createElement("select");
+	this.follow.cols[2].appendChild(this.follow.speed);
+	this.follow.speed.className="form-control";
+	this.follow.speed.style.width="96px";
+	this.follow.speed.style.marginLeft="10px";
+	var speeds=["1x","2x","3x","4x"];
+	for(var ii=0;ii<speeds.length;++ii)
+	{
+		var option=document.createElement("option");
+		option.text=speeds[ii]+" Speed";
+		option.speed=ii+1;
+		this.follow.speed.add(option);
+	}
+	this.follow.speed.disabled=true;
+	this.follow.speed.onchange=function(){myself.update_redraw_interval();};
+
 	var options=parse_uri();
 
 	this.name="Invalid";
@@ -70,8 +92,22 @@ function checkers_game_view_t(div)
 	this.update_disables_m();
 
 	this.get_info();
-	this.download_interval=setInterval(function(){myself.get_info();},1000);
+	this.download_interval=setInterval(function(){myself.get_info();},this.default_speed/this.max_divisor);
 	this.redraw_interval=null;
+}
+
+checkers_game_view_t.prototype.update_redraw_interval=function()
+{
+	var myself=this;
+
+	if(this.redraw_interval)
+	{
+		clearInterval(this.redraw_interval);
+		this.redraw_interval=null;
+	}
+
+	this.redraw_interval=setInterval(function(){myself.redraw();},this.default_speed/
+		this.follow.speed.options[this.follow.speed.selectedIndex].speed);
 }
 
 checkers_game_view_t.prototype.get_info=function()
@@ -146,10 +182,11 @@ checkers_game_view_t.prototype.update_disables_m=function()
 {
 	var myself=this;
 	this.viewer.set_buttons_disabled(this.follow.checkbox.checked);
+	this.follow.speed.disabled=!this.follow.checkbox.checked;
 
 	if(this.follow.checkbox.checked&&!this.redraw_interval)
 	{
-		this.redraw_interval=setInterval(function(){myself.redraw();},1000);
+		this.update_redraw_interval();
 	}
 	else
 	{

@@ -9,9 +9,9 @@
 #include "handler.hpp"
 
 skynet::checkers::board_list_t opening_moves{};
-size_t max_game_moves=100;
+size_t max_game_moves=200;
 size_t game_ttl_mins=10;
-size_t game_timeout_secs=30;
+size_t game_timeout_secs=60;
 
 game_manager_t global_game_manager(opening_moves,max_game_moves,
 	game_ttl_mins,game_timeout_secs);
